@@ -1690,7 +1690,7 @@ body::-webkit-scrollbar-thumb:hover { background: hsl(0, 0%, 70%); }
   #TESTIMONIAL
 \*-----------------------------------*/
 
-.testimonials-box { margin-bottom: 50px; }
+.testimonials-box { margin-bottom: 50px;}
 
 .testimonial-card {
   padding: 30px 20px;
