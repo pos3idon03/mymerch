@@ -1,0 +1,53 @@
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const path = require('path');
+const fs = require('fs');
+require('dotenv').config();
+
+const app = express();
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Serve static files from uploads directory
+app.use('/uploads', express.static('uploads'));
+
+// MongoDB Connection
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/b2b-ecommerce', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log('MongoDB connected'))
+.catch(err => console.log('MongoDB connection error:', err));
+
+// Routes
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/products', require('./routes/products'));
+app.use('/api/categories', require('./routes/categories'));
+app.use('/api/blog', require('./routes/blog'));
+app.use('/api/banner', require('./routes/banner'));
+app.use('/api/testimonials', require('./routes/testimonials'));
+app.use('/api/about', require('./routes/about'));
+app.use('/api/faq', require('./routes/faq'));
+app.use('/api/company', require('./routes/company'));
+app.use('/api/events', require('./routes/events'));
+app.use('/api/custom-order', require('./routes/customOrder'));
+
+// Serve React app in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
+}
+
+// Ensure uploads/assets directory exists
+fs.mkdirSync(path.join(__dirname, 'uploads', 'assets'), { recursive: true });
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+}); 
