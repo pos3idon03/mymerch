@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static('uploads'));
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/b2b-ecommerce', {
+mongoose.connect('mongodb+srv://mymerch:161019901804198506032022ArteAnas!@mymerch.lrrohu2.mongodb.net/?retryWrites=true&w=majority&appName=mymerch', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
