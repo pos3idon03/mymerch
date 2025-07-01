@@ -1,0 +1,74 @@
+const express = require('express');
+const router = express.Router();
+const multer = require('multer');
+const path = require('path');
+const Company = require('../models/Company');
+const auth = require('../middleware/auth');
+
+// Configure multer for file uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/assets/');
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith('image/')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only image files are allowed'), false);
+    }
+  }
+});
+
+// Get settings (public)
+router.get('/settings', async (req, res) => {
+  try {
+    let settings = await Company.findOne();
+    if (!settings) settings = await Company.create({});
+    res.json(settings);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Update settings (admin only, supports logo/favicon upload)
+router.put('/settings', auth, upload.fields([
+  { name: 'logo', maxCount: 1 },
+  { name: 'favicon', maxCount: 1 }
+]), async (req, res) => {
+  try {
+    let settings = await Company.findOne();
+    if (!settings) settings = await Company.create({});
+
+    // Handle file uploads
+    if (req.files && req.files.logo) {
+      settings.logo = `/uploads/assets/${req.files.logo[0].filename}`;
+    }
+    if (req.files && req.files.favicon) {
+      settings.favicon = `/uploads/assets/${req.files.favicon[0].filename}`;
+    }
+
+    // Handle text fields
+    const fields = ['facebook', 'instagram', 'twitter', 'linkedin', 'location', 'telephone', 'email'];
+    fields.forEach(field => {
+      if (req.body[field] !== undefined) {
+        settings[field] = req.body[field];
+      }
+    });
+
+    await settings.save();
+    res.json(settings);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+module.exports = router; 

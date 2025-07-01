@@ -1,0 +1,144 @@
+.sitemap-page {
+  padding: 2rem 0;
+  min-height: 60vh;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 1rem;
+}
+
+.page-header p {
+  font-size: 1.125rem;
+  color: #6b7280;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.sitemap-content {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.sitemap-section {
+  margin-bottom: 2.5rem;
+}
+
+.sitemap-section h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.sitemap-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sitemap-list li {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f3f4f6;
+  display: flex;
+  align-items: center;
+}
+
+.sitemap-list li:last-child {
+  border-bottom: none;
+}
+
+.sitemap-list a {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 500;
+  margin-right: 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.sitemap-list a:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+.sitemap-list li::after {
+  content: '-';
+  color: #9ca3af;
+  margin: 0 0.5rem;
+}
+
+.sitemap-footer {
+  text-align: center;
+  margin-top: 3rem;
+  padding: 2rem;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
+.sitemap-footer p {
+  color: #6b7280;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.sitemap-footer a {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.sitemap-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .sitemap-page {
+    padding: 1rem 0;
+  }
+
+  .page-header h1 {
+    font-size: 2rem;
+  }
+
+  .page-header p {
+    font-size: 1rem;
+  }
+
+  .sitemap-section h2 {
+    font-size: 1.25rem;
+  }
+
+  .sitemap-list li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+
+  .sitemap-list li::after {
+    display: none;
+  }
+
+  .sitemap-footer {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .sitemap-section {
+    margin-bottom: 2rem;
+  }
+} 
