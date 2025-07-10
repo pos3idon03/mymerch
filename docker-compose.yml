@@ -1,13 +1,13 @@
 version: '3.8'
 services:
-  # mongo:
-  #   image: mongo:6
-  #   restart: always
-  #   container_name: b2b-mongo
-  #   ports:
-  #     - "27017:27017"
-  #   volumes:
-  #     - mongo-data:/data/db
+  mongo:
+    image: mongo:6
+    restart: always
+    container_name: b2b-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
 
   app:
     build: .
@@ -18,10 +18,10 @@ services:
       - MONGODB_URI=mongodb+srv://mymerch:161019901804198506032022ArteAnas!@mymerch.lrrohu2.mongodb.net/?retryWrites=true&w=majority&appName=mymerch
       - JWT_SECRET=your-secret-key
       - NODE_ENV=production
-#     depends_on:
-#       - mongo
-# #     volumes:
-# #       - ./uploads:/app/uploads
+    depends_on:
+      - mongo
+    volumes:
+      - ./uploads:/app/uploads
 
-# # volumes:
-# #   mongo-data: 
+volumes:
+  mongo-data: 
