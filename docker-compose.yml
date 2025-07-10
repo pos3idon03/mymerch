@@ -16,7 +16,7 @@ services:
       - "5000:5000"
     environment:
       # - MONGODB_URI=mongodb://mongo:27017/b2b-ecommerce
-      - MONGODB_URI=mongodb+srv://mymerch:161019901804198506032022ArteAnas!@mymerch.lrrohu2.mongodb.net/b2b-ecommerce?retryWrites=true&w=majority&appName=mymerch
+      - MONGODB_URI=mongodb+srv://mymerch:stG2vB6A8Ydos3jS!@mymerch.lrrohu2.mongodb.net/b2b-ecommerce?retryWrites=true&w=majority&appName=mymerch
       # - JWT_SECRET=your-secret-key
       - NODE_ENV=production
     # depends_on:

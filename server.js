@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static('uploads'));
 
 // MongoDB Connection
-mongoose.connect('mongodb+srv://mymerch:161019901804198506032022ArteAnas!@mymerch.lrrohu2.mongodb.net/b2b-ecommerce?retryWrites=true&w=majority&appName=mymerch', {
+mongoose.connect('mongodb+srv://mymerch:stG2vB6A8Ydos3jS@mymerch.lrrohu2.mongodb.net/b2b-ecommerce?retryWrites=true&w=majority&appName=mymerch', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
