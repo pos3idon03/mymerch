@@ -1,28 +1,12 @@
 version: '3.8'
 services:
-  # mongo:
-  #   image: mongo:6
-  #   restart: always
-  #   container_name: b2b-mongo
-  #   ports:
-  #     - "27017:27017"
-  #   volumes:
-  #     - mongo-data:/data/db
-
   app:
     build: .
     container_name: b2b-app
     ports:
       - "5000:5000"
     environment:
-      # - MONGODB_URI=mongodb://mongo:27017/b2b-ecommerce
-      - MONGODB_URI=mongodb+srv://mymerch:stG2vB6A8Ydos3jS!@mymerch.lrrohu2.mongodb.net/b2b-ecommerce?retryWrites=true&w=majority&appName=mymerch
-      # - JWT_SECRET=your-secret-key
+      - MONGODB_URI= ${{ secrets.MONGODB_URI }}
       - NODE_ENV=production
-    # depends_on:
-    #   - mongo
     volumes:
       - ./uploads:/app/uploads
-
-# volumes:
-#   mongo-data: 
