@@ -16,7 +16,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static('uploads'));
 
 mongouri = process.env.MONGO_URI;
-console.log(mongouri);
 
 // MongoDB Connection
 mongoose.connect(mongouri, {

@@ -3,7 +3,6 @@ const User = require('./models/User');
 
 
 mongouri = process.env.MONGO_URI;
-console.log(mongouri);
 
 mongoose.connect(mongouri, {
   useNewUrlParser: true,
