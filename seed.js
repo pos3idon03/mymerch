@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const User = require('./models/User');
 
-mongoose.connect('mongodb+srv://mymerch:161019901804198506032022ArteAnas!@mymerch.lrrohu2.mongodb.net/?retryWrites=true&w=majority&appName=mymerch', {
+mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
