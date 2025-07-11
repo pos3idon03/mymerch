@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 const Company = require('../models/Company');
 const auth = require('../middleware/auth');
 
@@ -17,7 +18,11 @@ const UPLOAD_DESTINATION = path.join(PUBLIC_UPLOADS_URL_PATH, COMPANY_SUBDIR);
 // Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, '/app/uploads/prod/assets/');
+    const uploadDir = '/app/uploads/prod/assets';
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+    cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
@@ -54,15 +59,25 @@ router.put('/settings', auth, upload.fields([
   { name: 'favicon', maxCount: 1 }
 ]), async (req, res) => {
   try {
+    console.log('Files received:', req.files);
+    console.log('Body received:', req.body);
+    
     let settings = await Company.findOne();
-    if (!settings) settings = await Company.create({});
+    if (!settings) {
+      console.log('Creating new company settings');
+      settings = await Company.create({});
+    }
 
     // Handle file uploads
     if (req.files && req.files.logo) {
-      settings.logo = path.join(PUBLIC_UPLOADS_URL_PATH, COMPANY_SUBDIR, req.files.logo[0].filename).replace(/\\/g, '/');
+      const logoPath = path.join(PUBLIC_UPLOADS_URL_PATH, COMPANY_SUBDIR, req.files.logo[0].filename).replace(/\\/g, '/');
+      console.log('Setting logo path:', logoPath);
+      settings.logo = logoPath;
     }
     if (req.files && req.files.favicon) {
-      settings.favicon = path.join(PUBLIC_UPLOADS_URL_PATH, COMPANY_SUBDIR, req.files.favicon[0].filename).replace(/\\/g, '/');
+      const faviconPath = path.join(PUBLIC_UPLOADS_URL_PATH, COMPANY_SUBDIR, req.files.favicon[0].filename).replace(/\\/g, '/');
+      console.log('Setting favicon path:', faviconPath);
+      settings.favicon = faviconPath;
     }
 
     // Handle text fields
@@ -73,9 +88,12 @@ router.put('/settings', auth, upload.fields([
       }
     });
 
+    console.log('Saving settings:', settings);
     await settings.save();
+    console.log('Settings saved successfully');
     res.json(settings);
   } catch (error) {
+    console.error('Error updating company settings:', error);
     res.status(400).json({ message: error.message });
   }
 });

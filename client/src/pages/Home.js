@@ -151,6 +151,119 @@ const Home = () => {
       {/* Banner Section */}
       <Banner banners={homepageBanners} />
 
+      
+            {/* Featured Products Section */}
+      <section className="section">
+        <div className="container">
+          <h2 className="section-title">Τα προϊόντα μας και ιδέες για να τα συνδυάσετε</h2>
+          {/* <p className="section-subtitle">
+            Discover our most popular and high-quality products
+          </p> */}
+          <div className="products-3-grid">
+            {/* Left: Categories as dropdown list */}
+            <div className="products-3-col categories-col">
+              <h3 className="products-3-title">Κατηγορίες</h3>
+              <ul className="products-3-list category-dropdown-list">
+                {categories.length > 0 ? (
+                  categories.map(category => {
+                    const productsInCategory = allProducts.filter(product =>
+                      product.categories && product.categories.some(c => c._id === category._id)
+                    );
+                    const isOpen = openCategory === category._id;
+                    return (
+                      <li key={category._id} className="category-dropdown-item">
+                        <button
+                          className="category-dropdown-toggle"
+                          onClick={() => setOpenCategory(isOpen ? null : category._id)}
+                          aria-expanded={isOpen}
+                        >
+                          {/* Favicon */}
+                          {category.favicon && (
+                            <img src={category.favicon} alt="favicon" style={{ width: 24, height: 24, borderRadius: 4, border: '1px solid #eee', marginRight: 8, verticalAlign: 'middle' }} />
+                          )}
+                          <span>{category.name}</span>
+                          <span className="dropdown-arrow">{isOpen ? <FaChevronUp /> : <FaChevronDown />}</span>
+                        </button>
+                        {isOpen && productsInCategory.length > 0 && (
+                          <ul className="category-dropdown-menu prettier-product-list">
+                            {productsInCategory.map(product => (
+                              <li key={product._id} className="prettier-product-item">
+                                {/* Product favicon or default icon */}
+                                {product.favicon ? (
+                                  <img src={product.favicon} alt="favicon" style={{ width: 20, height: 20, borderRadius: 4, border: '1px solid #eee', marginRight: 6, verticalAlign: 'middle' }} />
+                                ) : (
+                                  <FaBox className="product-list-icon" />
+                                )}
+                                <span>{product.title}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                        {isOpen && productsInCategory.length === 0 && (
+                          <ul className="category-dropdown-menu prettier-product-list"><li className="prettier-product-item">No products</li></ul>
+                        )}
+                      </li>
+                    );
+                  })
+                ) : (
+                  <li>No categories</li>
+                )}
+              </ul>
+            </div>
+            {/* Right: Events */}
+            <div className="products-3-col events-col">
+              <h3 className="products-3-title">Events</h3>
+              <ul className="products-3-list event-dropdown-list">
+                {events.length > 0 ? (
+                  events.map(event => {
+                    const productsInEvent = allProducts.filter(product =>
+                      product.events && product.events.some(e => e._id === event._id)
+                    );
+                    const isOpen = openEvent === event._id;
+                    return (
+                      <li key={event._id} className="category-dropdown-item">
+                        <button
+                          className="category-dropdown-toggle"
+                          onClick={() => setOpenEvent(isOpen ? null : event._id)}
+                          aria-expanded={isOpen}
+                        >
+                          {/* Favicon */}
+                          {event.favicon && (
+                            <img src={event.favicon} alt="favicon" style={{ width: 24, height: 24, borderRadius: 4, border: '1px solid #eee', marginRight: 8, verticalAlign: 'middle' }} />
+                          )}
+                          <span>{event.name}</span>
+                          <span className="dropdown-arrow">{isOpen ? <FaChevronUp /> : <FaChevronDown />}</span>
+                        </button>
+                        {isOpen && productsInEvent.length > 0 && (
+                          <ul className="category-dropdown-menu prettier-product-list">
+                            {productsInEvent.map(product => (
+                              <li key={product._id} className="prettier-product-item">
+                                {/* Product favicon or default icon */}
+                                {product.favicon ? (
+                                  <img src={product.favicon} alt="favicon" style={{ width: 20, height: 20, borderRadius: 4, border: '1px solid #eee', marginRight: 6, verticalAlign: 'middle' }} />
+                                ) : (
+                                  <FaBox className="product-list-icon" />
+                                )}
+                                <span>{product.title}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                        {isOpen && productsInEvent.length === 0 && (
+                          <ul className="category-dropdown-menu prettier-product-list"><li className="prettier-product-item">No products</li></ul>
+                        )}
+                      </li>
+                    );
+                  })
+                ) : (
+                  <li>No events</li>
+                )}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+      
       {/* Custom Order Section */}
       <section className="section bg-gray-50">
         <div className="container">
@@ -269,118 +382,6 @@ const Home = () => {
                   <div className="custom-order-message">{customOrderMessage}</div>
                 )}
               </form>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Products Section */}
-      <section className="section">
-        <div className="container">
-          <h2 className="section-title">Τα προϊόντα μας και ιδέες για να τα συνδυάσετε</h2>
-          {/* <p className="section-subtitle">
-            Discover our most popular and high-quality products
-          </p> */}
-          <div className="products-3-grid">
-            {/* Left: Categories as dropdown list */}
-            <div className="products-3-col categories-col">
-              <h3 className="products-3-title">Κατηγορίες</h3>
-              <ul className="products-3-list category-dropdown-list">
-                {categories.length > 0 ? (
-                  categories.map(category => {
-                    const productsInCategory = allProducts.filter(product =>
-                      product.categories && product.categories.some(c => c._id === category._id)
-                    );
-                    const isOpen = openCategory === category._id;
-                    return (
-                      <li key={category._id} className="category-dropdown-item">
-                        <button
-                          className="category-dropdown-toggle"
-                          onClick={() => setOpenCategory(isOpen ? null : category._id)}
-                          aria-expanded={isOpen}
-                        >
-                          {/* Favicon */}
-                          {category.favicon && (
-                            <img src={category.favicon} alt="favicon" style={{ width: 24, height: 24, borderRadius: 4, border: '1px solid #eee', marginRight: 8, verticalAlign: 'middle' }} />
-                          )}
-                          <span>{category.name}</span>
-                          <span className="dropdown-arrow">{isOpen ? <FaChevronUp /> : <FaChevronDown />}</span>
-                        </button>
-                        {isOpen && productsInCategory.length > 0 && (
-                          <ul className="category-dropdown-menu prettier-product-list">
-                            {productsInCategory.map(product => (
-                              <li key={product._id} className="prettier-product-item">
-                                {/* Product favicon or default icon */}
-                                {product.favicon ? (
-                                  <img src={product.favicon} alt="favicon" style={{ width: 20, height: 20, borderRadius: 4, border: '1px solid #eee', marginRight: 6, verticalAlign: 'middle' }} />
-                                ) : (
-                                  <FaBox className="product-list-icon" />
-                                )}
-                                <span>{product.title}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                        {isOpen && productsInCategory.length === 0 && (
-                          <ul className="category-dropdown-menu prettier-product-list"><li className="prettier-product-item">No products</li></ul>
-                        )}
-                      </li>
-                    );
-                  })
-                ) : (
-                  <li>No categories</li>
-                )}
-              </ul>
-            </div>
-            {/* Right: Events */}
-            <div className="products-3-col events-col">
-              <h3 className="products-3-title">Events</h3>
-              <ul className="products-3-list event-dropdown-list">
-                {events.length > 0 ? (
-                  events.map(event => {
-                    const productsInEvent = allProducts.filter(product =>
-                      product.events && product.events.some(e => e._id === event._id)
-                    );
-                    const isOpen = openEvent === event._id;
-                    return (
-                      <li key={event._id} className="category-dropdown-item">
-                        <button
-                          className="category-dropdown-toggle"
-                          onClick={() => setOpenEvent(isOpen ? null : event._id)}
-                          aria-expanded={isOpen}
-                        >
-                          {/* Favicon */}
-                          {event.favicon && (
-                            <img src={event.favicon} alt="favicon" style={{ width: 24, height: 24, borderRadius: 4, border: '1px solid #eee', marginRight: 8, verticalAlign: 'middle' }} />
-                          )}
-                          <span>{event.name}</span>
-                          <span className="dropdown-arrow">{isOpen ? <FaChevronUp /> : <FaChevronDown />}</span>
-                        </button>
-                        {isOpen && productsInEvent.length > 0 && (
-                          <ul className="category-dropdown-menu prettier-product-list">
-                            {productsInEvent.map(product => (
-                              <li key={product._id} className="prettier-product-item">
-                                {/* Product favicon or default icon */}
-                                {product.favicon ? (
-                                  <img src={product.favicon} alt="favicon" style={{ width: 20, height: 20, borderRadius: 4, border: '1px solid #eee', marginRight: 6, verticalAlign: 'middle' }} />
-                                ) : (
-                                  <FaBox className="product-list-icon" />
-                                )}
-                                <span>{product.title}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                        {isOpen && productsInEvent.length === 0 && (
-                          <ul className="category-dropdown-menu prettier-product-list"><li className="prettier-product-item">No products</li></ul>
-                        )}
-                      </li>
-                    );
-                  })
-                ) : (
-                  <li>No events</li>
-                )}
-              </ul>
             </div>
           </div>
         </div>
