@@ -15,8 +15,11 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static files from uploads directory
 app.use('/uploads', express.static('uploads'));
 
+mongouri = process.env.MONGODB_URI;
+console.log(mongouri);
+
 // MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI, {
+mongoose.connect(mongouri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })

@@ -1,7 +1,11 @@
 const mongoose = require('mongoose');
 const User = require('./models/User');
 
-mongoose.connect(process.env.MONGODB_URI, {
+
+mongouri = process.env.MONGODB_URI;
+console.log(mongouri);
+
+mongoose.connect(mongouri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
