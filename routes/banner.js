@@ -7,7 +7,7 @@ const auth = require('../middleware/auth');
 
 const router = express.Router();
 
-const BASE_UPLOAD_DIR = '/app/uploads';
+const BASE_UPLOAD_DIR = '/app/uploads/prod';
 const BANNERS_SUBDIR = 'banners'; // Subdirectory within the volume for banners
 // Construct the full path for banners uploads
 const UPLOAD_DESTINATION = path.join(BASE_UPLOAD_DIR, BANNERS_SUBDIR);
