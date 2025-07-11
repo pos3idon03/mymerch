@@ -7,18 +7,22 @@ const auth = require('../middleware/auth');
 
 const router = express.Router();
 
-const BASE_UPLOAD_DIR = 'app/uploads/prod';
-const BANNERS_SUBDIR = 'banners'; // Subdirectory within the volume for banners
+// Define the public URL path for your uploaded files
+const PUBLIC_UPLOADS_URL_PATH = '/uploads'; // This is what the browser will use
+// Define the subdirectory for banners within the volume
+const BANNERS_SUBDIR = 'banners';
 // Construct the full path for banners uploads
-const UPLOAD_DESTINATION = path.join(BASE_UPLOAD_DIR, BANNERS_SUBDIR);
+const UPLOAD_DESTINATION = path.join(PUBLIC_UPLOADS_URL_PATH, BANNERS_SUBDIR);
 
 // Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    if (!fs.existsSync(UPLOAD_DESTINATION)) {
-      fs.mkdirSync(UPLOAD_DESTINATION, { recursive: true });
+    // This is the physical path on the volume
+    const uploadDir = '/app/uploads/prod/banners';
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
     }
-    cb(null, UPLOAD_DESTINATION);
+    cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + '-' + Math.round(Math.random() * 1E9) + path.extname(file.originalname));
@@ -60,7 +64,7 @@ router.post('/', auth, upload.single('image'), async (req, res) => {
   try {
     const { title, subtitle, link, order, placement } = req.body;
     
-    const image = req.file ? `/${UPLOAD_DESTINATION}/${req.file.filename}` : ''; // Example: /banners/1678889900000-12345.png
+    const image = req.file ? path.join(PUBLIC_UPLOADS_URL_PATH, BANNERS_SUBDIR, req.file.filename).replace(/\\/g, '/') : '';
 
     const banner = new Banner({
       title,
@@ -101,8 +105,7 @@ router.put('/:id', auth, upload.single('image'), async (req, res) => {
     };
 
     if (req.file) {
-      // Update the image path similar to the POST request
-      updateData.image = `/${UPLOAD_DESTINATION}/${req.file.filename}`;
+      updateData.image = path.join(PUBLIC_UPLOADS_URL_PATH, BANNERS_SUBDIR, req.file.filename).replace(/\\/g, '/'); // Ensure forward slashes for URLs
     }
 
     banner = await Banner.findByIdAndUpdate(
@@ -131,7 +134,13 @@ router.delete('/:id', auth, async (req, res) => {
     // Optional: Delete the actual file from the volume when the banner is deleted
     // This helps in cleaning up unused files and managing volume space.
     if (banner.image) {
-        const imagePathOnDisk = path.join(UPLOAD_DESTINATION, banner.image);
+        // Step 1: Get the relative path after "/uploads/"
+        const relativeImagePath = banner.image.startsWith('/uploads/') 
+        ? banner.image.substring('/uploads'.length) 
+        : banner.image; // Fallback if prefix is different
+
+        // Step 2: Combine with the actual disk mount path
+        const imagePathOnDisk = path.join('/app/uploads/prod', relativeImagePath);
         if (fs.existsSync(imagePathOnDisk)) {
             fs.unlinkSync(imagePathOnDisk);
             console.log(`Deleted image file from volume: ${imagePathOnDisk}`);

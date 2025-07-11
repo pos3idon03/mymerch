@@ -5,16 +5,19 @@ const path = require('path');
 const fs = require('fs');
 require('dotenv').config();
 
+// Define the public URL path for your uploaded files
+const PUBLIC_UPLOADS_URL_PATH = '/uploads'; // This is what the browser will use
 
-const volumeMountPath = '/app/uploads/prod'; // Replace with your actual mount path
+// Define the internal server path where the volume is mounted
+const INTERNAL_VOLUME_PATH = '/app/uploads/prod'; // Matches your docker-compose and MongoDB path
 
 try {
     // Check if the directory exists
-    if (fs.existsSync(volumeMountPath)) {
-        console.log(`Volume mounted successfully at: ${volumeMountPath}`);
+    if (fs.existsSync(INTERNAL_VOLUME_PATH)) {
+        console.log(`Volume mounted successfully at: ${INTERNAL_VOLUME_PATH}`);
 
         // Try to write a test file
-        const testFilePath = path.join(volumeMountPath, 'volume_test.txt');
+        const testFilePath = path.join(INTERNAL_VOLUME_PATH, 'volume_test.txt');
         fs.writeFileSync(testFilePath, `Test data from ${new Date().toISOString()}`);
         console.log(`Successfully wrote test file to volume: ${testFilePath}`);
 
@@ -23,10 +26,10 @@ try {
         // console.log('Cleaned up test file.');
 
     } else {
-        console.error(`Volume mount path does NOT exist: ${volumeMountPath}`);
+        console.error(`Volume mount path does NOT exist: ${INTERNAL_VOLUME_PATH}`);
     }
 } catch (error) {
-    console.error(`Error interacting with volume at ${volumeMountPath}:`, error.message);
+    console.error(`Error interacting with volume at ${INTERNAL_VOLUME_PATH}:`, error.message);
 }
 
 
@@ -38,8 +41,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files from uploads directory
-app.use('/uploads', express.static('/app/uploads/prod'));
+// Serve static files from the volume mount point
+app.use(PUBLIC_UPLOADS_URL_PATH, express.static(INTERNAL_VOLUME_PATH));
 
 mongouri = process.env.MONGO_URI;
 
