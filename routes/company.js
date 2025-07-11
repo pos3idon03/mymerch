@@ -59,10 +59,10 @@ router.put('/settings', auth, upload.fields([
 
     // Handle file uploads
     if (req.files && req.files.logo) {
-      settings.logo = `/app/uploads/assets/${req.files.logo[0].filename}`;
+      settings.logo = path.join(PUBLIC_UPLOADS_URL_PATH, COMPANY_SUBDIR, req.files.logo[0].filename).replace(/\\/g, '/');
     }
     if (req.files && req.files.favicon) {
-      settings.favicon = `/app/uploads/assets/${req.files.favicon[0].filename}`;
+      settings.favicon = path.join(PUBLIC_UPLOADS_URL_PATH, COMPANY_SUBDIR, req.files.favicon[0].filename).replace(/\\/g, '/');
     }
 
     // Handle text fields
