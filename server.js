@@ -4,30 +4,6 @@ const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
 require('dotenv').config();
-const volumeMountPath = '/app/uploads'; // Replace with your actual mount path
-
-try {
-    // Check if the directory exists
-    if (fs.existsSync(volumeMountPath)) {
-        console.log(`Volume mounted successfully at: ${volumeMountPath}`);
-
-        // Try to write a test file
-        const testFilePath = path.join(volumeMountPath, 'volume_test.txt');
-        fs.writeFileSync(testFilePath, `Test data from ${new Date().toISOString()}`);
-        console.log(`Successfully wrote test file to volume: ${testFilePath}`);
-
-        // Clean up the test file (optional)
-        fs.unlinkSync(testFilePath);
-        console.log('Cleaned up test file.');
-
-    } else {
-        console.error(`Volume mount path does NOT exist: ${volumeMountPath}`);
-    }
-} catch (error) {
-    console.error(`Error interacting with volume at ${volumeMountPath}:`, error.message);
-}
-
-
 
 
 const app = express();
