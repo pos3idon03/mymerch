@@ -4,12 +4,6 @@ const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
 require('dotenv').config();
-
-
-// Check if the volume is mounted
-const fs = require('fs');
-const path = require('path');
-
 const volumeMountPath = '/app/uploads'; // Replace with your actual mount path
 
 try {
