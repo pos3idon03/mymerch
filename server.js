@@ -6,7 +6,7 @@ const fs = require('fs');
 require('dotenv').config();
 
 // Define the public URL path for your uploaded files
-const PUBLIC_UPLOADS_URL_PATH = '/uploads'; // This is what the browser will use
+const PUBLIC_UPLOADS_URL_PATH = '/uploads/prod'; // This is what the browser will use
 
 // Define the internal server path where the volume is mounted
 const INTERNAL_VOLUME_PATH = '/app/uploads/prod'; // Matches your docker-compose and MongoDB path
