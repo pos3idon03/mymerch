@@ -154,7 +154,7 @@ const AdminBanners = () => {
       active: banner.active,
       placement: banner.placement || 'homepage'
     });
-    setImagePreview(banner.image ? `http://localhost:5000${banner.image}` : '');
+    setImagePreview(banner.image ? `${banner.image}` : '');
     setSelectedFile(null);
     setError('');
     setShowForm(true);
