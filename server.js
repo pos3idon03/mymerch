@@ -39,7 +39,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Serve static files from uploads directory
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static('/app/uploads'));
 
 mongouri = process.env.MONGO_URI;
 
@@ -74,20 +74,20 @@ if (process.env.NODE_ENV === 'production') {
 
 
 // Ensure uploads subdirectories exist
-const uploadDirs = [
-  'uploads/assets',
-  'uploads/banners',
-  'uploads/testimonials',
-  'uploads/products',
-  'uploads/events',
-  'uploads/customOrders',
-  'uploads/categories',
-  'uploads/blogs',
-  'uploads/about',
-];
-uploadDirs.forEach(dir => {
-  fs.mkdirSync(path.join(__dirname, dir), { recursive: true });
-});
+// const uploadDirs = [
+//   'uploads/assets',
+//   'uploads/banners',
+//   'uploads/testimonials',
+//   'uploads/products',
+//   'uploads/events',
+//   'uploads/customOrders',
+//   'uploads/categories',
+//   'uploads/blogs',
+//   'uploads/about',
+// ];
+// uploadDirs.forEach(dir => {
+//   fs.mkdirSync(path.join(__dirname, dir), { recursive: true });
+// });
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

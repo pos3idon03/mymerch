@@ -7,17 +7,21 @@ const auth = require('../middleware/auth');
 
 const router = express.Router();
 
+const BASE_UPLOAD_DIR = '/app/uploads';
+const BANNERS_SUBDIR = 'banners'; // Subdirectory within the volume for banners
+// Construct the full path for banners uploads
+const UPLOAD_DESTINATION = path.join(BASE_UPLOAD_DIR, BANNERS_SUBDIR);
+
 // Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadDir = '/app/uploads/banners';
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
+    if (!fs.existsSync(UPLOAD_DESTINATION)) {
+      fs.mkdirSync(UPLOAD_DESTINATION, { recursive: true });
     }
-    cb(null, uploadDir);
+    cb(null, UPLOAD_DESTINATION);
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
+    cb(null, Date.now() + '-' + Math.round(Math.random() * 1E9) + path.extname(file.originalname));
   }
 });
 
@@ -56,7 +60,7 @@ router.post('/', auth, upload.single('image'), async (req, res) => {
   try {
     const { title, subtitle, link, order, placement } = req.body;
     
-    const image = req.file ? `/app/uploads/banners/${req.file.filename}` : '';
+    const image = req.file ? `/${BANNERS_SUBDIR}/${req.file.filename}` : ''; // Example: /banners/1678889900000-12345.png
 
     const banner = new Banner({
       title,
@@ -97,7 +101,8 @@ router.put('/:id', auth, upload.single('image'), async (req, res) => {
     };
 
     if (req.file) {
-      updateData.image = `/app/uploads/banners/${req.file.filename}`;
+      // Update the image path similar to the POST request
+      updateData.image = `/${BANNERS_SUBDIR}/${req.file.filename}`;
     }
 
     banner = await Banner.findByIdAndUpdate(
@@ -122,6 +127,14 @@ router.delete('/:id', auth, async (req, res) => {
     if (!banner) {
       return res.status(404).json({ message: 'Banner not found' });
     }
+    if (banner.image) {
+      const imagePathOnDisk = path.join(BASE_UPLOAD_DIR, banner.image);
+      if (fs.existsSync(imagePathOnDisk)) {
+          fs.unlinkSync(imagePathOnDisk);
+          console.log(`Deleted image file from volume: ${imagePathOnDisk}`);
+      } else {
+          console.warn(`Image file not found on disk: ${imagePathOnDisk}`);
+      }
 
     await Banner.findByIdAndDelete(req.params.id);
     res.json({ message: 'Banner removed' });
