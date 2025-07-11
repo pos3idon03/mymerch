@@ -33,7 +33,7 @@ const Navbar = () => {
     try {
       const response = await axios.get('/api/company/settings');
       if (response.data.favicon) {
-        setFavicon(`http://localhost:5000${response.data.favicon}`);
+        setFavicon(response.data.favicon);
       }
     } catch (error) {
       // ignore favicon error
@@ -59,7 +59,7 @@ const Navbar = () => {
           <Link to="/" className="navbar-logo">
             {logo ? (
               <img 
-                src={`http://localhost:5000${logo.image}`} 
+                src={logo.image} 
                 alt={logo.name || 'MyMerch Logo'} 
                 className="navbar-logo-image"
               />

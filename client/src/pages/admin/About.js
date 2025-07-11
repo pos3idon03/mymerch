@@ -154,7 +154,7 @@ const AdminAbout = () => {
       content: about.content,
       active: about.active
     });
-    setImagePreview(about.bannerImage ? `http://localhost:5000${about.bannerImage}` : '');
+    setImagePreview(about.bannerImage ? about.bannerImage: '');
     setSelectedFile(null);
     setError('');
     setShowForm(true);
@@ -313,7 +313,7 @@ const AdminAbout = () => {
                 <td>
                   {about.bannerImage && (
                     <img 
-                      src={`http://localhost:5000${about.bannerImage}`} 
+                      src={about.bannerImage} 
                       alt="Banner"
                       className="about-banner-thumbnail"
                     />

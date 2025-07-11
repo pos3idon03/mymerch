@@ -90,7 +90,7 @@ const About = () => {
         <section className="about-banner">
           <div className="banner-image">
             <img 
-              src={`http://localhost:5000${aboutContent.bannerImage}`} 
+              src={aboutContent.bannerImage} 
               alt="About Us"
             />
           </div>

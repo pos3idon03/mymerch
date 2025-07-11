@@ -7,10 +7,19 @@ const auth = require('../middleware/auth');
 
 const router = express.Router();
 
+
+// Define the public URL path for your uploaded files
+const PUBLIC_UPLOADS_URL_PATH = '/uploads/prod'; // This is what the browser will use
+// Define the subdirectory for banners within the volume
+const ABOUT_SUBDIR = 'about';
+// Construct the full path for banners uploads
+const UPLOAD_DESTINATION = path.join(PUBLIC_UPLOADS_URL_PATH, ABOUT_SUBDIR);
+
+
 // Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadDir = '/app/uploads/about';
+    const uploadDir = '/app/uploads/prod/about';
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }
@@ -73,7 +82,7 @@ router.post('/', auth, upload.single('bannerImage'), async (req, res) => {
       return res.status(400).json({ message: 'Banner image is required' });
     }
 
-    const bannerImage = `/app/uploads/about/${req.file.filename}`;
+    const bannerImage = path.join(PUBLIC_UPLOADS_URL_PATH, ABOUT_SUBDIR, req.file.filename).replace(/\\/g, '/');
 
     const about = new About({
       bannerImage,
@@ -109,7 +118,7 @@ router.put('/:id', auth, upload.single('bannerImage'), async (req, res) => {
     };
 
     if (req.file) {
-      updateData.bannerImage = `/app/uploads/about/${req.file.filename}`;
+      updateData.bannerImage = path.join(PUBLIC_UPLOADS_URL_PATH, ABOUT_SUBDIR, req.file.filename).replace(/\\/g, '/');
     }
 
     about = await About.findByIdAndUpdate(

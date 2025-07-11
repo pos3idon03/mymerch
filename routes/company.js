@@ -5,10 +5,19 @@ const path = require('path');
 const Company = require('../models/Company');
 const auth = require('../middleware/auth');
 
+
+// Define the public URL path for your uploaded files
+const PUBLIC_UPLOADS_URL_PATH = '/uploads/prod'; // This is what the browser will use
+// Define the subdirectory for banners within the volume
+const COMPANY_SUBDIR = 'assets';
+// Construct the full path for banners uploads
+const UPLOAD_DESTINATION = path.join(PUBLIC_UPLOADS_URL_PATH, COMPANY_SUBDIR);
+
+
 // Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, '/app/uploads/assets/');
+    cb(null, '/app/uploads/prod/assets/');
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);

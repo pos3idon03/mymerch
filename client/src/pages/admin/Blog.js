@@ -164,7 +164,7 @@ const AdminBlog = () => {
       tags: post.tags.join(', '),
       published: post.published
     });
-    setImagePreview(post.image ? `http://localhost:5000${post.image}` : '');
+    setImagePreview(post.image ? post.image : '');
     setSelectedFile(null);
     setError('');
     setShowForm(true);
@@ -360,7 +360,7 @@ const AdminBlog = () => {
                 <td>
                   {post.image && (
                     <img 
-                      src={`http://localhost:5000${post.image}`} 
+                      src={post.image} 
                       alt={post.title}
                       className="blog-thumbnail"
                     />

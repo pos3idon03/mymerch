@@ -8,7 +8,7 @@ const TestimonialCard = ({ testimonial }) => {
         <div className="testimonial-logo">
           {testimonial.companyLogo && (
             <img 
-              src={`http://localhost:5000${testimonial.companyLogo}`} 
+              src={testimonial.companyLogo} 
               alt="Company logo"
               onError={(e) => {
                 e.target.src = '/placeholder-logo.png';

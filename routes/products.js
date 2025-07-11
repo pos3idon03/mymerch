@@ -8,17 +8,24 @@ const auth = require('../middleware/auth');
 
 const router = express.Router();
 
+// Define the public URL path for your uploaded files
+const PUBLIC_UPLOADS_URL_PATH = '/uploads/prod'; // This is what the browser will use
+// Define the subdirectory for banners within the volume
+const PRODUCTS_SUBDIR = 'products';
+// Construct the full path for banners uploads
+const UPLOAD_DESTINATION = path.join(PUBLIC_UPLOADS_URL_PATH, PRODUCTS_SUBDIR);
+
 // Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadDir = '/app/uploads/products';
+    const uploadDir = '/app/uploads/prod/products';
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }
     cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
+    cb(null, Date.now() + '-' + Math.round(Math.random() * 1E9) + path.extname(file.originalname));
   }
 });
 
@@ -107,9 +114,12 @@ router.post('/', auth, multiUpload, async (req, res) => {
       return res.status(400).json({ message: 'Product image is required' });
     }
 
-    const image = `/app/uploads/products/${req.files.image[0].filename}`;
-    const favicon = req.files.favicon ? `/app/uploads/products/${req.files.favicon[0].filename}` : '';
+    //const image = `/app/uploads/products/${req.files.image[0].filename}`;
+    //const favicon = req.files.favicon ? `/app/uploads/products/${req.files.favicon[0].filename}` : '';
 
+    const image = path.join(PUBLIC_UPLOADS_URL_PATH, PRODUCTS_SUBDIR, req.files.image[0].filename).replace(/\\/g, '/');
+    const favicon = req.files.favicon ? path.join(PUBLIC_UPLOADS_URL_PATH, PRODUCTS_SUBDIR, req.files.favicon[0].filename).replace(/\\/g, '/') : '';
+    
     const product = new Product({
       title,
       description,
@@ -153,10 +163,10 @@ router.put('/:id', auth, multiUpload, async (req, res) => {
     };
 
     if (req.files && req.files.image) {
-      updateData.image = `/app/uploads/products/${req.files.image[0].filename}`;
+      updateData.image = path.join(PUBLIC_UPLOADS_URL_PATH, PRODUCTS_SUBDIR, req.files.image[0].filename).replace(/\\/g, '/');
     }
     if (req.files && req.files.favicon) {
-      updateData.favicon = `/app/uploads/products/${req.files.favicon[0].filename}`;
+      updateData.favicon = path.join(PUBLIC_UPLOADS_URL_PATH, PRODUCTS_SUBDIR, req.files.favicon[0].filename).replace(/\\/g, '/');
     }
 
     product = await Product.findByIdAndUpdate(

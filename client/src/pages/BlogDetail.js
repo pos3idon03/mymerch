@@ -70,7 +70,7 @@ const BlogDetail = () => {
         {blog.image && (
           <div className="blog-image-container">
             <img 
-              src={`http://localhost:5000${blog.image}`} 
+              src={blog.image} 
               alt={blog.title}
               className="blog-image"
             />

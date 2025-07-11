@@ -45,7 +45,7 @@ function App() {
   useEffect(() => {
     axios.get('/api/company/settings').then(res => {
       if (res.data.favicon) {
-        const faviconUrl = `http://localhost:5000${res.data.favicon}`;
+        const faviconUrl = res.data.favicon;
         let link = document.querySelector("link[rel~='icon']");
         if (!link) {
           link = document.createElement('link');

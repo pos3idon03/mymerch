@@ -6,10 +6,19 @@ const path = require('path');
 
 const router = express.Router();
 
+
+// Define the public URL path for your uploaded files
+const PUBLIC_UPLOADS_URL_PATH = '/uploads/prod'; // This is what the browser will use
+// Define the subdirectory for banners within the volume
+const CATEGORIES_SUBDIR = 'categories';
+// Construct the full path for banners uploads
+const UPLOAD_DESTINATION = path.join(PUBLIC_UPLOADS_URL_PATH, CATEGORIES_SUBDIR);
+
+
 // Multer storage config for PNG images
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, '/app/uploads/categories/');
+    cb(null, '/app/uploads/prod/categories/');
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + '-' + file.originalname);

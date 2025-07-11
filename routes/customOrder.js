@@ -8,10 +8,17 @@ const auth = require('../middleware/auth');
 
 const router = express.Router();
 
+// Define the public URL path for your uploaded files
+const PUBLIC_UPLOADS_URL_PATH = '/uploads/prod'; // This is what the browser will use
+// Define the subdirectory for banners within the volume
+const CUSTOM_ORDER_SUBDIR = 'customOrders';
+// Construct the full path for banners uploads
+const UPLOAD_DESTINATION = path.join(PUBLIC_UPLOADS_URL_PATH, CUSTOM_ORDER_SUBDIR);
+
 // Multer config for image upload
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadDir = '/app/uploads/customOrders';
+    const uploadDir = '/app/uploads/prod/customOrders';
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }
@@ -30,7 +37,7 @@ router.post('/', upload.single('image'), async (req, res) => {
     if (!products || !quantities || !email || !phone) {
       return res.status(400).json({ message: 'Missing required fields' });
     }
-    const image = req.file ? `/app/uploads/customOrders/${req.file.filename}` : '';
+    const image = req.file ? path.join(PUBLIC_UPLOADS_URL_PATH, CUSTOM_ORDER_SUBDIR, req.file.filename).replace(/\\/g, '/') : '';
     const order = new CustomOrder({
       products: JSON.parse(products),
       quantities: JSON.parse(quantities),

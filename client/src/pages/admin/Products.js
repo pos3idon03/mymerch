@@ -471,7 +471,7 @@ const AdminProducts = () => {
                 <td>
                   {product.image && (
                     <img 
-                      src={`http://localhost:5000${product.image}`} 
+                      src={product.image} 
                       alt={product.title}
                       className="product-thumbnail"
                     />

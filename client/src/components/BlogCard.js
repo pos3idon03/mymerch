@@ -7,7 +7,7 @@ const BlogCard = ({ blog }) => {
     <div className="blog-card">
       <div className="blog-image">
         <img 
-          src={`http://localhost:5000${blog.image}`} 
+          src={blog.image} 
           alt={blog.title}
           onError={(e) => {
             e.target.src = '/placeholder-blog.jpg';

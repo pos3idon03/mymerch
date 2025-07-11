@@ -39,8 +39,8 @@ const Assets = () => {
         telephone: res.data.telephone || '',
         email: res.data.email || '',
       });
-      setLogoPreview(res.data.logo ? `http://localhost:5000${res.data.logo}` : '');
-      setFaviconPreview(res.data.favicon ? `http://localhost:5000${res.data.favicon}` : '');
+      setLogoPreview(res.data.logo ? res.data.logo : '');
+      setFaviconPreview(res.data.favicon ? res.data.favicon : '');
     } catch (e) {
       setError('Failed to fetch settings');
     } finally {

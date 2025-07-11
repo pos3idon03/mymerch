@@ -150,7 +150,7 @@ const AdminTestimonials = () => {
       testimonial: testimonial.testimonial,
       active: testimonial.active
     });
-    setImagePreview(testimonial.companyLogo ? `http://localhost:5000${testimonial.companyLogo}` : '');
+    setImagePreview(testimonial.companyLogo ? testimonial.companyLogo : '');
     setSelectedFile(null);
     setError('');
     setShowForm(true);
@@ -309,7 +309,7 @@ const AdminTestimonials = () => {
                 <td>
                   {testimonial.companyLogo && (
                     <img 
-                      src={`http://localhost:5000${testimonial.companyLogo}`} 
+                      src={testimonial.companyLogo} 
                       alt="Company logo"
                       className="testimonial-logo"
                     />

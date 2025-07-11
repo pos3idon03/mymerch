@@ -7,10 +7,19 @@ const auth = require('../middleware/auth');
 
 const router = express.Router();
 
+
+// Define the public URL path for your uploaded files
+const PUBLIC_UPLOADS_URL_PATH = '/uploads/prod'; // This is what the browser will use
+// Define the subdirectory for banners within the volume
+const BLOGS_SUBDIR = 'blogs';
+// Construct the full path for banners uploads
+const UPLOAD_DESTINATION = path.join(PUBLIC_UPLOADS_URL_PATH, BLOGS_SUBDIR);
+
+
 // Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadDir = '/app/uploads/blogs';
+    const uploadDir = '/app/uploads/prod/blogs';
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }
@@ -93,7 +102,7 @@ router.post('/', auth, upload.single('image'), async (req, res) => {
       return res.status(400).json({ message: 'Blog image is required' });
     }
 
-    const image = `/app/uploads/blogs/${req.file.filename}`;
+    const image = path.join(PUBLIC_UPLOADS_URL_PATH, BLOGS_SUBDIR, req.file.filename).replace(/\\/g, '/');
 
     const blog = new Blog({
       title,
@@ -135,7 +144,7 @@ router.put('/:id', auth, upload.single('image'), async (req, res) => {
     };
 
     if (req.file) {
-      updateData.image = `/app/uploads/blogs/${req.file.filename}`;
+      updateData.image = path.join(PUBLIC_UPLOADS_URL_PATH, BLOGS_SUBDIR, req.file.filename).replace(/\\/g, '/');
     }
 
     blog = await Blog.findByIdAndUpdate(

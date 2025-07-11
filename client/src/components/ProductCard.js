@@ -7,7 +7,7 @@ const ProductCard = ({ product }) => {
     <div className="product-card">
       <div className="product-image">
         <img 
-          src={`http://localhost:5000${product.image}`} 
+          src={product.image} 
           alt={product.title}
           onError={(e) => {
             e.target.src = 'https://via.placeholder.com/300x200?text=No+Image';
