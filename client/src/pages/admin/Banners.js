@@ -354,7 +354,8 @@ const AdminBanners = () => {
                 <td>
                   {banner.image && (
                     <img 
-                      src={`http://localhost:5000${banner.image}`} 
+                      //src={`http://localhost:5000${banner.image}`} 
+                      src={banner.image} 
                       alt={banner.title}
                       className="banner-thumbnail"
                     />
