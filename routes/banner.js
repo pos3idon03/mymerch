@@ -125,23 +125,27 @@ router.delete('/:id', auth, async (req, res) => {
   try {
     const banner = await Banner.findById(req.params.id);
     if (!banner) {
-      return res.status(404).json({ message: 'Banner not found' });
+        return res.status(404).json({ message: 'Banner not found' });
     }
+
+    // Optional: Delete the actual file from the volume when the banner is deleted
+    // This helps in cleaning up unused files and managing volume space.
     if (banner.image) {
-      const imagePathOnDisk = path.join(BASE_UPLOAD_DIR, banner.image);
-      if (fs.existsSync(imagePathOnDisk)) {
-          fs.unlinkSync(imagePathOnDisk);
-          console.log(`Deleted image file from volume: ${imagePathOnDisk}`);
-      } else {
-          console.warn(`Image file not found on disk: ${imagePathOnDisk}`);
-      }
+        const imagePathOnDisk = path.join(BASE_UPLOAD_DIR, banner.image);
+        if (fs.existsSync(imagePathOnDisk)) {
+            fs.unlinkSync(imagePathOnDisk);
+            console.log(`Deleted image file from volume: ${imagePathOnDisk}`);
+        } else {
+            console.warn(`Image file not found on disk: ${imagePathOnDisk}`);
+        }
+    }
 
     await Banner.findByIdAndDelete(req.params.id);
     res.json({ message: 'Banner removed' });
-  } catch (error) {
+} catch (error) {
     console.error(error.message);
     res.status(500).send('Server error');
-  }
+}
 });
 
 module.exports = router; 

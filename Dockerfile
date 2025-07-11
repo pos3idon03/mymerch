@@ -21,8 +21,8 @@ COPY . .
 COPY --from=client-build /app/client/build ./client/build
 
 # Create uploads directory
-RUN mkdir -p uploads
-RUN mkdir -p uploads/assets
+# RUN mkdir -p uploads
+# RUN mkdir -p uploads/assets
 
 # Expose port
 EXPOSE 5000
