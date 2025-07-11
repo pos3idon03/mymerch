@@ -10,7 +10,7 @@ const router = express.Router();
 // Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadDir = 'uploads/testimonials';
+    const uploadDir = '/app/uploads/testimonials';
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }
@@ -60,7 +60,7 @@ router.post('/', auth, upload.single('companyLogo'), async (req, res) => {
       return res.status(400).json({ message: 'Company logo is required' });
     }
 
-    const companyLogo = `/uploads/testimonials/${req.file.filename}`;
+    const companyLogo = `/app/uploads/testimonials/${req.file.filename}`;
 
     const testimonialDoc = new Testimonial({
       customerName,
@@ -96,7 +96,7 @@ router.put('/:id', auth, upload.single('companyLogo'), async (req, res) => {
     };
 
     if (req.file) {
-      updateData.companyLogo = `/uploads/testimonials/${req.file.filename}`;
+      updateData.companyLogo = `/app/uploads/testimonials/${req.file.filename}`;
     }
 
     testimonialDoc = await Testimonial.findByIdAndUpdate(

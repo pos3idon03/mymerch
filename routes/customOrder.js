@@ -11,7 +11,7 @@ const router = express.Router();
 // Multer config for image upload
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadDir = 'uploads/customOrders';
+    const uploadDir = '/app/uploads/customOrders';
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }
@@ -30,7 +30,7 @@ router.post('/', upload.single('image'), async (req, res) => {
     if (!products || !quantities || !email || !phone) {
       return res.status(400).json({ message: 'Missing required fields' });
     }
-    const image = req.file ? `/uploads/customOrders/${req.file.filename}` : '';
+    const image = req.file ? `/app/uploads/customOrders/${req.file.filename}` : '';
     const order = new CustomOrder({
       products: JSON.parse(products),
       quantities: JSON.parse(quantities),

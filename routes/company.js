@@ -8,7 +8,7 @@ const auth = require('../middleware/auth');
 // Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/assets/');
+    cb(null, '/app/uploads/assets/');
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
@@ -50,10 +50,10 @@ router.put('/settings', auth, upload.fields([
 
     // Handle file uploads
     if (req.files && req.files.logo) {
-      settings.logo = `/uploads/assets/${req.files.logo[0].filename}`;
+      settings.logo = `/app/uploads/assets/${req.files.logo[0].filename}`;
     }
     if (req.files && req.files.favicon) {
-      settings.favicon = `/uploads/assets/${req.files.favicon[0].filename}`;
+      settings.favicon = `/app/uploads/assets/${req.files.favicon[0].filename}`;
     }
 
     // Handle text fields

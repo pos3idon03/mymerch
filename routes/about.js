@@ -10,7 +10,7 @@ const router = express.Router();
 // Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadDir = 'uploads/about';
+    const uploadDir = '/app/uploads/about';
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }
@@ -73,7 +73,7 @@ router.post('/', auth, upload.single('bannerImage'), async (req, res) => {
       return res.status(400).json({ message: 'Banner image is required' });
     }
 
-    const bannerImage = `/uploads/about/${req.file.filename}`;
+    const bannerImage = `/app/uploads/about/${req.file.filename}`;
 
     const about = new About({
       bannerImage,
@@ -109,7 +109,7 @@ router.put('/:id', auth, upload.single('bannerImage'), async (req, res) => {
     };
 
     if (req.file) {
-      updateData.bannerImage = `/uploads/about/${req.file.filename}`;
+      updateData.bannerImage = `/app/uploads/about/${req.file.filename}`;
     }
 
     about = await About.findByIdAndUpdate(

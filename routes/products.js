@@ -11,7 +11,7 @@ const router = express.Router();
 // Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadDir = 'uploads/products';
+    const uploadDir = '/app/uploads/products';
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }
@@ -107,8 +107,8 @@ router.post('/', auth, multiUpload, async (req, res) => {
       return res.status(400).json({ message: 'Product image is required' });
     }
 
-    const image = `/uploads/products/${req.files.image[0].filename}`;
-    const favicon = req.files.favicon ? `/uploads/products/${req.files.favicon[0].filename}` : '';
+    const image = `/app/uploads/products/${req.files.image[0].filename}`;
+    const favicon = req.files.favicon ? `/app/uploads/products/${req.files.favicon[0].filename}` : '';
 
     const product = new Product({
       title,
@@ -153,10 +153,10 @@ router.put('/:id', auth, multiUpload, async (req, res) => {
     };
 
     if (req.files && req.files.image) {
-      updateData.image = `/uploads/products/${req.files.image[0].filename}`;
+      updateData.image = `/app/uploads/products/${req.files.image[0].filename}`;
     }
     if (req.files && req.files.favicon) {
-      updateData.favicon = `/uploads/products/${req.files.favicon[0].filename}`;
+      updateData.favicon = `/app/uploads/products/${req.files.favicon[0].filename}`;
     }
 
     product = await Product.findByIdAndUpdate(

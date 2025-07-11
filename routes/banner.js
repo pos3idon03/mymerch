@@ -56,7 +56,7 @@ router.post('/', auth, upload.single('image'), async (req, res) => {
   try {
     const { title, subtitle, link, order, placement } = req.body;
     
-    const image = req.file ? `/uploads/banners/${req.file.filename}` : '';
+    const image = req.file ? `/app/uploads/banners/${req.file.filename}` : '';
 
     const banner = new Banner({
       title,
@@ -97,7 +97,7 @@ router.put('/:id', auth, upload.single('image'), async (req, res) => {
     };
 
     if (req.file) {
-      updateData.image = `/uploads/banners/${req.file.filename}`;
+      updateData.image = `/app/uploads/banners/${req.file.filename}`;
     }
 
     banner = await Banner.findByIdAndUpdate(

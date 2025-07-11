@@ -9,7 +9,7 @@ const router = express.Router();
 // Multer storage config for PNG images
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads/categories/');
+    cb(null, '/app/uploads/categories/');
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + '-' + file.originalname);
@@ -132,7 +132,7 @@ router.post('/upload', auth, upload.single('image'), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ message: 'No file uploaded or invalid file type' });
   }
-  res.json({ imageUrl: `/uploads/categories/${req.file.filename}` });
+  res.json({ imageUrl: `/app/uploads/categories/${req.file.filename}` });
 });
 
 module.exports = router; 
