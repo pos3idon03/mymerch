@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const User = require('./models/User');
 
 
-mongouri = process.env.MONGODB_URI;
+mongouri = process.env.MONGO_URI;
 console.log(mongouri);
 
 mongoose.connect(mongouri, {
