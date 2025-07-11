@@ -66,10 +66,10 @@ const AdminBanners = () => {
   };
 
   const validateForm = () => {
-    if (!formData.title.trim()) {
-      setError('Title is required');
-      return false;
-    }
+    // if (!formData.title.trim()) {
+    //   setError('Title is required');
+    //   return false;
+    // }
     
     if (!editingBanner && !selectedFile) {
       setError('Please select an image for new banners');
