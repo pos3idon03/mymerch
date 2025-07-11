@@ -9,4 +9,8 @@ services:
       - MONGO_URI
       - NODE_ENV
     volumes:
-      - ./uploads:/app/uploads
+      - mymerch-volume:/app/uploads
+
+volumes:
+  mymerch-volume:
+    external: true # This tells Docker Compose that 'my-koyeb-volume' is managed externally (by Koyeb)
