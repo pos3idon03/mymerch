@@ -8,7 +8,7 @@ const auth = require('../middleware/auth');
 const router = express.Router();
 
 // Define the public URL path for your uploaded files
-const PUBLIC_UPLOADS_URL_PATH = '/uploads'; // This is what the browser will use
+const PUBLIC_UPLOADS_URL_PATH = '/uploads/prod'; // This is what the browser will use
 // Define the subdirectory for banners within the volume
 const BANNERS_SUBDIR = 'banners';
 // Construct the full path for banners uploads
