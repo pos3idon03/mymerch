@@ -60,7 +60,7 @@ router.post('/', auth, upload.single('image'), async (req, res) => {
   try {
     const { title, subtitle, link, order, placement } = req.body;
     
-    const image = req.file ? `/${BANNERS_SUBDIR}/${req.file.filename}` : ''; // Example: /banners/1678889900000-12345.png
+    const image = req.file ? `/${UPLOAD_DESTINATION}/${req.file.filename}` : ''; // Example: /banners/1678889900000-12345.png
 
     const banner = new Banner({
       title,
@@ -102,7 +102,7 @@ router.put('/:id', auth, upload.single('image'), async (req, res) => {
 
     if (req.file) {
       // Update the image path similar to the POST request
-      updateData.image = `/${BANNERS_SUBDIR}/${req.file.filename}`;
+      updateData.image = `/${UPLOAD_DESTINATION}/${req.file.filename}`;
     }
 
     banner = await Banner.findByIdAndUpdate(
@@ -131,7 +131,7 @@ router.delete('/:id', auth, async (req, res) => {
     // Optional: Delete the actual file from the volume when the banner is deleted
     // This helps in cleaning up unused files and managing volume space.
     if (banner.image) {
-        const imagePathOnDisk = path.join(BASE_UPLOAD_DIR, banner.image);
+        const imagePathOnDisk = path.join(UPLOAD_DESTINATION, banner.image);
         if (fs.existsSync(imagePathOnDisk)) {
             fs.unlinkSync(imagePathOnDisk);
             console.log(`Deleted image file from volume: ${imagePathOnDisk}`);

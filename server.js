@@ -6,7 +6,7 @@ const fs = require('fs');
 require('dotenv').config();
 
 
-const volumeMountPath = '/app/uploads'; // Replace with your actual mount path
+const volumeMountPath = '/app/uploads/prod'; // Replace with your actual mount path
 
 try {
     // Check if the directory exists
@@ -39,7 +39,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Serve static files from uploads directory
-app.use('/uploads', express.static('/app/uploads'));
+app.use('/uploads', express.static('/app/uploads/prod'));
 
 mongouri = process.env.MONGO_URI;
 
