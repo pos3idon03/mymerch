@@ -71,8 +71,22 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-// Ensure uploads/assets directory exists
-fs.mkdirSync(path.join(__dirname, 'uploads', 'assets'), { recursive: true });
+
+// Ensure uploads subdirectories exist
+const uploadDirs = [
+  'uploads/assets',
+  'uploads/banners',
+  'uploads/testimonials',
+  'uploads/products',
+  'uploads/events',
+  'uploads/customOrders',
+  'uploads/categories',
+  'uploads/blogs',
+  'uploads/about',
+];
+uploadDirs.forEach(dir => {
+  fs.mkdirSync(path.join(__dirname, dir), { recursive: true });
+});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
