@@ -152,10 +152,10 @@ const Home = () => {
       <Banner banners={homepageBanners} />
 
       
-            {/* Featured Products Section */}
+      {/* Featured Products Section */}
       <section className="section">
         <div className="container">
-          <h2 className="section-title">Τα προϊόντα μας και ιδέες για να τα συνδυάσετε</h2>
+          <h2 className="section-title">Ψάχνεις διαφημιστικά προϊόντα; Είμαστε ο συνεργάτης που εμπιστεύεσαι για να βάλεις το logo σου σε ό,τι μπορεί να φορεθεί, να κρατηθεί ή να... γίνει δώρο! 🎁</h2>
           {/* <p className="section-subtitle">
             Discover our most popular and high-quality products
           </p> */}
@@ -210,65 +210,89 @@ const Home = () => {
                 )}
               </ul>
             </div>
-            {/* Right: Events */}
-            <div className="products-3-col events-col">
-              <h3 className="products-3-title">Events</h3>
-              <ul className="products-3-list event-dropdown-list">
-                {events.length > 0 ? (
-                  events.map(event => {
-                    const productsInEvent = allProducts.filter(product =>
-                      product.events && product.events.some(e => e._id === event._id)
-                    );
-                    const isOpen = openEvent === event._id;
-                    return (
-                      <li key={event._id} className="category-dropdown-item">
-                        <button
-                          className="category-dropdown-toggle"
-                          onClick={() => setOpenEvent(isOpen ? null : event._id)}
-                          aria-expanded={isOpen}
-                        >
-                          {/* Favicon */}
-                          {event.favicon && (
-                            <img src={event.favicon} alt="favicon" style={{ width: 24, height: 24, borderRadius: 4, border: '1px solid #eee', marginRight: 8, verticalAlign: 'middle' }} />
-                          )}
-                          <span>{event.name}</span>
-                          <span className="dropdown-arrow">{isOpen ? <FaChevronUp /> : <FaChevronDown />}</span>
-                        </button>
-                        {isOpen && productsInEvent.length > 0 && (
-                          <ul className="category-dropdown-menu prettier-product-list">
-                            {productsInEvent.map(product => (
-                              <li key={product._id} className="prettier-product-item">
-                                {/* Product favicon or default icon */}
-                                {product.favicon ? (
-                                  <img src={product.favicon} alt="favicon" style={{ width: 20, height: 20, borderRadius: 4, border: '1px solid #eee', marginRight: 6, verticalAlign: 'middle' }} />
-                                ) : (
-                                  <FaBox className="product-list-icon" />
-                                )}
-                                <span>{product.title}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                        {isOpen && productsInEvent.length === 0 && (
-                          <ul className="category-dropdown-menu prettier-product-list"><li className="prettier-product-item">No products</li></ul>
-                        )}
-                      </li>
-                    );
-                  })
-                ) : (
-                  <li>No events</li>
-                )}
-              </ul>
+            {/* Right: Categories Image */}
+            <div className="products-3-col categories-image-custom-image">
+              <h3 className="products-3-title">Κατηγορίες</h3>
+              <p>Επιλέξτε την κατηγορία που σας ενδιαφέρει για να δείτε τα προϊόντα της.</p>
+              <div className="categories-image-grid">
+                {categories.map(category => (
+                  <div key={category._id} className="category-image-item">
+                    <Link to={`/products?category=${category._id}`}>
+                      {category.favicon ? (
+                        <img src={category.favicon} alt={category.name} />
+                      ) : (
+                        <div className="category-image-placeholder">
+                          <FaBox />
+                          <span>{category.name}</span>
+                        </div>
+                      )}
+                    </Link>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </section>
-      
+
+      {/* Events Section (moved below Featured Products Section) */}
+      <section className="section">
+        <div className="container">
+          <h3 className="section-title">Events</h3>
+          <ul className="products-3-list event-dropdown-list">
+            {events.length > 0 ? (
+              events.map(event => {
+                const productsInEvent = allProducts.filter(product =>
+                  product.events && product.events.some(e => e._id === event._id)
+                );
+                const isOpen = openEvent === event._id;
+                return (
+                  <li key={event._id} className="category-dropdown-item">
+                    <button
+                      className="category-dropdown-toggle"
+                      onClick={() => setOpenEvent(isOpen ? null : event._id)}
+                      aria-expanded={isOpen}
+                    >
+                      {/* Favicon */}
+                      {event.favicon && (
+                        <img src={event.favicon} alt="favicon" style={{ width: 24, height: 24, borderRadius: 4, border: '1px solid #eee', marginRight: 8, verticalAlign: 'middle' }} />
+                      )}
+                      <span>{event.name}</span>
+                      <span className="dropdown-arrow">{isOpen ? <FaChevronUp /> : <FaChevronDown />}</span>
+                    </button>
+                    {isOpen && productsInEvent.length > 0 && (
+                      <ul className="category-dropdown-menu prettier-product-list">
+                        {productsInEvent.map(product => (
+                          <li key={product._id} className="prettier-product-item">
+                            {/* Product favicon or default icon */}
+                            {product.favicon ? (
+                              <img src={product.favicon} alt="favicon" style={{ width: 20, height: 20, borderRadius: 4, border: '1px solid #eee', marginRight: 6, verticalAlign: 'middle' }} />
+                            ) : (
+                              <FaBox className="product-list-icon" />
+                            )}
+                            <span>{product.title}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    {isOpen && productsInEvent.length === 0 && (
+                      <ul className="category-dropdown-menu prettier-product-list"><li className="prettier-product-item">No products</li></ul>
+                    )}
+                  </li>
+                );
+              })
+            ) : (
+              <li>No events</li>
+            )}
+          </ul>
+        </div>
+      </section>
+
       {/* Custom Order Section */}
       <section className="section bg-gray-50">
         <div className="container">
           <div className="offer-content custom-order-offer-content">
-          <div className="offer-image custom-order-offer-image">
+            <div className="offer-image custom-order-offer-image">
               {customOrderBanner && customOrderBanner.image ? (
                 <img
                   src={customOrderBanner.image}
