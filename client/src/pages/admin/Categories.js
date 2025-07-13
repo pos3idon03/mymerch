@@ -241,7 +241,6 @@ const AdminCategories = () => {
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  //required
                   className="form-input"
                   placeholder="Enter category name"
                 />
@@ -270,7 +269,7 @@ const AdminCategories = () => {
               </div>
 
               <div className="form-group">
-                <label>Category Image *</label>
+                <label>Category Image {!editingCategory && '*'}</label>
                 <div className="file-upload">
                   <input
                     type="file"
@@ -280,13 +279,13 @@ const AdminCategories = () => {
                     id="category-image"
                   />
                   <label htmlFor="category-image" className="file-label">
-                    <FaUpload /> Choose PNG
+                    <FaUpload /> Choose PNG Image
                   </label>
                 </div>
                 {selectedFile && (
                   <p className="file-info">Selected: {selectedFile.name} ({(selectedFile.size / 1024 / 1024).toFixed(2)} MB)</p>
                 )}
-                {editingCategory && !selectedFile && (
+                {editingCategory && !selectedFile && formData.image && (
                   <p className="file-info">Current image will be kept</p>
                 )}
               </div>
@@ -317,10 +316,11 @@ const AdminCategories = () => {
                 {selectedFavicon && (
                   <p className="file-info">Selected: {selectedFavicon.name} ({(selectedFavicon.size / 1024).toFixed(1)} KB)</p>
                 )}
-                {editingCategory && !selectedFavicon && faviconPreview && (
+                {editingCategory && !selectedFavicon && formData.favicon && (
                   <p className="file-info">Current favicon will be kept</p>
                 )}
               </div>
+
               {faviconPreview && (
                 <div className="form-group">
                   <label>Favicon Preview</label>
@@ -356,6 +356,7 @@ const AdminCategories = () => {
         <table className="admin-table">
           <thead>
             <tr>
+              <th>Image</th>
               <th>Name</th>
               <th>Description</th>
               <th>Active</th>
@@ -366,12 +367,25 @@ const AdminCategories = () => {
           <tbody>
             {categories.map(category => (
               <tr key={category._id}>
+                <td>
+                  {category.image && (
+                    <img 
+                      src={category.image} 
+                      alt={category.name}
+                      className="category-thumbnail"
+                    />
+                  )}
+                </td>
                 <td>{category.name}</td>
                 <td>{category.description}</td>
                 <td>{category.active ? 'Yes' : 'No'}</td>
                 <td>
                   {category.favicon && (
-                    <img src={category.favicon} alt="favicon" style={{ width: 24, height: 24, borderRadius: 4, border: '1px solid #eee' }} />
+                    <img 
+                      src={category.favicon} 
+                      alt="favicon" 
+                      style={{ width: 24, height: 24, borderRadius: 4, border: '1px solid #eee' }} 
+                    />
                   )}
                 </td>
                 <td>
