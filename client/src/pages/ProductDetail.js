@@ -88,7 +88,7 @@ const ProductDetail = () => {
               <p>{product.description}</p>
             </div>
             <div className="product-actions">
-              <Link to="/products" className="btn btn-outline">
+              <Link to="/products" className="btn btn-primary">
                 <FaArrowLeft /> Back to Products
               </Link>
             </div>

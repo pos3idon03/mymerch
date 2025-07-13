@@ -183,6 +183,18 @@
   margin-bottom: 2rem;
 }
 
+.btn-primary {
+  background: linear-gradient(90deg, #d4af37 60%, #bfa133 100%);
+  color: #fff;
+  border: none;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background: linear-gradient(90deg, #bfa133 60%, #d4af37 100%);
+  color: #fff;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .product-detail-content {
