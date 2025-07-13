@@ -16,6 +16,7 @@ yarn-error.log*
 .env
 .env.local
 .env.*.local
+docker-compose.local.yml
 
 # OS generated files
 .DS_Store

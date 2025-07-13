@@ -135,6 +135,9 @@ const Home = () => {
   // Only show active banners with placement 'custom-order' for the custom order section
   const customOrderBanner = banners.find(b => b.placement === 'custom-order' && b.active);
 
+  // Only show active banners with placement 'categories' for the categories section
+  const categoriesBanner = banners.find(b => b.placement === 'categories' && b.active);
+
   const offerBanner = banners.find(b => b.placement === 'offer-banner' && b.active);
   const customersBanner = banners.filter(b => b.placement === 'customers-banner' && b.active);
 
@@ -212,23 +215,19 @@ const Home = () => {
             </div>
             {/* Right: Categories Image */}
             <div className="products-3-col categories-image-custom-image">
-              <h3 className="products-3-title">Κατηγορίες</h3>
-              <p>Επιλέξτε την κατηγορία που σας ενδιαφέρει για να δείτε τα προϊόντα της.</p>
-              <div className="categories-image-grid">
-                {categories.map(category => (
-                  <div key={category._id} className="category-image-item">
-                    <Link to={`/products?category=${category._id}`}>
-                      {category.favicon ? (
-                        <img src={category.favicon} alt={category.name} />
-                      ) : (
-                        <div className="category-image-placeholder">
-                          <FaBox />
-                          <span>{category.name}</span>
-                        </div>
-                      )}
-                    </Link>
+              <div className="offer-image custom-order-offer-image">
+                {categoriesBanner && categoriesBanner.image ? (
+                  <img
+                    src={categoriesBanner.image}
+                    alt={categoriesBanner.title || 'Categories'}
+                    style={{ maxWidth: '100%', borderRadius: '12px', minHeight: '200px', objectFit: 'cover' }}
+                  />
+                ) : (
+                  <div className="offer-placeholder">
+                    <h3>Categories</h3>
+                    <p>Browse our product categories</p>
                   </div>
-                ))}
+                  )}
               </div>
             </div>
           </div>

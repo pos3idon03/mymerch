@@ -267,6 +267,7 @@ const AdminBanners = () => {
                   <option value="custom-order">Custom Order Section</option>
                   <option value="offer-banner">Offer Banner</option>
                   <option value="customers-banner">Customers Banner</option>
+                  <option value="categories">Categories Section</option>
                   <option value="other">Other</option>
                 </select>
               </div>
