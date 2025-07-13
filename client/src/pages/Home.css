@@ -134,7 +134,7 @@
 } 
 
 .section .container {
-  max-width: 1600px; /* or 1200px, 1600px, etc. */
+  max-width: 1400px; /* or 1200px, 1600px, etc. */
   width: 100%;
   margin: 0 auto;
   padding-left: 32px;

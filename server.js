@@ -4,6 +4,7 @@ const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
 require('dotenv').config();
+const rateLimit = require('express-rate-limit');
 
 // Define the public URL path for your uploaded files
 const PUBLIC_UPLOADS_URL_PATH = '/uploads/prod'; // This is what the browser will use
@@ -53,6 +54,31 @@ mongoose.connect(mongouri, {
 })
 .then(() => console.log('MongoDB connected'))
 .catch(err => console.log('MongoDB connection error:', err));
+
+// Rate Limiting
+const globalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+  message: 'Too many requests from this IP, please try again later.'
+});
+app.use(globalLimiter);
+
+const uploadLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 10, // limit each IP to 10 uploads per hour
+  message: 'Too many uploads from this IP, please try again later.'
+});
+app.use('/api/events/upload', uploadLimiter);
+app.use('/api/products', uploadLimiter); // If you have product uploads
+
+const formLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  message: 'Too many attempts, please try again later.'
+});
+app.use('/api/auth/login', formLimiter);
+app.use('/api/contact', formLimiter);
+
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));
