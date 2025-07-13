@@ -3,36 +3,49 @@ const Event = require('../models/Event');
 const auth = require('../middleware/auth');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 
 const router = express.Router();
 
-
 // Define the public URL path for your uploaded files
 const PUBLIC_UPLOADS_URL_PATH = '/uploads/prod'; // This is what the browser will use
-// Define the subdirectory for events within the volume
 const EVENTS_SUBDIR = 'events';
-// Construct the full path for events uploads
 const UPLOAD_DESTINATION = path.join(PUBLIC_UPLOADS_URL_PATH, EVENTS_SUBDIR);
+const PHYSICAL_UPLOAD_DIR = '/app' + UPLOAD_DESTINATION;
 
-// Multer storage config for PNG images
+// Configure multer for file uploads (image and favicon)
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, '/app/uploads/prod/events/');
+  destination: (req, file, cb) => {
+    if (!fs.existsSync(PHYSICAL_UPLOAD_DIR)) {
+      fs.mkdirSync(PHYSICAL_UPLOAD_DIR, { recursive: true });
+    }
+    cb(null, PHYSICAL_UPLOAD_DIR);
   },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + '-' + file.originalname);
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + '-' + Math.round(Math.random() * 1E9) + path.extname(file.originalname));
   }
 });
 
-const fileFilter = (req, file, cb) => {
-  if (file.mimetype === 'image/png') {
-    cb(null, true);
-  } else {
-    cb(new Error('Only PNG files are allowed!'), false);
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 5000000 }, // 5MB limit
+  fileFilter: (req, file, cb) => {
+    const filetypes = /jpeg|jpg|png|webp/;
+    const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = filetypes.test(file.mimetype);
+    if (mimetype && extname) {
+      return cb(null, true);
+    } else {
+      cb(new Error('Only image files are allowed!'));
+    }
   }
-};
+});
 
-const upload = multer({ storage, fileFilter });
+// Accept both image and favicon fields
+const multiUpload = upload.fields([
+  { name: 'image', maxCount: 1 },
+  { name: 'favicon', maxCount: 1 }
+]);
 
 // @route   GET /api/events
 // @desc    Get all active events
@@ -61,11 +74,21 @@ router.get('/all', auth, async (req, res) => {
 });
 
 // @route   POST /api/events
-// @desc    Create an event
+// @desc    Create an event (with direct image and favicon upload)
 // @access  Private
-router.post('/', auth, async (req, res) => {
+router.post('/', auth, multiUpload, async (req, res) => {
   try {
-    const { name, description, active, image, favicon } = req.body;
+    const { name, description, active } = req.body;
+
+    let image = req.body.image;
+    let favicon = req.body.favicon;
+
+    if (req.files && req.files.image) {
+      image = path.join(PUBLIC_UPLOADS_URL_PATH, EVENTS_SUBDIR, req.files.image[0].filename).replace(/\\/g, '/');
+    }
+    if (req.files && req.files.favicon) {
+      favicon = path.join(PUBLIC_UPLOADS_URL_PATH, EVENTS_SUBDIR, req.files.favicon[0].filename).replace(/\\/g, '/');
+    }
 
     const event = new Event({
       name,
@@ -88,15 +111,33 @@ router.post('/', auth, async (req, res) => {
 });
 
 // @route   PUT /api/events/:id
-// @desc    Update an event
+// @desc    Update an event (with direct image and favicon upload)
 // @access  Private
-router.put('/:id', auth, async (req, res) => {
+router.put('/:id', auth, multiUpload, async (req, res) => {
   try {
-    const { name, description, active, image, favicon } = req.body;
+    const { name, description, active } = req.body;
+
+    let updateData = {
+      name,
+      description,
+      active
+    };
+
+    if (req.files && req.files.image) {
+      updateData.image = path.join(PUBLIC_UPLOADS_URL_PATH, EVENTS_SUBDIR, req.files.image[0].filename).replace(/\\/g, '/');
+    } else if (req.body.image) {
+      updateData.image = req.body.image;
+    }
+
+    if (req.files && req.files.favicon) {
+      updateData.favicon = path.join(PUBLIC_UPLOADS_URL_PATH, EVENTS_SUBDIR, req.files.favicon[0].filename).replace(/\\/g, '/');
+    } else if (req.body.favicon) {
+      updateData.favicon = req.body.favicon;
+    }
 
     const event = await Event.findByIdAndUpdate(
       req.params.id,
-      { name, description, active, image, favicon },
+      updateData,
       { new: true }
     );
 
@@ -134,13 +175,13 @@ router.delete('/:id', auth, async (req, res) => {
 });
 
 // @route   POST /api/events/upload
-// @desc    Upload event image (PNG only)
+// @desc    Upload event image (PNG/JPG/WEBP only) - legacy/manual
 // @access  Private
 router.post('/upload', auth, upload.single('image'), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ message: 'No file uploaded or invalid file type' });
   }
-  res.json({ imageUrl: `/app/uploads/events/${req.file.filename}` });
+  res.json({ imageUrl: path.join(PUBLIC_UPLOADS_URL_PATH, EVENTS_SUBDIR, req.file.filename).replace(/\\/g, '/') });
 });
 
 module.exports = router; 

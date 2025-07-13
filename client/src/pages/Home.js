@@ -139,6 +139,7 @@ const Home = () => {
   const categoriesBanner = banners.find(b => b.placement === 'categories' && b.active);
 
   const offerBanner = banners.find(b => b.placement === 'offer-banner' && b.active);
+  
   const customersBanner = banners.filter(b => b.placement === 'customers-banner' && b.active);
 
   if (loading) {
