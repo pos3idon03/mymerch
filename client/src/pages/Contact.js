@@ -87,32 +87,6 @@ const Contact = () => {
         </div>
         
         <div className="contact-wrapper">
-          <div className="contact-info">
-            <h2>Get In Touch</h2>
-            <p>
-              Ready to start working together? We'd love to hear from you. 
-              Send us a message and we'll respond as soon as possible.
-            </p>
-            <div className="contact-details">
-              <div className="contact-item">
-                <h4>Email</h4>
-                <p>info@mymerch.gr</p>
-              </div>
-              <div className="contact-item">
-                <h4>Phone</h4>
-                <p>+1 (555) 123-4567</p>
-              </div>
-              <div className="contact-item">
-                <h4>Address</h4>
-                <p>123 Business Street<br />Suite 100<br />City, State 12345</p>
-              </div>
-              <div className="contact-item">
-                <h4>Business Hours</h4>
-                <p>Monday - Friday: 9:00 AM - 6:00 PM<br />Saturday: 10:00 AM - 4:00 PM<br />Sunday: Closed</p>
-              </div>
-            </div>
-          </div>
-
           <div className="contact-form-container">
             <h3>Send us a Message</h3>
             
@@ -223,6 +197,32 @@ const Contact = () => {
                 {submitting ? 'Sending...' : 'Send Message'}
               </button>
             </form>
+          </div>
+
+          <div className="contact-info">
+            <h2>Get In Touch</h2>
+            <p>
+              Ready to start working together? We'd love to hear from you. 
+              Send us a message and we'll respond as soon as possible.
+            </p>
+            <div className="contact-details">
+              <div className="contact-item">
+                <h4>Email</h4>
+                <p>info@mymerch.gr</p>
+              </div>
+              <div className="contact-item">
+                <h4>Phone</h4>
+                <p>+1 (555) 123-4567</p>
+              </div>
+              <div className="contact-item">
+                <h4>Address</h4>
+                <p>123 Business Street<br />Suite 100<br />City, State 12345</p>
+              </div>
+              <div className="contact-item">
+                <h4>Business Hours</h4>
+                <p>Monday - Friday: 9:00 AM - 6:00 PM<br />Saturday: 10:00 AM - 4:00 PM<br />Sunday: Closed</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

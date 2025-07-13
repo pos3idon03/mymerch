@@ -31,10 +31,9 @@
 }
 
 .contact-wrapper {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
-  align-items: start;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 .contact-info h2 {
