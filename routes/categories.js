@@ -3,25 +3,29 @@ const Category = require('../models/Category');
 const auth = require('../middleware/auth');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 
 const router = express.Router();
 
-
 // Define the public URL path for your uploaded files
 const PUBLIC_UPLOADS_URL_PATH = '/uploads/prod'; // This is what the browser will use
-// Define the subdirectory for banners within the volume
+// Define the subdirectory for categories within the volume
 const CATEGORIES_SUBDIR = 'categories';
-// Construct the full path for banners uploads
+// Construct the full path for categories uploads
 const UPLOAD_DESTINATION = path.join(PUBLIC_UPLOADS_URL_PATH, CATEGORIES_SUBDIR);
-
 
 // Multer storage config for PNG images
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, '/app/uploads/prod/categories/');
+    // This is the physical path on the volume
+    const uploadDir = '/app/uploads/prod/categories';
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+    cb(null, uploadDir);
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + '-' + file.originalname);
+    cb(null, Date.now() + '-' + Math.round(Math.random() * 1E9) + path.extname(file.originalname));
   }
 });
 
@@ -33,7 +37,11 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-const upload = multer({ storage, fileFilter });
+const upload = multer({ 
+  storage, 
+  fileFilter,
+  limits: { fileSize: 5000000 } // 5MB limit
+});
 
 // @route   GET /api/categories
 // @desc    Get all active categories
@@ -126,6 +134,29 @@ router.delete('/:id', auth, async (req, res) => {
       return res.status(404).json({ message: 'Category not found' });
     }
 
+    // Optional: Delete the actual files from the volume when the category is deleted
+    if (category.image) {
+      const relativeImagePath = category.image.startsWith('/uploads/') 
+        ? category.image.substring('/uploads'.length) 
+        : category.image;
+      const imagePathOnDisk = path.join('/app/uploads/prod', relativeImagePath);
+      if (fs.existsSync(imagePathOnDisk)) {
+        fs.unlinkSync(imagePathOnDisk);
+        console.log(`Deleted image file from volume: ${imagePathOnDisk}`);
+      }
+    }
+
+    if (category.favicon) {
+      const relativeFaviconPath = category.favicon.startsWith('/uploads/') 
+        ? category.favicon.substring('/uploads'.length) 
+        : category.favicon;
+      const faviconPathOnDisk = path.join('/app/uploads/prod', relativeFaviconPath);
+      if (fs.existsSync(faviconPathOnDisk)) {
+        fs.unlinkSync(faviconPathOnDisk);
+        console.log(`Deleted favicon file from volume: ${faviconPathOnDisk}`);
+      }
+    }
+
     await Category.findByIdAndDelete(req.params.id);
     res.json({ message: 'Category removed' });
   } catch (error) {
@@ -141,7 +172,7 @@ router.post('/upload', auth, upload.single('image'), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ message: 'No file uploaded or invalid file type' });
   }
-  res.json({ imageUrl: `/app/uploads/categories/${req.file.filename}` });
+  res.json({ imageUrl: path.join(PUBLIC_UPLOADS_URL_PATH, CATEGORIES_SUBDIR, req.file.filename).replace(/\\/g, '/') });
 });
 
 module.exports = router; 

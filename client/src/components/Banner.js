@@ -55,11 +55,12 @@ const Banner = ({ banners }) => {
           <div
             key={banner._id}
             className={`banner-slide ${index === currentSlide ? 'active' : ''}`}
-            style={{
-              //backgroundImage: `url(http://localhost:5000${banner.image})`
-              backgroundImage: `url(${banner.image})`
-            }}
           >
+            <img 
+              src={banner.image} 
+              alt={banner.title || 'Banner'}
+              className="banner-image"
+            />
             <div className="banner-content">
               <div className="container">
                 <div className="banner-text">
