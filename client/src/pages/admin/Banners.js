@@ -268,6 +268,7 @@ const AdminBanners = () => {
                   <option value="offer-banner">Offer Banner</option>
                   <option value="customers-banner">Customers Banner</option>
                   <option value="categories">Categories Section</option>
+                  <option value="event-banner">Event Banner</option>
                   <option value="other">Other</option>
                 </select>
               </div>

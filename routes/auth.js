@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const { body, validationResult } = require('express-validator');
 const User = require('../models/User');
 const auth = require('../middleware/auth');
+const { blacklistToken } = require('../middleware/tokenBlacklist');
 
 const router = express.Router();
 
@@ -115,6 +116,15 @@ router.get('/user', auth, async (req, res) => {
     console.error(error.message);
     res.status(500).send('Server error');
   }
+});
+
+// Logout route
+router.post('/logout', async (req, res) => {
+  const token = req.header('Authorization')?.split(' ')[1];
+  if (token) {
+    await blacklistToken(token);
+  }
+  res.json({ message: 'Logged out' });
 });
 
 module.exports = router; 

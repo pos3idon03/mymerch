@@ -28,7 +28,15 @@ const bannerSchema = new mongoose.Schema({
   },
   placement: {
     type: String,
-    enum: ['homepage', 'custom-order', 'offer-banner', 'customers-banner', 'categories', 'other'],
+    enum: [
+      'homepage',
+      'custom-order',
+      'offer-banner',
+      'customers-banner',
+      'categories',
+      'event-banner',
+      'other'
+    ],
     default: 'other',
     required: false
   }

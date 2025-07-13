@@ -142,6 +142,9 @@ const Home = () => {
   
   const customersBanner = banners.filter(b => b.placement === 'customers-banner' && b.active);
 
+  // Find the event banner from banners
+  const eventBanner = banners.find(b => b.placement === 'event-banner' && b.active);
+
   if (loading) {
     return (
       <div className="loading">
@@ -235,43 +238,39 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Events Section (moved below Featured Products Section) */}
+      {/* Events Section (now a single banner image) */}
       <section className="section bg-gray-50">
         <div className="container">
           <h2 className="section-title">Events</h2>
-          <p className="section-subtitle">
-            Discover our latest events and special promotions
-          </p>
-          
-          {events.length > 0 ? (
-            <div className="events-grid">
-              {events.map(event => (
-                <div key={event._id} className="event-card">
-                  <div className="event-image">
-                    {event.image ? (
-                      <img 
-                        src={event.image} 
-                        alt={event.name}
-                        style={{ width: '100%', height: '200px', objectFit: 'cover', borderRadius: '8px 8px 0 0' }}
-                      />
-                    ) : (
-                      <div className="event-image-placeholder">
-                        <FaBox style={{ fontSize: '3rem', color: '#ccc' }} />
-                      </div>
-                    )}
-                  </div>
-                  <div className="event-content">
-                    <h3 className="event-title">{event.name}</h3>
-                  </div>
-                </div>
-              ))}
+          {eventBanner && eventBanner.image ? (
+            <div className="event-banner-image-wrapper" style={{ textAlign: 'center', margin: '2rem 0' }}>
+              <img
+                src={eventBanner.image}
+                alt={eventBanner.title || 'Event Banner'}
+                style={{
+                  maxWidth: '100%',
+                  borderRadius: '12px',
+                  minHeight: '200px',
+                  objectFit: 'cover',
+                  boxShadow: '0 4px 20px rgba(0,0,0,0.08)'
+                }}
+              />
             </div>
           ) : (
-            <div className="text-center">
-              <p>No events available at the moment</p>
+            <div className="event-image-placeholder" style={{ textAlign: 'center', margin: '2rem 0' }}>
+              <div style={{
+                width: '100%',
+                minHeight: '200px',
+                background: '#f8f9fa',
+                borderRadius: '12px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <span style={{ color: '#bbb', fontSize: '2rem' }}>No event banner set</span>
+              </div>
             </div>
           )}
-          
           <div className="text-center mt-4">
             <Link to="/contact" className="btn btn-primary">
               Contact Us

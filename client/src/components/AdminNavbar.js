@@ -9,7 +9,18 @@ const AdminNavbar = () => {
 
   const isActive = (path) => location.pathname === path;
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        await fetch('/api/auth/logout', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+      } catch (e) {
+        // Optionally handle error, but still proceed to logout client-side
+      }
+    }
     localStorage.removeItem('token');
     navigate('/admin/login');
   };
