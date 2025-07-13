@@ -159,136 +159,128 @@ const Home = () => {
       <section className="section">
         <div className="container">
           <h2 className="section-title">Ψάχνεις διαφημιστικά προϊόντα; Είμαστε ο συνεργάτης που εμπιστεύεσαι για να βάλεις το logo σου σε ό,τι μπορεί να φορεθεί, να κρατηθεί ή να... γίνει δώρο! 🎁</h2>
-          {/* <p className="section-subtitle">
-            Discover our most popular and high-quality products
-          </p> */}
-          <div className="products-3-grid">
-            {/* Left: Categories as dropdown list */}
-            <div className="products-3-col categories-col">
-              <h3 className="products-3-title">Κατηγορίες</h3>
-              <ul className="products-3-list category-dropdown-list">
-                {categories.length > 0 ? (
-                  categories.map(category => {
-                    const productsInCategory = allProducts.filter(product =>
-                      product.categories && product.categories.some(c => c._id === category._id)
-                    );
-                    const isOpen = openCategory === category._id;
-                    return (
-                      <li key={category._id} className="category-dropdown-item">
-                        <button
-                          className="category-dropdown-toggle"
-                          onClick={() => setOpenCategory(isOpen ? null : category._id)}
-                          aria-expanded={isOpen}
-                        >
-                          {/* Favicon */}
-                          {category.favicon && (
-                            <img src={category.favicon} alt="favicon" style={{ width: 24, height: 24, borderRadius: 4, border: '1px solid #eee', marginRight: 8, verticalAlign: 'middle' }} />
+          <div className="offer-content">
+            <div className="offer-text">
+              {/* <p className="section-subtitle">
+                Discover our most popular and high-quality products
+              </p> */}
+              
+              {/* Categories as dropdown list */}
+              <div className="categories-section">
+                <h3 className="products-3-title">Κατηγορίες</h3>
+                <ul className="products-3-list category-dropdown-list">
+                  {categories.length > 0 ? (
+                    categories.map(category => {
+                      const productsInCategory = allProducts.filter(product =>
+                        product.categories && product.categories.some(c => c._id === category._id)
+                      );
+                      const isOpen = openCategory === category._id;
+                      return (
+                        <li key={category._id} className="category-dropdown-item">
+                          <button
+                            className="category-dropdown-toggle"
+                            onClick={() => setOpenCategory(isOpen ? null : category._id)}
+                            aria-expanded={isOpen}
+                          >
+                            {/* Favicon */}
+                            {category.favicon && (
+                              <img src={category.favicon} alt="favicon" style={{ width: 24, height: 24, borderRadius: 4, border: '1px solid #eee', marginRight: 8, verticalAlign: 'middle' }} />
+                            )}
+                            <span>{category.name}</span>
+                            <span className="dropdown-arrow">{isOpen ? <FaChevronUp /> : <FaChevronDown />}</span>
+                          </button>
+                          {isOpen && productsInCategory.length > 0 && (
+                            <ul className="category-dropdown-menu prettier-product-list">
+                              {productsInCategory.map(product => (
+                                <li key={product._id} className="prettier-product-item">
+                                  {/* Product favicon or default icon */}
+                                  {product.favicon ? (
+                                    <img src={product.favicon} alt="favicon" style={{ width: 20, height: 20, borderRadius: 4, border: '1px solid #eee', marginRight: 6, verticalAlign: 'middle' }} />
+                                  ) : (
+                                    <FaBox className="product-list-icon" />
+                                  )}
+                                  <span>{product.title}</span>
+                                </li>
+                              ))}
+                            </ul>
                           )}
-                          <span>{category.name}</span>
-                          <span className="dropdown-arrow">{isOpen ? <FaChevronUp /> : <FaChevronDown />}</span>
-                        </button>
-                        {isOpen && productsInCategory.length > 0 && (
-                          <ul className="category-dropdown-menu prettier-product-list">
-                            {productsInCategory.map(product => (
-                              <li key={product._id} className="prettier-product-item">
-                                {/* Product favicon or default icon */}
-                                {product.favicon ? (
-                                  <img src={product.favicon} alt="favicon" style={{ width: 20, height: 20, borderRadius: 4, border: '1px solid #eee', marginRight: 6, verticalAlign: 'middle' }} />
-                                ) : (
-                                  <FaBox className="product-list-icon" />
-                                )}
-                                <span>{product.title}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                        {isOpen && productsInCategory.length === 0 && (
-                          <ul className="category-dropdown-menu prettier-product-list"><li className="prettier-product-item">No products</li></ul>
-                        )}
-                      </li>
-                    );
-                  })
-                ) : (
-                  <li>No categories</li>
-                )}
-              </ul>
-            </div>
-            {/* Right: Categories Image */}
-            <div className="products-3-col categories-image-custom-image">
-              <div className="offer-image custom-order-offer-image">
-                {categoriesBanner && categoriesBanner.image ? (
-                  <img
-                    src={categoriesBanner.image}
-                    alt={categoriesBanner.title || 'Categories'}
-                    style={{ maxWidth: '100%', borderRadius: '12px', minHeight: '200px', objectFit: 'cover' }}
-                  />
-                ) : (
-                  <div className="offer-placeholder">
-                    <h3>Categories</h3>
-                    <p>Browse our product categories</p>
-                  </div>
+                          {isOpen && productsInCategory.length === 0 && (
+                            <ul className="category-dropdown-menu prettier-product-list"><li className="prettier-product-item">No products</li></ul>
+                          )}
+                        </li>
+                      );
+                    })
+                  ) : (
+                    <li>No categories</li>
                   )}
+                </ul>
               </div>
+            </div>
+            <div className="offer-image">
+              {categoriesBanner && categoriesBanner.image ? (
+                <img
+                  src={categoriesBanner.image}
+                  alt={categoriesBanner.title || 'Categories'}
+                  style={{ maxWidth: '100%', borderRadius: '12px', minHeight: '200px', objectFit: 'cover' }}
+                />
+              ) : (
+                <div className="offer-placeholder">
+                  <h3>Categories</h3>
+                  <p>Browse our product categories</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
       </section>
 
       {/* Events Section (moved below Featured Products Section) */}
-      <section className="section">
+      <section className="section bg-gray-50">
         <div className="container">
-          <h3 className="section-title">Events</h3>
-          <ul className="products-3-list event-dropdown-list">
-            {events.length > 0 ? (
-              events.map(event => {
-                const productsInEvent = allProducts.filter(product =>
-                  product.events && product.events.some(e => e._id === event._id)
-                );
-                const isOpen = openEvent === event._id;
-                return (
-                  <li key={event._id} className="category-dropdown-item">
-                    <button
-                      className="category-dropdown-toggle"
-                      onClick={() => setOpenEvent(isOpen ? null : event._id)}
-                      aria-expanded={isOpen}
-                    >
-                      {/* Favicon */}
-                      {event.favicon && (
-                        <img src={event.favicon} alt="favicon" style={{ width: 24, height: 24, borderRadius: 4, border: '1px solid #eee', marginRight: 8, verticalAlign: 'middle' }} />
-                      )}
-                      <span>{event.name}</span>
-                      <span className="dropdown-arrow">{isOpen ? <FaChevronUp /> : <FaChevronDown />}</span>
-                    </button>
-                    {isOpen && productsInEvent.length > 0 && (
-                      <ul className="category-dropdown-menu prettier-product-list">
-                        {productsInEvent.map(product => (
-                          <li key={product._id} className="prettier-product-item">
-                            {/* Product favicon or default icon */}
-                            {product.favicon ? (
-                              <img src={product.favicon} alt="favicon" style={{ width: 20, height: 20, borderRadius: 4, border: '1px solid #eee', marginRight: 6, verticalAlign: 'middle' }} />
-                            ) : (
-                              <FaBox className="product-list-icon" />
-                            )}
-                            <span>{product.title}</span>
-                          </li>
-                        ))}
-                      </ul>
+          <h2 className="section-title">Events</h2>
+          <p className="section-subtitle">
+            Discover our latest events and special promotions
+          </p>
+          
+          {events.length > 0 ? (
+            <div className="events-grid">
+              {events.map(event => (
+                <div key={event._id} className="event-card">
+                  <div className="event-image">
+                    {event.image ? (
+                      <img 
+                        src={event.image} 
+                        alt={event.name}
+                        style={{ width: '100%', height: '200px', objectFit: 'cover', borderRadius: '8px 8px 0 0' }}
+                      />
+                    ) : (
+                      <div className="event-image-placeholder">
+                        <FaBox style={{ fontSize: '3rem', color: '#ccc' }} />
+                      </div>
                     )}
-                    {isOpen && productsInEvent.length === 0 && (
-                      <ul className="category-dropdown-menu prettier-product-list"><li className="prettier-product-item">No products</li></ul>
-                    )}
-                  </li>
-                );
-              })
-            ) : (
-              <li>No events</li>
-            )}
-          </ul>
+                  </div>
+                  <div className="event-content">
+                    <h3 className="event-title">{event.name}</h3>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center">
+              <p>No events available at the moment</p>
+            </div>
+          )}
+          
+          <div className="text-center mt-4">
+            <Link to="/contact" className="btn btn-primary">
+              Contact Us
+            </Link>
+          </div>
         </div>
       </section>
 
       {/* Custom Order Section */}
-      <section className="section bg-gray-50">
+      <section className="section">
         <div className="container">
           <div className="offer-content custom-order-offer-content">
             <div className="offer-image custom-order-offer-image">
@@ -308,7 +300,7 @@ const Home = () => {
             <div className="offer-text custom-order-offer-text">
               <h2 className="section-title text-left">Φτιάξτο όπως θες!</h2>
               <p className="offer-description">
-                Στείλε την εικόνα του προϊόντος που θες για να γίνει η ιδέα σου πραγματικότητα!
+                Στείλε την εικόνα που θες να εκτυπώσεις και θα την κάνουμε πραγματικότητα!
               </p>
               <form className="admin-form" onSubmit={handleCustomOrderSubmit}>
                 <div className="form-group">
@@ -447,14 +439,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-
-      {/* Customers Banner Section */}
-      {customersBanner.length > 0 && (
-        <section className="section customers-banner-section">
-          <Banner banners={customersBanner} />
-        </section>
-      )}
-
+    
       {/* Testimonials Section */}
       <section className="section">
         <div className="container">
@@ -476,6 +461,13 @@ const Home = () => {
           )}
         </div>
       </section>
+
+      {/* Customers Banner Section */}
+      {customersBanner.length > 0 && (
+        <section className="section customers-banner-section">
+          <Banner banners={customersBanner} />
+        </section>
+      )}
 
       {/* Blog Section */}
       <section className="section bg-gray-50">

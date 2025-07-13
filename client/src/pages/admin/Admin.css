@@ -457,54 +457,66 @@
 }
 
 .btn {
-  padding: 0.5rem 1rem;
+  padding: 16px 24px;
   border: none;
-  border-radius: 4px;
+  border-radius: 10px;
   cursor: pointer;
-  font-size: 0.875rem;
-  font-weight: 500;
-  transition: all 0.3s ease;
+  font-size: 1.15rem;
+  font-weight: 700;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(44,62,80,0.10);
 }
 
 .btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+  transform: none !important;
 }
 
 .btn-primary {
-  background-color: #2563eb;
+  background: linear-gradient(90deg, #3498db 60%, #217dbb 100%);
   color: white;
 }
 
-.btn-primary:hover:not(:disabled) {
-  background-color: #1d4ed8;
+.btn-primary:hover:not(:disabled),
+.btn-primary:focus:not(:disabled) {
+  background: linear-gradient(90deg, #217dbb 60%, #3498db 100%);
+  box-shadow: 0 4px 16px rgba(44,62,80,0.13);
+  transform: translateY(-2px) scale(1.01);
 }
 
 .btn-secondary {
-  background-color: #6b7280;
+  background: linear-gradient(90deg, #6b7280 60%, #4b5563 100%);
   color: white;
 }
 
-.btn-secondary:hover:not(:disabled) {
-  background-color: #4b5563;
+.btn-secondary:hover:not(:disabled),
+.btn-secondary:focus:not(:disabled) {
+  background: linear-gradient(90deg, #4b5563 60%, #6b7280 100%);
+  box-shadow: 0 4px 16px rgba(44,62,80,0.13);
+  transform: translateY(-2px) scale(1.01);
 }
 
 .btn-danger {
-  background-color: #dc2626;
+  background: linear-gradient(90deg, #dc2626 60%, #b91c1c 100%);
   color: white;
 }
 
-.btn-danger:hover:not(:disabled) {
-  background-color: #b91c1c;
+.btn-danger:hover:not(:disabled),
+.btn-danger:focus:not(:disabled) {
+  background: linear-gradient(90deg, #b91c1c 60%, #dc2626 100%);
+  box-shadow: 0 4px 16px rgba(44,62,80,0.13);
+  transform: translateY(-2px) scale(1.01);
 }
 
 .btn-sm {
-  padding: 0.25rem 0.5rem;
-  font-size: 0.75rem;
+  padding: 12px 20px;
+  font-size: 1rem;
 }
 
 /* Form Inputs */

@@ -27,43 +27,56 @@ code {
 
 .btn {
   display: inline-block;
-  padding: 12px 24px;
+  padding: 16px 24px;
   border: none;
-  border-radius: 6px;
-  font-size: 16px;
-  font-weight: 500;
+  border-radius: 10px;
+  font-size: 1.15rem;
+  font-weight: 700;
   text-decoration: none;
   cursor: pointer;
-  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+  box-shadow: 0 2px 8px rgba(44,62,80,0.10);
 }
 
 .btn-primary {
-  background-color: #2563eb;
+  background: linear-gradient(90deg, #3498db 60%, #217dbb 100%);
   color: white;
 }
 
-.btn-primary:hover {
-  background-color: #1d4ed8;
+.btn-primary:hover,
+.btn-primary:focus {
+  background: linear-gradient(90deg, #217dbb 60%, #3498db 100%);
+  box-shadow: 0 4px 16px rgba(44,62,80,0.13);
+  transform: translateY(-2px) scale(1.01);
 }
 
 .btn-secondary {
-  background-color: #6b7280;
+  background: linear-gradient(90deg, #6b7280 60%, #4b5563 100%);
   color: white;
 }
 
-.btn-secondary:hover {
-  background-color: #4b5563;
+.btn-secondary:hover,
+.btn-secondary:focus {
+  background: linear-gradient(90deg, #4b5563 60%, #6b7280 100%);
+  box-shadow: 0 4px 16px rgba(44,62,80,0.13);
+  transform: translateY(-2px) scale(1.01);
 }
 
 .btn-outline {
-  background-color: transparent;
-  color: #2563eb;
-  border: 2px solid #2563eb;
+  background: transparent;
+  color: #3498db;
+  border: 2px solid #3498db;
+  box-shadow: 0 2px 8px rgba(44,62,80,0.10);
 }
 
-.btn-outline:hover {
-  background-color: #2563eb;
+.btn-outline:hover,
+.btn-outline:focus {
+  background: linear-gradient(90deg, #3498db 60%, #217dbb 100%);
   color: white;
+  border-color: transparent;
+  box-shadow: 0 4px 16px rgba(44,62,80,0.13);
+  transform: translateY(-2px) scale(1.01);
 }
 
 .section {
