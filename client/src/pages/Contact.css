@@ -5,7 +5,7 @@
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 1600px;
   margin: 0 auto;
   padding: 0 20px;
 }
@@ -144,7 +144,7 @@
   font-weight: 700;
   border-radius: 8px;
   margin-top: 10px;
-  background: linear-gradient(90deg, #3498db 60%, #217dbb 100%);
+  background: linear-gradient(90deg, #d4af37 60%, #bfa133 100%);
   border: none;
   color: #fff;
   letter-spacing: 0.5px;
@@ -157,7 +157,7 @@
 
 .btn-primary:hover,
 .btn-primary:focus {
-  background: linear-gradient(90deg, #217dbb 60%, #3498db 100%);
+  background: linear-gradient(90deg, #bfa133 60%, #d4af37 100%);
   box-shadow: 0 4px 16px rgba(44,62,80,0.13);
   transform: translateY(-2px) scale(1.01);
   color: #fff;

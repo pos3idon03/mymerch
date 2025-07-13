@@ -40,15 +40,15 @@ code {
 }
 
 .btn-primary {
-  background: linear-gradient(90deg, #3498db 60%, #217dbb 100%);
-  color: white;
+  background: linear-gradient(90deg, #d4af37 60%, #bfa133 100%);
+  color: #fff;
+  border: none;
 }
 
 .btn-primary:hover,
 .btn-primary:focus {
-  background: linear-gradient(90deg, #217dbb 60%, #3498db 100%);
-  box-shadow: 0 4px 16px rgba(44,62,80,0.13);
-  transform: translateY(-2px) scale(1.01);
+  background: linear-gradient(90deg, #bfa133 60%, #d4af37 100%);
+  color: #fff;
 }
 
 .btn-secondary {

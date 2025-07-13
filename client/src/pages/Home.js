@@ -197,13 +197,15 @@ const Home = () => {
                             <ul className="category-dropdown-menu prettier-product-list">
                               {productsInCategory.map(product => (
                                 <li key={product._id} className="prettier-product-item">
-                                  {/* Product favicon or default icon */}
-                                  {product.favicon ? (
-                                    <img src={product.favicon} alt="favicon" style={{ width: 20, height: 20, borderRadius: 4, border: '1px solid #eee', marginRight: 6, verticalAlign: 'middle' }} />
-                                  ) : (
-                                    <FaBox className="product-list-icon" />
-                                  )}
-                                  <span>{product.title}</span>
+                                  <Link to={`/products/${product._id}`} style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', color: 'inherit' }}>
+                                    {/* Product favicon or default icon */}
+                                    {product.favicon ? (
+                                      <img src={product.favicon} alt="favicon" style={{ width: 20, height: 20, borderRadius: 4, border: '1px solid #eee', marginRight: 6, verticalAlign: 'middle' }} />
+                                    ) : (
+                                      <FaBox className="product-list-icon" />
+                                    )}
+                                    <span className="product-title-bold">{product.title}</span>
+                                  </Link>
                                 </li>
                               ))}
                             </ul>
@@ -241,7 +243,7 @@ const Home = () => {
       {/* Events Section (now a single banner image) */}
       <section className="section bg-gray-50">
         <div className="container">
-          <h2 className="section-title">Events</h2>
+          <h2 className="section-title">Κάνε κάθε Event μοναδικό!</h2>
           {eventBanner && eventBanner.image ? (
             <div className="event-banner-image-wrapper" style={{ textAlign: 'center', margin: '2rem 0' }}>
               <img

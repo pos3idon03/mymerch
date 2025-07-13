@@ -479,13 +479,13 @@
 }
 
 .btn-primary {
-  background: linear-gradient(90deg, #3498db 60%, #217dbb 100%);
+  background: linear-gradient(90deg, #d4af37 60%, #bfa133 100%);
   color: white;
 }
 
 .btn-primary:hover:not(:disabled),
 .btn-primary:focus:not(:disabled) {
-  background: linear-gradient(90deg, #217dbb 60%, #3498db 100%);
+  background: linear-gradient(90deg, #bfa133 60%, #d4af37 100%);
   box-shadow: 0 4px 16px rgba(44,62,80,0.13);
   transform: translateY(-2px) scale(1.01);
 }
