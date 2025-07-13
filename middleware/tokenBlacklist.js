@@ -1,23 +1,14 @@
 // middleware/tokenBlacklist.js
 
-const BlacklistedToken = require('../models/BlacklistedToken');
+// In-memory blacklist (for production, use Redis or a database)
+const tokenBlacklist = new Set();
 
-// Add a token to the blacklist
-async function blacklistToken(token) {
-  try {
-    await BlacklistedToken.create({ token });
-  } catch (err) {
-    // Ignore duplicate errors
-    if (err.code !== 11000) {
-      throw err;
-    }
-  }
+function blacklistToken(token) {
+  tokenBlacklist.add(token);
 }
 
-// Check if a token is blacklisted
-async function isTokenBlacklisted(token) {
-  const found = await BlacklistedToken.findOne({ token });
-  return !!found;
+function isTokenBlacklisted(token) {
+  return tokenBlacklist.has(token);
 }
 
 module.exports = { blacklistToken, isTokenBlacklisted }; 
