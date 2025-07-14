@@ -421,7 +421,7 @@ const Home = () => {
                 <li>24/7 customer support</li>
                 <li>Flexible payment terms</li>
               </ul>
-              <Link to="/contact" className="prettier-submit-btn">
+              <Link to="/contact" className="btn btn-primary">
                 Get Quote
               </Link>
             </div>

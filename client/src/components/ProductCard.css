@@ -141,7 +141,8 @@
 
 @media (max-width: 480px) {
   .product-image {
-    height: 180px;
+    /* height: 180px; */
+    aspect-ratio: 1 / 1.2;
   }
 
   .product-content {
