@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ProductCard from '../components/ProductCard';
 import './Products.css';
+import { Helmet } from 'react-helmet';
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -50,6 +51,14 @@ const Products = () => {
 
   return (
     <div className="products-page">
+      <Helmet>
+        <title>Products | MyMerch</title>
+        <meta name="description" content="Browse our wide selection of custom products and merchandise. Find the perfect item for your needs at MyMerch." />
+        <meta property="og:title" content="Products | MyMerch" />
+        <meta property="og:description" content="Browse our wide selection of custom products and merchandise. Find the perfect item for your needs at MyMerch." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.mymerch.gr/products" />
+      </Helmet>
       <div className="container">
         <div className="page-header">
           <h1>Our Products</h1>

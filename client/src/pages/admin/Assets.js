@@ -120,7 +120,7 @@ const Assets = () => {
         {/* Logo */}
         <div className="asset-form-item">
           <label>Logo</label>
-          {logoPreview && <img src={logoPreview} alt="Logo" className="asset-preview" />}
+          {logoPreview && <img src={logoPreview} alt="Logo" className="asset-preview" loading='lazy'/>}
           <input
             type="file"
             accept="image/*"
@@ -133,7 +133,7 @@ const Assets = () => {
         {/* Favicon */}
         <div className="asset-form-item">
           <label>Favicon</label>
-          {faviconPreview && <img src={faviconPreview} alt="Favicon" className="asset-preview" style={{width:32, height:32}} />}
+          {faviconPreview && <img src={faviconPreview} alt="Favicon" className="asset-preview" style={{width:32, height:32}} loading='lazy'/>}
           <input
             type="file"
             accept="image/*"

@@ -271,7 +271,7 @@ const AdminBlog = () => {
                 <div className="form-group">
                   <label>Image Preview</label>
                   <div className="image-preview">
-                    <img src={imagePreview} alt="Blog preview" />
+                    <img src={imagePreview} alt="Blog preview" loading='lazy'/>
                   </div>
                 </div>
               )}
@@ -363,6 +363,7 @@ const AdminBlog = () => {
                       src={post.image} 
                       alt={post.title}
                       className="blog-thumbnail"
+                      loading='lazy'
                     />
                   )}
                 </td>

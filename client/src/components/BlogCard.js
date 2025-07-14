@@ -12,6 +12,7 @@ const BlogCard = ({ blog }) => {
           onError={(e) => {
             e.target.src = '/placeholder-blog.jpg';
           }}
+          loading='lazy'
         />
       </div>
       <div className="blog-content">

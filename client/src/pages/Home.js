@@ -6,6 +6,7 @@ import ProductCard from '../components/ProductCard';
 import TestimonialCard from '../components/TestimonialCard';
 import BlogCard from '../components/BlogCard';
 import { FaBox, FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { Helmet } from 'react-helmet';
 import './Home.css';
 
 const Home = () => {
@@ -154,7 +155,16 @@ const Home = () => {
   }
 
   return (
+    
     <div className="home">
+      <Helmet>
+        <title>Home | MyMerch</title>
+        <meta name="description" content="Discover custom merchandise, apparel, and more at MyMerch. Quality products, fast shipping, and great prices." />
+        <meta property="og:title" content="Home | MyMerch" />
+        <meta property="og:description" content="Discover custom merchandise, apparel, and more at MyMerch. Quality products, fast shipping, and great prices." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.mymerch.gr/" />
+      </Helmet>
       {/* Banner Section */}
       <Banner banners={homepageBanners} />
 
@@ -188,7 +198,7 @@ const Home = () => {
                           >
                             {/* Favicon */}
                             {category.favicon && (
-                              <img src={category.favicon} alt="favicon" style={{ width: 24, height: 24, borderRadius: 4, border: '1px solid #eee', marginRight: 8, verticalAlign: 'middle' }} />
+                              <img src={category.favicon} alt="favicon" style={{ width: 24, height: 24, borderRadius: 4, border: '1px solid #eee', marginRight: 8, verticalAlign: 'middle' }} loading='lazy'/>
                             )}
                             <span>{category.name}</span>
                             <span className="dropdown-arrow">{isOpen ? <FaChevronUp /> : <FaChevronDown />}</span>
@@ -200,7 +210,7 @@ const Home = () => {
                                   <Link to={`/products/${product._id}`} style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', color: 'inherit' }}>
                                     {/* Product favicon or default icon */}
                                     {product.favicon ? (
-                                      <img src={product.favicon} alt="favicon" style={{ width: 20, height: 20, borderRadius: 4, border: '1px solid #eee', marginRight: 6, verticalAlign: 'middle' }} />
+                                      <img src={product.favicon} alt="favicon" style={{ width: 20, height: 20, borderRadius: 4, border: '1px solid #eee', marginRight: 6, verticalAlign: 'middle' }} loading='lazy'/>
                                     ) : (
                                       <FaBox className="product-list-icon" />
                                     )}
@@ -228,6 +238,7 @@ const Home = () => {
                   src={categoriesBanner.image}
                   alt={categoriesBanner.title || 'Categories'}
                   style={{ maxWidth: '100%', borderRadius: '12px', minHeight: '200px', objectFit: 'cover' }}
+                  loading='lazy'
                 />
               ) : (
                 <div className="offer-placeholder">
@@ -255,7 +266,8 @@ const Home = () => {
                   borderRadius: '12px',
                   minHeight: '200px',
                   objectFit: 'cover',
-                  boxShadow: '0 4px 20px rgba(0,0,0,0.08)'
+                  boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+                  loading: 'lazy'
                 }}
               />
             </div>
@@ -292,6 +304,7 @@ const Home = () => {
                   src={customOrderBanner.image}
                   alt={customOrderBanner.title}
                   style={{ maxWidth: '100%', borderRadius: '12px', minHeight: '200px', objectFit: 'cover' }}
+                  loading='lazy'
                 />
               ) : (
                 <div className="offer-placeholder">
@@ -367,7 +380,7 @@ const Home = () => {
                   </label>
                   {customOrderImagePreview && (
                     <div className="custom-order-image-preview">
-                      <img src={customOrderImagePreview} alt="Preview" />
+                      <img src={customOrderImagePreview} alt="Preview" loading='lazy'/>
                     </div>
                   )}
                 </div>
@@ -431,6 +444,7 @@ const Home = () => {
                   src={offerBanner.image}
                   alt={offerBanner.title || 'Offer Banner'}
                   style={{ maxWidth: '100%', borderRadius: '12px', minHeight: '200px', objectFit: 'cover' }}
+                  loading='lazy'
                 />
               ) : (
                 <div className="offer-placeholder">

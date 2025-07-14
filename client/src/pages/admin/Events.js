@@ -286,7 +286,7 @@ const AdminEvents = () => {
                 <div className="form-group">
                   <label>Image Preview</label>
                   <div className="image-preview">
-                    <img src={imagePreview} alt="Event preview" />
+                    <img src={imagePreview} alt="Event preview" loading='lazy'/>
                   </div>
                 </div>
               )}
@@ -316,7 +316,7 @@ const AdminEvents = () => {
                 <div className="form-group">
                   <label>Favicon Preview</label>
                   <div className="image-preview">
-                    <img src={faviconPreview} alt="Favicon preview" style={{ width: 32, height: 32, borderRadius: 4, border: '1px solid #eee' }} />
+                    <img src={faviconPreview} alt="Favicon preview" style={{ width: 32, height: 32, borderRadius: 4, border: '1px solid #eee' }} loading='lazy'/>
                   </div>
                 </div>
               )}
@@ -371,10 +371,10 @@ const AdminEvents = () => {
               <tr key={event._id}>
                 <td>{event.name}</td>
                 <td>{event.description}</td>
-                <td>{event.image ? <img src={event.image} alt={event.name} style={{width: '60px', height: '40px', objectFit: 'cover'}} /> : 'No image'}</td>
+                <td>{event.image ? <img src={event.image} alt={event.name} style={{width: '60px', height: '40px', objectFit: 'cover'}} loading='lazy'/> : 'No image'}</td>
                 <td>
                   {event.favicon && (
-                    <img src={event.favicon} alt="favicon" style={{ width: 24, height: 24, borderRadius: 4, border: '1px solid #eee' }} />
+                    <img src={event.favicon} alt="favicon" style={{ width: 24, height: 24, borderRadius: 4, border: '1px solid #eee' }} loading='lazy'/>
                   )}
                 </td>
                 <td>{event.active ? 'Yes' : 'No'}</td>

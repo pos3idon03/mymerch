@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import BlogCard from '../components/BlogCard';
+import { Helmet } from 'react-helmet';
 import './Blog.css';
 
 const Blog = () => {
@@ -43,6 +44,15 @@ const Blog = () => {
 
   return (
     <div className="blog-page">
+      <Helmet>
+        <title>Our Blog | MyMerch</title>
+        <meta name="description" content="Stay updated with our latest news, insights, and industry trends at MyMerch." />
+        <meta property="og:title" content="Our Blog | MyMerch" />
+        <meta property="og:description" content="Stay updated with our latest news, insights, and industry trends at MyMerch." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.mymerch.gr/blog" />
+        {/* Add more meta tags as needed */}
+      </Helmet>
       <div className="container">
         <div className="page-header">
           <h1>Our Blog</h1>

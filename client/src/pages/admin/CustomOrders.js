@@ -90,7 +90,7 @@ const AdminCustomOrders = () => {
                 <td>
                   {order.products.map(p => (
                     <div key={p._id} style={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
-                      {p.favicon && <img src={p.favicon} alt="favicon" style={{ width: 20, height: 20, borderRadius: 4, border: '1px solid #eee', marginRight: 6 }} />}
+                      {p.favicon && <img src={p.favicon} alt="favicon" style={{ width: 20, height: 20, borderRadius: 4, border: '1px solid #eee', marginRight: 6 }} loading='lazy'/>}
                       {p.title}
                     </div>
                   ))}

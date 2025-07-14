@@ -242,7 +242,7 @@ const AdminTestimonials = () => {
                 <div className="form-group">
                   <label>Logo Preview</label>
                   <div className="image-preview">
-                    <img src={imagePreview} alt="Company logo preview" />
+                    <img src={imagePreview} alt="Company logo preview" loading='lazy'/>
                   </div>
                 </div>
               )}
@@ -312,6 +312,7 @@ const AdminTestimonials = () => {
                       src={testimonial.companyLogo} 
                       alt="Company logo"
                       className="testimonial-logo"
+                      loading='lazy'
                     />
                   )}
                 </td>

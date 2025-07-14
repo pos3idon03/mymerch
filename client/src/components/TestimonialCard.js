@@ -13,6 +13,7 @@ const TestimonialCard = ({ testimonial }) => {
               onError={(e) => {
                 e.target.src = '/placeholder-logo.png';
               }}
+              loading='lazy'
             />
           )}
         </div>

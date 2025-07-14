@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import './FAQ.css';
+import { Helmet } from 'react-helmet';
 
 const FAQ = () => {
   const [faqs, setFaqs] = useState([]);
@@ -48,6 +49,14 @@ const FAQ = () => {
 
   return (
     <div className="faq-page">
+      <Helmet>
+        <title>FAQ | MyMerch</title>
+        <meta name="description" content="Find answers to frequently asked questions about MyMerch's products, orders, shipping, and more." />
+        <meta property="og:title" content="FAQ | MyMerch" />
+        <meta property="og:description" content="Find answers to frequently asked questions about MyMerch's products, orders, shipping, and more." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://yourdomain.com/faq" />
+      </Helmet>
       <div className="container">
         <div className="page-header">
           <h1>Frequently Asked Questions</h1>

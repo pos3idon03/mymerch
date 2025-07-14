@@ -299,7 +299,7 @@ const AdminBanners = () => {
                 <div className="form-group">
                   <label>Image Preview</label>
                   <div className="image-preview">
-                    <img src={imagePreview} alt="Banner preview" />
+                    <img src={imagePreview} alt="Banner preview" loading='lazy'/>
                   </div>
                 </div>
               )}
@@ -360,6 +360,7 @@ const AdminBanners = () => {
                       src={banner.image} 
                       alt={banner.title}
                       className="banner-thumbnail"
+                      loading='lazy'
                     />
                   )}
                 </td>

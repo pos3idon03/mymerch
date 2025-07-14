@@ -62,6 +62,7 @@ const Navbar = () => {
                 src={logo.image} 
                 alt={logo.name || 'MyMerch Logo'} 
                 className="navbar-logo-image"
+                loading='lazy'
               />
             ) : (
               <span className="navbar-logo-text">MyMerch</span>

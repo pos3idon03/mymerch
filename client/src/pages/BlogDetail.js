@@ -73,6 +73,7 @@ const BlogDetail = () => {
               src={blog.image} 
               alt={blog.title}
               className="blog-image"
+              loading='lazy'
             />
           </div>
         )}

@@ -92,6 +92,7 @@ const About = () => {
             <img 
               src={aboutContent.bannerImage} 
               alt="About Us"
+              loading='lazy'
             />
           </div>
           <div className="banner-overlay">

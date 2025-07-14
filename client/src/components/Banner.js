@@ -60,6 +60,7 @@ const Banner = ({ banners }) => {
               src={banner.image} 
               alt={banner.title || 'Banner'}
               className="banner-image"
+              loading='lazy'
             />
             <div className="banner-content">
               <div className="container">

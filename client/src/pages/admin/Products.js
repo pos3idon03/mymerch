@@ -384,7 +384,7 @@ const AdminProducts = () => {
                 <div className="form-group">
                   <label>Image Preview</label>
                   <div className="image-preview">
-                    <img src={imagePreview} alt="Product preview" />
+                    <img src={imagePreview} alt="Product preview" loading='lazy'/>
                   </div>
                 </div>
               )}
@@ -414,7 +414,7 @@ const AdminProducts = () => {
                 <div className="form-group">
                   <label>Favicon Preview</label>
                   <div className="image-preview">
-                    <img src={faviconPreview} alt="Favicon preview" style={{ width: 32, height: 32, borderRadius: 4, border: '1px solid #eee' }} />
+                    <img src={faviconPreview} alt="Favicon preview" style={{ width: 32, height: 32, borderRadius: 4, border: '1px solid #eee' }} loading='lazy'/>
                   </div>
                 </div>
               )}
@@ -474,6 +474,7 @@ const AdminProducts = () => {
                       src={product.image} 
                       alt={product.title}
                       className="product-thumbnail"
+                      loading='lazy'
                     />
                   )}
                 </td>
@@ -482,7 +483,7 @@ const AdminProducts = () => {
                 <td>{product.events?.map(e => e.name).join(', ') || 'N/A'}</td>
                 <td>
                   {product.favicon && (
-                    <img src={product.favicon} alt="favicon" style={{ width: 24, height: 24, borderRadius: 4, border: '1px solid #eee' }} />
+                    <img src={product.favicon} alt="favicon" style={{ width: 24, height: 24, borderRadius: 4, border: '1px solid #eee' }} loading='lazy'/>
                   )}
                 </td>
                 <td>{product.active ? 'Yes' : 'No'}</td>

@@ -12,6 +12,7 @@ const ProductCard = ({ product }) => {
           onError={(e) => {
             e.target.src = 'https://via.placeholder.com/300x200?text=No+Image';
           }}
+          loading='lazy'
         />
       </div>
       <div className="product-content">

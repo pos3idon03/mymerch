@@ -294,7 +294,7 @@ const AdminCategories = () => {
                 <div className="form-group">
                   <label>Image Preview</label>
                   <div className="image-preview">
-                    <img src={imagePreview} alt="Category preview" />
+                    <img src={imagePreview} alt="Category preview" loading='lazy'/>
                   </div>
                 </div>
               )}
@@ -325,7 +325,7 @@ const AdminCategories = () => {
                 <div className="form-group">
                   <label>Favicon Preview</label>
                   <div className="image-preview">
-                    <img src={faviconPreview} alt="Favicon preview" style={{ width: 32, height: 32, borderRadius: 4, border: '1px solid #eee' }} />
+                    <img src={faviconPreview} alt="Favicon preview" style={{ width: 32, height: 32, borderRadius: 4, border: '1px solid #eee' }} loading='lazy'/>
                   </div>
                 </div>
               )}
@@ -373,6 +373,7 @@ const AdminCategories = () => {
                       src={category.image} 
                       alt={category.name}
                       className="category-thumbnail"
+                      loading='lazy'
                     />
                   )}
                 </td>
@@ -385,6 +386,7 @@ const AdminCategories = () => {
                       src={category.favicon} 
                       alt="favicon" 
                       style={{ width: 24, height: 24, borderRadius: 4, border: '1px solid #eee' }} 
+                      loading='lazy'
                     />
                   )}
                 </td>
