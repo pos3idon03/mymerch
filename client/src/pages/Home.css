@@ -838,3 +838,12 @@
   margin-bottom: 2.5rem;
   color: #1f2937;
 } 
+
+.btn, .btn-primary {
+  display: inline-block; /* or flex, but see below */
+  text-align: center;
+  vertical-align: middle;
+  /* Optional: for flex layouts */
+  justify-content: center;
+  align-items: center;
+} 

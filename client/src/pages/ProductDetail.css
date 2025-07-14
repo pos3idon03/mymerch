@@ -17,7 +17,7 @@
 }
 
 .breadcrumb-link:hover {
-  color: #2563eb;
+  color: #d4af37;
 }
 
 .breadcrumb-separator {
@@ -73,7 +73,7 @@
 }
 
 .thumbnail.active {
-  border-color: #2563eb;
+  border-color: #d4af37;
 }
 
 .thumbnail img {

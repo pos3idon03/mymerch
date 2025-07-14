@@ -53,7 +53,7 @@
 
 .search-input:focus {
   outline: none;
-  border-color: #2563eb;
+  border-color: #d4af37;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
@@ -76,9 +76,9 @@
 
 .category-btn:hover,
 .category-btn.active {
-  background-color: #2563eb;
+  background-color: #d4af37;
   color: white;
-  border-color: #2563eb;
+  border-color: #d4af37;
 }
 
 .products-results {
@@ -131,9 +131,9 @@
 }
 .pagination button.active,
 .pagination button:hover:not(:disabled) {
-  background: #2563eb;
+  background: #d4af37;
   color: #fff;
-  border-color: #2563eb;
+  border-color: #d4af37;
 }
 .pagination button:disabled {
   opacity: 0.5;

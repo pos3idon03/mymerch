@@ -243,7 +243,8 @@ const Home = () => {
       {/* Events Section (now a single banner image) */}
       <section className="section bg-gray-50">
         <div className="container">
-          <h2 className="section-title">Χριστούγεννα, Απόκριες, καλοκαίρι, εγκαίνια, γενέθλια, Black Friday  ή απλώς μια καλή Τρίτη ☕ — κάθε στιγμή είναι ιδανική για να τραβήξεις βλέμματα (και πελάτες)!</h2>
+          <h2 className="section-title">Κάνε κάθε Event μοναδικό!</h2>
+          <p className="section-subtitle">Χριστούγεννα, Απόκριες, καλοκαίρι, εγκαίνια, γενέθλια, Black Friday  ή απλώς μια καλή Τρίτη ☕ — κάθε στιγμή είναι ιδανική για να τραβήξεις βλέμματα (και πελάτες)!</p>
           {eventBanner && eventBanner.image ? (
             <div className="event-banner-image-wrapper" style={{ textAlign: 'center', margin: '2rem 0' }}>
               <img
@@ -420,7 +421,7 @@ const Home = () => {
                 <li>24/7 customer support</li>
                 <li>Flexible payment terms</li>
               </ul>
-              <Link to="/contact" className="btn btn-primary">
+              <Link to="/contact" className="prettier-submit-btn">
                 Get Quote
               </Link>
             </div>
