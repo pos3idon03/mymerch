@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
+const { SitemapStream, streamToPromise } = require('sitemap');
+const { createGzip } = require('zlib');
 require('dotenv').config();
 
 // Define the public URL path for your uploaded files
@@ -68,6 +70,42 @@ app.use('/api/company', require('./routes/company'));
 app.use('/api/events', require('./routes/events'));
 app.use('/api/custom-order', require('./routes/customOrder'));
 
+const Product = require('./models/Product');
+const Blog = require('./models/Blog');
+
+app.get('/sitemap.xml', async (req, res) => {
+  try {
+    const smStream = new SitemapStream({ hostname: 'https://www.mymerch.gr' });
+
+    // Static pages
+    smStream.write({ url: '/', changefreq: 'weekly', priority: 1.0 });
+    smStream.write({ url: '/products', changefreq: 'weekly', priority: 0.8 });
+    smStream.write({ url: '/contact', changefreq: 'monthly', priority: 0.6 });
+    smStream.write({ url: '/faq', changefreq: 'monthly', priority: 0.6 });
+    smStream.write({ url: '/blog', changefreq: 'weekly', priority: 0.7 });
+
+    // Dynamic product pages
+    const products = await Product.find({}, '_id');
+    products.forEach(product => {
+      smStream.write({ url: `/products/${product._id}`, changefreq: 'weekly', priority: 0.7 });
+    });
+
+    // Dynamic blog pages
+    const blogs = await Blog.find({}, '_id');
+    blogs.forEach(blog => {
+      smStream.write({ url: `/blog/${blog._id}`, changefreq: 'weekly', priority: 0.7 });
+    });
+
+    smStream.end();
+
+    res.header('Content-Type', 'application/xml');
+    streamToPromise(smStream).then(sm => res.send(sm.toString()));
+  } catch (e) {
+    console.error(e);
+    res.status(500).end();
+  }
+});
+
 // Serve React app in production
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
@@ -77,21 +115,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 
-// Ensure uploads subdirectories exist
-// const uploadDirs = [
-//   'uploads/assets',
-//   'uploads/banners',
-//   'uploads/testimonials',
-//   'uploads/products',
-//   'uploads/events',
-//   'uploads/customOrders',
-//   'uploads/categories',
-//   'uploads/blogs',
-//   'uploads/about',
-// ];
-// uploadDirs.forEach(dir => {
-//   fs.mkdirSync(path.join(__dirname, dir), { recursive: true });
-// });
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
