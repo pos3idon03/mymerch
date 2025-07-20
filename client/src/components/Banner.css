@@ -1,12 +1,11 @@
 .banner {
   position: relative;
-  /* Remove fixed height and use aspect ratio instead */
   aspect-ratio: 4/3; /* This matches your 800x600 images */
   overflow: hidden;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  /* Fallback for older browsers */
-  height: 0;
-  padding-bottom: 75%; /* 3/4 = 75% for 4:3 aspect ratio */
+  /* Ensure minimum visibility */
+  min-height: 300px;
+  min-width: 100%;
 }
 
 .banner-slider {
@@ -33,14 +32,16 @@
   width: 100%;
   height: 100%;
   display: block;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
-/* New banner image class */
+/* Banner image */
 .banner-image {
   width: 100%;
   height: 100%;
-  /* Changed from object-fit: cover to object-fit: contain for better image visibility */
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
   /* Image quality optimizations to prevent blur */
   image-rendering: -webkit-optimize-contrast;
@@ -48,7 +49,7 @@
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   /* Ensure smooth transitions */
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 /* Alternative class for when you want to cover the full area */
@@ -61,58 +62,33 @@
   object-fit: contain;
 }
 
-/* Background fallback for when image doesn't fill the space */
-.banner-image-container {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 /* Utility classes for different aspect ratios */
 .banner-aspect-4-3 {
   aspect-ratio: 4/3;
-  padding-bottom: 75%;
 }
 
 .banner-aspect-16-9 {
   aspect-ratio: 16/9;
-  padding-bottom: 56.25%;
 }
 
 .banner-aspect-1-1 {
   aspect-ratio: 1/1;
-  padding-bottom: 100%;
 }
 
 /* Legacy height classes (optional, overrides aspect ratio) */
 .banner-height-small {
   aspect-ratio: auto;
   height: 400px;
-  padding-bottom: 0;
 }
 
 .banner-height-medium {
   aspect-ratio: auto;
   height: 600px;
-  padding-bottom: 0;
 }
 
 .banner-height-large {
   aspect-ratio: auto;
   height: 800px;
-  padding-bottom: 0;
-}
-
-/* Better handling for different image aspect ratios */
-.banner-image-container {
-  position: relative;
-  overflow: hidden;
-}
-
-/* Ensure images maintain aspect ratio while fitting properly */
-.banner-image {
-  transition: all 0.3s ease;
 }
 
 /* Specific handling for 800x600 images (4:3 aspect ratio) */

@@ -6,6 +6,9 @@ import './Banner.css';
 const Banner = ({ banners, imageFit = 'contain' }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
+  // Debug logging
+  console.log('Banner component rendered with:', { banners, imageFit, bannersLength: banners?.length });
+
   useEffect(() => {
     if (banners.length > 1) {
       const timer = setInterval(() => {
@@ -28,20 +31,6 @@ const Banner = ({ banners, imageFit = 'contain' }) => {
     setCurrentSlide(index);
   };
 
-  // Function to generate responsive image URLs
-  const getResponsiveImageUrl = (originalUrl, width) => {
-    // If you have an image optimization service like Cloudinary, Imgix, or similar, 
-    // you can modify this function to generate optimized URLs
-    // 
-    // Examples:
-    // Cloudinary: return originalUrl.replace('/upload/', `/upload/w_${width},c_scale/`);
-    // Imgix: return originalUrl + `?w=${width}&auto=format,compress`;
-    // Custom CDN: return originalUrl.replace(/\.(jpg|jpeg|png|webp)$/, `-${width}w.$1`);
-    
-    // For now, we'll use the original URL
-    // You should implement one of the above solutions for better performance
-    return originalUrl;
-  };
 
   // Determine image class based on fit preference
   const getImageClass = () => {
@@ -55,6 +44,7 @@ const Banner = ({ banners, imageFit = 'contain' }) => {
   };
 
   if (!banners || banners.length === 0) {
+    console.log('No banners provided, showing fallback');
     return (
       <section className="banner">
         <div className="banner-content">
@@ -74,40 +64,71 @@ const Banner = ({ banners, imageFit = 'contain' }) => {
     );
   }
 
+  // Add a test banner if no images are loading
+  const hasValidImages = banners.some(banner => banner.image);
+  if (!hasValidImages) {
+    console.log('No valid images found, showing test banner');
+    return (
+      <section className="banner">
+        <div className="banner-content">
+          <div className="container">
+            <div className="banner-text">
+              <h1 className="banner-title">Test Banner - Images Not Loading</h1>
+              <p className="banner-subtitle">
+                This is a test banner. Check console for debugging info.
+              </p>
+              <p style={{ fontSize: '0.9rem', opacity: 0.8 }}>
+                Banner count: {banners.length}<br/>
+                Image URLs: {banners.map(b => b.image).join(', ')}
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  console.log('Rendering banners:', banners.map(b => ({ id: b._id, title: b.title, image: b.image })));
+
   return (
     <section className="banner">
       <div className="banner-slider">
-        {banners.map((banner, index) => (
-          <div
-            key={banner._id}
-            className={`banner-slide ${index === currentSlide ? 'active' : ''}`}
-          >
-            <picture className="banner-image-container">
-              {/* Single image source since we maintain consistent aspect ratio */}
-              <img 
-                src={banner.image}
-                alt={banner.title || 'Banner'}
-                className={getImageClass()}
-                loading='lazy'
-              />
-            </picture>
-            <div className="banner-content">
-              <div className="container">
-                <div className="banner-text">
-                  <h1 className="banner-title">{banner.title}</h1>
-                  {banner.subtitle && (
-                    <p className="banner-subtitle">{banner.subtitle}</p>
-                  )}
-                  {banner.link && (
-                    <Link to={banner.link} className="btn btn-primary">
-                      Learn More
-                    </Link>
-                  )}
+        {banners.map((banner, index) => {
+          console.log(`Rendering banner ${index}:`, banner);
+          return (
+            <div
+              key={banner._id}
+              className={`banner-slide ${index === currentSlide ? 'active' : ''}`}
+            >
+              <picture className="banner-image-container">
+                {/* Single image source since we maintain consistent aspect ratio */}
+                <img 
+                  src={banner.image}
+                  alt={banner.title || 'Banner'}
+                  className={getImageClass()}
+                  loading='lazy'
+                  onError={(e) => console.error('Image failed to load:', banner.image, e)}
+                  onLoad={() => console.log('Image loaded successfully:', banner.image)}
+                />
+              </picture>
+              <div className="banner-content">
+                <div className="container">
+                  <div className="banner-text">
+                    <h1 className="banner-title">{banner.title}</h1>
+                    {banner.subtitle && (
+                      <p className="banner-subtitle">{banner.subtitle}</p>
+                    )}
+                    {banner.link && (
+                      <Link to={banner.link} className="btn btn-primary">
+                        Learn More
+                      </Link>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
 
         {banners.length > 1 && (
           <>
