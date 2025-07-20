@@ -166,7 +166,7 @@ const Home = () => {
         <meta property="og:url" content="https://www.mymerch.gr/" />
       </Helmet>
       {/* Banner Section */}
-      <Banner banners={homepageBanners} />
+      <Banner banners={homepageBanners} imageFit="contain" />
 
       
       {/* Featured Products Section */}
@@ -482,7 +482,7 @@ const Home = () => {
       {/* Customers Banner Section */}
       {customersBanner.length > 0 && (
         <section className="section customers-banner-section">
-          <Banner banners={customersBanner} />
+          <Banner banners={customersBanner} imageFit="contain" />
         </section>
       )}
 

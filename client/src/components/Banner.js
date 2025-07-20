@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import './Banner.css';
 
-const Banner = ({ banners }) => {
+const Banner = ({ banners, imageFit = 'contain' }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
@@ -41,6 +41,17 @@ const Banner = ({ banners }) => {
     // For now, we'll use the original URL
     // You should implement one of the above solutions for better performance
     return originalUrl;
+  };
+
+  // Determine image class based on fit preference
+  const getImageClass = () => {
+    switch (imageFit) {
+      case 'cover':
+        return 'banner-image banner-image-cover';
+      case 'contain':
+      default:
+        return 'banner-image banner-image-contain';
+    }
   };
 
   if (!banners || banners.length === 0) {
@@ -86,7 +97,7 @@ const Banner = ({ banners }) => {
               <img 
                 src={getResponsiveImageUrl(banner.image, 600)}
                 alt={banner.title || 'Banner'}
-                className="banner-image"
+                className={getImageClass()}
                 loading='lazy'
               />
             </picture>
