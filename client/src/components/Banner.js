@@ -28,6 +28,21 @@ const Banner = ({ banners }) => {
     setCurrentSlide(index);
   };
 
+  // Function to generate responsive image URLs
+  const getResponsiveImageUrl = (originalUrl, width) => {
+    // If you have an image optimization service like Cloudinary, Imgix, or similar, 
+    // you can modify this function to generate optimized URLs
+    // 
+    // Examples:
+    // Cloudinary: return originalUrl.replace('/upload/', `/upload/w_${width},c_scale/`);
+    // Imgix: return originalUrl + `?w=${width}&auto=format,compress`;
+    // Custom CDN: return originalUrl.replace(/\.(jpg|jpeg|png|webp)$/, `-${width}w.$1`);
+    
+    // For now, we'll use the original URL
+    // You should implement one of the above solutions for better performance
+    return originalUrl;
+  };
+
   if (!banners || banners.length === 0) {
     return (
       <section className="banner">
@@ -56,12 +71,25 @@ const Banner = ({ banners }) => {
             key={banner._id}
             className={`banner-slide ${index === currentSlide ? 'active' : ''}`}
           >
-            <img 
-              src={banner.image} 
-              alt={banner.title || 'Banner'}
-              className="banner-image"
-              loading='lazy'
-            />
+            <picture className="banner-image-container">
+              {/* Desktop image (larger size) */}
+              <source
+                media="(min-width: 768px)"
+                srcSet={getResponsiveImageUrl(banner.image, 1200)}
+              />
+              {/* Tablet image (medium size) */}
+              <source
+                media="(min-width: 480px)"
+                srcSet={getResponsiveImageUrl(banner.image, 800)}
+              />
+              {/* Mobile image (smaller size) */}
+              <img 
+                src={getResponsiveImageUrl(banner.image, 600)}
+                alt={banner.title || 'Banner'}
+                className="banner-image"
+                loading='lazy'
+              />
+            </picture>
             <div className="banner-content">
               <div className="container">
                 <div className="banner-text">
