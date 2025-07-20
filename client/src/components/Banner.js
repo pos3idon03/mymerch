@@ -83,19 +83,9 @@ const Banner = ({ banners, imageFit = 'contain' }) => {
             className={`banner-slide ${index === currentSlide ? 'active' : ''}`}
           >
             <picture className="banner-image-container">
-              {/* Desktop image (larger size) */}
-              <source
-                media="(min-width: 768px)"
-                srcSet={getResponsiveImageUrl(banner.image, 1200)}
-              />
-              {/* Tablet image (medium size) */}
-              <source
-                media="(min-width: 480px)"
-                srcSet={getResponsiveImageUrl(banner.image, 800)}
-              />
-              {/* Mobile image (smaller size) */}
+              {/* Single image source since we maintain consistent aspect ratio */}
               <img 
-                src={getResponsiveImageUrl(banner.image, 600)}
+                src={banner.image}
                 alt={banner.title || 'Banner'}
                 className={getImageClass()}
                 loading='lazy'

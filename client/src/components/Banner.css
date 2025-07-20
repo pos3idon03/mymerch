@@ -1,8 +1,12 @@
 .banner {
   position: relative;
-  height: 600px;
+  /* Remove fixed height and use aspect ratio instead */
+  aspect-ratio: 4/3; /* This matches your 800x600 images */
   overflow: hidden;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  /* Fallback for older browsers */
+  height: 0;
+  padding-bottom: 75%; /* 3/4 = 75% for 4:3 aspect ratio */
 }
 
 .banner-slider {
@@ -65,17 +69,39 @@
   justify-content: center;
 }
 
-/* Utility classes for different banner heights */
+/* Utility classes for different aspect ratios */
+.banner-aspect-4-3 {
+  aspect-ratio: 4/3;
+  padding-bottom: 75%;
+}
+
+.banner-aspect-16-9 {
+  aspect-ratio: 16/9;
+  padding-bottom: 56.25%;
+}
+
+.banner-aspect-1-1 {
+  aspect-ratio: 1/1;
+  padding-bottom: 100%;
+}
+
+/* Legacy height classes (optional, overrides aspect ratio) */
 .banner-height-small {
+  aspect-ratio: auto;
   height: 400px;
+  padding-bottom: 0;
 }
 
 .banner-height-medium {
+  aspect-ratio: auto;
   height: 600px;
+  padding-bottom: 0;
 }
 
 .banner-height-large {
+  aspect-ratio: auto;
   height: 800px;
+  padding-bottom: 0;
 }
 
 /* Better handling for different image aspect ratios */
@@ -190,9 +216,10 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .banner {
+  /* Remove fixed height - aspect ratio handles scaling */
+  /* .banner {
     height: 500px;
-  }
+  } */
 
   .banner-title {
     font-size: 2.5rem;
@@ -226,9 +253,10 @@
 }
 
 @media (max-width: 480px) {
-  .banner {
+  /* Remove fixed height - aspect ratio handles scaling */
+  /* .banner {
     height: 400px;
-  }
+  } */
 
   .banner-title {
     font-size: 2rem;
@@ -254,9 +282,10 @@
 
 /* Large desktop screens */
 @media (min-width: 1200px) {
-  .banner {
+  /* Remove fixed height - aspect ratio handles scaling */
+  /* .banner {
     height: 700px;
-  }
+  } */
   
   .banner-title {
     font-size: 4rem;
@@ -276,9 +305,10 @@
 
 /* Extra large screens */
 @media (min-width: 1600px) {
-  .banner {
+  /* Remove fixed height - aspect ratio handles scaling */
+  /* .banner {
     height: 800px;
-  }
+  } */
   
   .banner-title {
     font-size: 4.5rem;
