@@ -58,7 +58,23 @@ router.get('/', async (req, res) => {
     const products = await Product.find({ active: true })
       .populate('categories', 'name')
       .populate('events', 'name')
-      .sort({ createdAt: -1 });
+      .sort({ order: 1, createdAt: -1 });
+    res.json(products);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server error');
+  }
+});
+
+// @route   GET /api/products/all
+// @desc    Get all products (including inactive) - Admin only
+// @access  Private
+router.get('/all', auth, async (req, res) => {
+  try {
+    const products = await Product.find()
+      .populate('categories', 'name')
+      .populate('events', 'name')
+      .sort({ order: 1, createdAt: -1 });
     res.json(products);
   } catch (error) {
     console.error(error.message);
@@ -74,8 +90,27 @@ router.get('/featured', async (req, res) => {
     const products = await Product.find({ active: true })
       .populate('categories', 'name')
       .populate('events', 'name')
-      .sort({ createdAt: -1 })
+      .sort({ order: 1, createdAt: -1 })
       .limit(6);
+    res.json(products);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server error');
+  }
+});
+
+// @route   GET /api/products/category/:categoryId
+// @desc    Get products by category
+// @access  Public
+router.get('/category/:categoryId', async (req, res) => {
+  try {
+    const products = await Product.find({ 
+      active: true,
+      categories: req.params.categoryId 
+    })
+      .populate('categories', 'name')
+      .populate('events', 'name')
+      .sort({ order: 1, createdAt: -1 });
     res.json(products);
   } catch (error) {
     console.error(error.message);
@@ -108,7 +143,7 @@ router.get('/:id', async (req, res) => {
 // @access  Private
 router.post('/', auth, multiUpload, async (req, res) => {
   try {
-    const { title, description, categories, events, active } = req.body;
+    const { title, description, categories, events, active, order } = req.body;
     
     if (!req.files || !req.files.image) {
       return res.status(400).json({ message: 'Product image is required' });
@@ -127,7 +162,8 @@ router.post('/', auth, multiUpload, async (req, res) => {
       favicon,
       categories: categories ? JSON.parse(categories) : [],
       events: events ? JSON.parse(events) : [],
-      active: active === 'true'
+      active: active === 'true',
+      order: order ? parseInt(order) : 0
     });
 
     await product.save();
@@ -147,7 +183,7 @@ router.post('/', auth, multiUpload, async (req, res) => {
 // @access  Private
 router.put('/:id', auth, multiUpload, async (req, res) => {
   try {
-    const { title, description, categories, events, active } = req.body;
+    const { title, description, categories, events, active, order } = req.body;
     
     let product = await Product.findById(req.params.id);
     if (!product) {
@@ -159,7 +195,8 @@ router.put('/:id', auth, multiUpload, async (req, res) => {
       description,
       categories: categories ? JSON.parse(categories) : [],
       events: events ? JSON.parse(events) : [],
-      active: active === 'true'
+      active: active === 'true',
+      order: order ? parseInt(order) : product.order
     };
 
     if (req.files && req.files.image) {

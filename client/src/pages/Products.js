@@ -1,25 +1,46 @@
 import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ProductCard from '../components/ProductCard';
 import './Products.css';
 import { Helmet } from 'react-helmet';
 
 const Products = () => {
+  const { categoryId } = useParams();
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const productsPerPage = 9;
   const totalPages = Math.ceil(products.length / productsPerPage);
   const paginatedProducts = products.slice((currentPage - 1) * productsPerPage, currentPage * productsPerPage);
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [categoryId]);
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get('/api/products');
+      setLoading(true);
+      setError('');
+      
+      let response;
+      if (categoryId) {
+        response = await axios.get(`/api/products/category/${categoryId}`);
+        // Fetch category details for the header
+        try {
+          const categoryResponse = await axios.get(`/api/categories/${categoryId}`);
+          setSelectedCategory(categoryResponse.data);
+        } catch (catError) {
+          console.error('Error fetching category:', catError);
+        }
+      } else {
+        response = await axios.get('/api/products');
+        setSelectedCategory(null);
+      }
+      
       setProducts(response.data);
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -31,6 +52,14 @@ const Products = () => {
 
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) setCurrentPage(page);
+  };
+
+  const handleCategoryFilter = (categoryId) => {
+    if (categoryId) {
+      navigate(`/products/category/${categoryId}`);
+    } else {
+      navigate('/products');
+    }
   };
 
   if (loading) {
@@ -61,8 +90,23 @@ const Products = () => {
       </Helmet>
       <div className="container">
         <div className="page-header">
-          <h1>Our Products</h1>
-          <p>Discover our comprehensive range of high-quality products</p>
+          <h1>
+            {selectedCategory ? `${selectedCategory.name} Products` : 'Our Products'}
+          </h1>
+          <p>
+            {selectedCategory 
+              ? `Discover our ${selectedCategory.name.toLowerCase()} products`
+              : 'Discover our comprehensive range of high-quality products'
+            }
+          </p>
+          {selectedCategory && (
+            <button 
+              className="back-to-all-btn"
+              onClick={() => handleCategoryFilter(null)}
+            >
+              ← See All Products
+            </button>
+          )}
         </div>
 
         {products.length > 0 ? (

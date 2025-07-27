@@ -418,6 +418,49 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Test Your Idea Section - HIDDEN FOR NOW */}
+      {/* 
+      <section className="section bg-gradient">
+        <div className="container">
+          <div className="test-idea-content">
+            <div className="test-idea-text">
+              <h2 className="section-title text-left text-white">Test Your Idea</h2>
+              <p className="test-idea-description">
+                Want to see how your design looks on our products? Upload your image and test it on t-shirts, 
+                tote bags, caps, and lanyards. Customize the size and position to create your perfect design.
+              </p>
+              <div className="test-idea-features">
+                <div className="feature-item">
+                  <span className="feature-icon">🎨</span>
+                  <span>Drag & Drop Design</span>
+                </div>
+                <div className="feature-item">
+                  <span className="feature-icon">📱</span>
+                  <span>Real-time Preview</span>
+                </div>
+                <div className="feature-item">
+                  <span className="feature-icon">⚡</span>
+                  <span>Instant Results</span>
+                </div>
+              </div>
+              <Link to="/test-your-idea" className="btn btn-white">
+                Start Designing
+              </Link>
+            </div>
+            <div className="test-idea-image">
+              <div className="design-preview">
+                <div className="product-mockup">
+                  <div className="design-area">
+                    <span>Your Design Here</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      */}
+
       {/* Customer Offer Section */}
       <section className="section bg-gray-50">
         <div className="container">

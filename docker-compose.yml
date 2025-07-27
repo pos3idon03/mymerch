@@ -14,4 +14,4 @@ services:
 
 volumes:
   merch-prod:
-    external: true # This tells Docker Compose that 'my-koyeb-volume' is managed externally (by Koyeb)
+    #external: true # This tells Docker Compose that 'my-koyeb-volume' is managed externally (by Koyeb)

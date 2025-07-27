@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import AdminNavbar from './components/AdminNavbar';
 import Footer from './components/Footer';
@@ -14,6 +14,7 @@ import FAQ from './pages/FAQ';
 import Sitemap from './pages/Sitemap';
 import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
+import TestYourIdea from './pages/TestYourIdea';
 import AdminLogin from './pages/admin/Login';
 import AdminDashboard from './pages/admin/Dashboard';
 import AdminProducts from './pages/admin/Products';
@@ -28,6 +29,17 @@ import AdminEvents from './pages/admin/Events';
 import AdminCustomOrders from './pages/admin/CustomOrders';
 import './App.css';
 import axios from 'axios';
+
+// Scroll to top component
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};
 
 // Admin Layout Component
 const AdminLayout = ({ children }) => {
@@ -59,6 +71,7 @@ function App() {
 
   return (
     <Router>
+      <ScrollToTop />
       <div className="App">
         <Routes>
           {/* Admin Routes */}
@@ -168,7 +181,21 @@ function App() {
               <Footer />
             </>
           } />
+          <Route path="/test-your-idea" element={
+            <>
+              <Navbar />
+              <TestYourIdea />
+              <Footer />
+            </>
+          } />
           <Route path="/products" element={
+            <>
+              <Navbar />
+              <Products />
+              <Footer />
+            </>
+          } />
+          <Route path="/products/category/:categoryId" element={
             <>
               <Navbar />
               <Products />

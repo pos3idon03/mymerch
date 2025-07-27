@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FaBars, FaTimes } from 'react-icons/fa';
+import { FaChevronDown } from 'react-icons/fa';
 import axios from 'axios';
 import './Navbar.css';
 
@@ -9,11 +9,14 @@ const Navbar = () => {
   const [logo, setLogo] = useState(null);
   const [favicon, setFavicon] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [categories, setCategories] = useState([]);
+  const [showCategoriesDropdown, setShowCategoriesDropdown] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
     fetchLogo();
     fetchFavicon();
+    fetchCategories();
   }, []);
 
   const fetchLogo = async () => {
@@ -40,12 +43,40 @@ const Navbar = () => {
     }
   };
 
+  const fetchCategories = async () => {
+    try {
+      // First try to get categories with products
+      const response = await axios.get('/api/categories/with-products');
+      if (response.data && response.data.length > 0) {
+        setCategories(response.data);
+      } else {
+        // If no categories with products, get all active categories
+        const allCategoriesResponse = await axios.get('/api/categories');
+        setCategories(allCategoriesResponse.data);
+      }
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+      // Fallback to getting all categories if the first request fails
+      try {
+        const fallbackResponse = await axios.get('/api/categories');
+        setCategories(fallbackResponse.data);
+      } catch (fallbackError) {
+        console.error('Error fetching fallback categories:', fallbackError);
+      }
+    }
+  };
+
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
   const closeMenu = () => {
     setIsOpen(false);
+    setShowCategoriesDropdown(false);
+  };
+
+  const toggleCategoriesDropdown = () => {
+    setShowCategoriesDropdown(!showCategoriesDropdown);
   };
 
   const isActive = (path) => {
@@ -78,13 +109,45 @@ const Navbar = () => {
           >
             Home
           </Link>
+          <div className={`navbar-dropdown ${showCategoriesDropdown ? 'show-dropdown' : ''}`}>
+            <button 
+              className={`navbar-link dropdown-toggle ${isActive('/products') ? 'active' : ''}`}
+              onClick={toggleCategoriesDropdown}
+            >
+              Products <FaChevronDown className="dropdown-icon" />
+            </button>
+            {showCategoriesDropdown && (
+              <div className="dropdown-menu">
+                <Link 
+                  to="/products" 
+                  className="dropdown-item"
+                  onClick={closeMenu}
+                >
+                  All Products
+                </Link>
+                {categories.map(category => (
+                  <Link 
+                    key={category._id}
+                    to={`/products/category/${category._id}`}
+                    className="dropdown-item"
+                    onClick={closeMenu}
+                  >
+                    {category.name}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+          {/* Test Your Idea Link - HIDDEN FOR NOW */}
+          {/* 
           <Link 
-            to="/products" 
-            className={`navbar-link ${isActive('/products') ? 'active' : ''}`}
+            to="/test-your-idea" 
+            className={`navbar-link ${isActive('/test-your-idea') ? 'active' : ''}`}
             onClick={closeMenu}
           >
-            Products
+            Test Your Idea
           </Link>
+          */}
           <Link 
             to="/about" 
             className={`navbar-link ${isActive('/about') ? 'active' : ''}`}
@@ -102,8 +165,10 @@ const Navbar = () => {
         </div>
 
         <div className="navbar-actions">
-          <button className="navbar-toggle" onClick={toggleMenu}>
-            {isOpen ? <FaTimes /> : <FaBars />}
+          <button className={`navbar-toggle ${isOpen ? 'active' : ''}`} onClick={toggleMenu}>
+            <span className="hamburger-line"></span>
+            <span className="hamburger-line"></span>
+            <span className="hamburger-line"></span>
           </button>
         </div>
       </div>

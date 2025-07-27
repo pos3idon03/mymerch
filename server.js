@@ -69,6 +69,7 @@ app.use('/api/faq', require('./routes/faq'));
 app.use('/api/company', require('./routes/company'));
 app.use('/api/events', require('./routes/events'));
 app.use('/api/custom-order', require('./routes/customOrder'));
+app.use('/api/test-your-idea', require('./routes/testYourIdea'));
 
 const Product = require('./models/Product');
 const Blog = require('./models/Blog');

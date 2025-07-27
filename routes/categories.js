@@ -56,6 +56,34 @@ router.get('/', async (req, res) => {
   }
 });
 
+// @route   GET /api/categories/with-products
+// @desc    Get categories that have active products
+// @access  Public
+router.get('/with-products', async (req, res) => {
+  try {
+    const Product = require('../models/Product');
+    
+    // Get all active products and their categories
+    const products = await Product.find({ active: true }).populate('categories');
+    
+    // Extract unique category IDs that have products
+    const categoryIds = [...new Set(products.flatMap(product => 
+      product.categories.map(cat => cat._id.toString())
+    ))];
+    
+    // Get the actual category documents
+    const categories = await Category.find({ 
+      _id: { $in: categoryIds },
+      active: true 
+    }).sort({ name: 1 });
+    
+    res.json(categories);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server error');
+  }
+});
+
 // @route   GET /api/categories/all
 // @desc    Get all categories (including inactive)
 // @access  Private
@@ -63,6 +91,22 @@ router.get('/all', auth, async (req, res) => {
   try {
     const categories = await Category.find().sort({ name: 1 });
     res.json(categories);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server error');
+  }
+});
+
+// @route   GET /api/categories/:id
+// @desc    Get category by ID
+// @access  Public
+router.get('/:id', async (req, res) => {
+  try {
+    const category = await Category.findById(req.params.id);
+    if (!category) {
+      return res.status(404).json({ message: 'Category not found' });
+    }
+    res.json(category);
   } catch (error) {
     console.error(error.message);
     res.status(500).send('Server error');
