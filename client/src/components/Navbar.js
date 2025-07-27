@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FaBars, FaTimes, FaChevronDown } from 'react-icons/fa';
+import { FaChevronDown } from 'react-icons/fa';
 import axios from 'axios';
 import './Navbar.css';
 
@@ -165,8 +165,10 @@ const Navbar = () => {
         </div>
 
         <div className="navbar-actions">
-          <button className="navbar-toggle" onClick={toggleMenu}>
-            {isOpen ? <FaTimes /> : <FaBars />}
+          <button className={`navbar-toggle ${isOpen ? 'active' : ''}`} onClick={toggleMenu}>
+            <span className="hamburger-line"></span>
+            <span className="hamburger-line"></span>
+            <span className="hamburger-line"></span>
           </button>
         </div>
       </div>
