@@ -65,15 +65,23 @@ router.post('/login', [
   body('password').exists().withMessage('Password is required')
 ], async (req, res) => {
   try {
+    console.log('Login request body:', req.body);
+    console.log('Content-Type:', req.headers['content-type']);
+    
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      console.log('Validation errors:', errors.array());
       return res.status(400).json({ errors: errors.array() });
     }
 
     const { email, password } = req.body;
 
-    // Check if user exists
-    const user = await User.findOne({ email });
+    // Check if user exists (try email first, then username)
+    let user = await User.findOne({ email });
+    if (!user) {
+      // If not found by email, try username
+      user = await User.findOne({ username: email });
+    }
     if (!user) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }

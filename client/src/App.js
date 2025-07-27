@@ -14,6 +14,7 @@ import FAQ from './pages/FAQ';
 import Sitemap from './pages/Sitemap';
 import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
+import TestYourIdea from './pages/TestYourIdea';
 import AdminLogin from './pages/admin/Login';
 import AdminDashboard from './pages/admin/Dashboard';
 import AdminProducts from './pages/admin/Products';
@@ -168,7 +169,21 @@ function App() {
               <Footer />
             </>
           } />
+          <Route path="/test-your-idea" element={
+            <>
+              <Navbar />
+              <TestYourIdea />
+              <Footer />
+            </>
+          } />
           <Route path="/products" element={
+            <>
+              <Navbar />
+              <Products />
+              <Footer />
+            </>
+          } />
+          <Route path="/products/category/:categoryId" element={
             <>
               <Navbar />
               <Products />

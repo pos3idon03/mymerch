@@ -16,7 +16,8 @@ const AdminProducts = () => {
     events: [],
     active: true,
     image: '',
-    favicon: ''
+    favicon: '',
+    order: 0
   });
   const [selectedFile, setSelectedFile] = useState(null);
   const [imagePreview, setImagePreview] = useState('');
@@ -34,7 +35,11 @@ const AdminProducts = () => {
   const fetchData = async () => {
     try {
       const [productsRes, categoriesRes] = await Promise.all([
-        axios.get('/api/products'),
+        axios.get('/api/products/all', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        }),
         axios.get('/api/categories/all', {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -176,6 +181,7 @@ const AdminProducts = () => {
       formDataToSend.append('categories', JSON.stringify(formData.categories));
       formDataToSend.append('events', JSON.stringify(formData.events));
       formDataToSend.append('active', formData.active);
+      formDataToSend.append('order', formData.order);
       if (selectedFile) {
         formDataToSend.append('image', selectedFile);
       }
@@ -232,7 +238,8 @@ const AdminProducts = () => {
       events: product.events ? product.events.map(e => e._id || e) : [],
       active: product.active,
       image: product.image || '',
-      favicon: product.favicon || ''
+      favicon: product.favicon || '',
+      order: product.order || 0
     });
     setImagePreview(product.image ? product.image : '');
     setFaviconPreview(product.favicon ? product.favicon : '');
@@ -250,7 +257,8 @@ const AdminProducts = () => {
       events: [],
       active: true,
       image: '',
-      favicon: ''
+      favicon: '',
+      order: 0
     });
     setEditingProduct(null);
     setSelectedFile(null);
@@ -359,6 +367,17 @@ const AdminProducts = () => {
               </div>
 
               <div className="form-group">
+                <label>Order</label>
+                <input
+                  type="number"
+                  value={formData.order}
+                  onChange={(e) => setFormData({...formData, order: parseInt(e.target.value) || 0})}
+                  className="form-input"
+                  placeholder="Display order"
+                />
+              </div>
+
+              <div className="form-group">
                 <label>Product Image {!editingProduct && '*'}</label>
                 <div className="file-upload">
                   <input
@@ -460,6 +479,7 @@ const AdminProducts = () => {
               <th>Title</th>
               <th>Categories</th>
               <th>Events</th>
+              <th>Order</th>
               <th>Favicon</th>
               <th>Active</th>
               <th>Actions</th>
@@ -481,6 +501,7 @@ const AdminProducts = () => {
                 <td>{product.title}</td>
                 <td>{product.categories?.map(c => c.name).join(', ') || 'N/A'}</td>
                 <td>{product.events?.map(e => e.name).join(', ') || 'N/A'}</td>
+                <td>{product.order || 0}</td>
                 <td>
                   {product.favicon && (
                     <img src={product.favicon} alt="favicon" style={{ width: 24, height: 24, borderRadius: 4, border: '1px solid #eee' }} loading='lazy'/>
