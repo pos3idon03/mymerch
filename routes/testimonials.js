@@ -7,17 +7,25 @@ const auth = require('../middleware/auth');
 
 const router = express.Router();
 
+// Define the public URL path for your uploaded files
+const PUBLIC_UPLOADS_URL_PATH = '/uploads/prod'; // This is what the browser will use
+// Define the subdirectory for testimonials within the volume
+const TESTIMONIALS_SUBDIR = 'testimonials';
+// Construct the full path for testimonials uploads
+const UPLOAD_DESTINATION = path.join(PUBLIC_UPLOADS_URL_PATH, TESTIMONIALS_SUBDIR);
+
 // Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadDir = '/app/uploads/testimonials';
+    // This is the physical path on the volume
+    const uploadDir = '/app/uploads/prod/testimonials';
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }
     cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
+    cb(null, Date.now() + '-' + Math.round(Math.random() * 1E9) + path.extname(file.originalname));
   }
 });
 
@@ -56,18 +64,18 @@ router.post('/', auth, upload.single('companyLogo'), async (req, res) => {
   try {
     const { customerName, testimonial, active } = req.body;
     
-    if (!req.file) {
-      return res.status(400).json({ message: 'Company logo is required' });
-    }
-
-    const companyLogo = `/app/uploads/testimonials/${req.file.filename}`;
-
-    const testimonialDoc = new Testimonial({
+    const testimonialData = {
       customerName,
-      companyLogo,
       testimonial,
       active: active === 'true'
-    });
+    };
+
+    // Only add companyLogo if a file was uploaded
+    if (req.file) {
+      testimonialData.companyLogo = path.join(PUBLIC_UPLOADS_URL_PATH, TESTIMONIALS_SUBDIR, req.file.filename).replace(/\\/g, '/');
+    }
+
+    const testimonialDoc = new Testimonial(testimonialData);
 
     await testimonialDoc.save();
     res.json(testimonialDoc);
@@ -96,7 +104,7 @@ router.put('/:id', auth, upload.single('companyLogo'), async (req, res) => {
     };
 
     if (req.file) {
-      updateData.companyLogo = `/app/uploads/testimonials/${req.file.filename}`;
+      updateData.companyLogo = path.join(PUBLIC_UPLOADS_URL_PATH, TESTIMONIALS_SUBDIR, req.file.filename).replace(/\\/g, '/');
     }
 
     testimonialDoc = await Testimonial.findByIdAndUpdate(
@@ -120,6 +128,24 @@ router.delete('/:id', auth, async (req, res) => {
     const testimonial = await Testimonial.findById(req.params.id);
     if (!testimonial) {
       return res.status(404).json({ message: 'Testimonial not found' });
+    }
+
+    // Optional: Delete the actual file from the volume when the testimonial is deleted
+    // This helps in cleaning up unused files and managing volume space.
+    if (testimonial.companyLogo) {
+        // Step 1: Get the relative path after "/uploads/"
+        const relativeImagePath = testimonial.companyLogo.startsWith('/uploads/') 
+        ? testimonial.companyLogo.substring('/uploads'.length) 
+        : testimonial.companyLogo; // Fallback if prefix is different
+
+        // Step 2: Combine with the actual disk mount path
+        const imagePathOnDisk = path.join('/app/uploads/prod', relativeImagePath);
+        if (fs.existsSync(imagePathOnDisk)) {
+            fs.unlinkSync(imagePathOnDisk);
+            console.log(`Deleted image file from volume: ${imagePathOnDisk}`);
+        } else {
+            console.warn(`Image file not found on disk: ${imagePathOnDisk}`);
+        }
     }
 
     await Testimonial.findByIdAndDelete(req.params.id);

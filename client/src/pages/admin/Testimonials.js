@@ -73,10 +73,7 @@ const AdminTestimonials = () => {
       return false;
     }
     
-    if (!editingTestimonial && !selectedFile) {
-      setError('Please select a company logo for new testimonials');
-      return false;
-    }
+
     
     return true;
   };
@@ -217,7 +214,7 @@ const AdminTestimonials = () => {
               </div>
 
               <div className="form-group">
-                <label>Company Logo {!editingTestimonial && '*'}</label>
+                <label>Company Logo</label>
                 <div className="file-upload">
                   <input
                     type="file"

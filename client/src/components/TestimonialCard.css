@@ -39,20 +39,11 @@
   line-height: 1.7;
   color: #333;
   margin: 0 0 25px 0;
-  font-style: italic;
+  font-style: normal;
   position: relative;
   flex: 1;
-}
-
-.testimonial-text::before {
-  content: '"';
-  font-size: 3rem;
-  color: #007bff;
-  position: absolute;
-  top: -10px;
-  left: -15px;
-  font-family: serif;
-  opacity: 0.3;
+  text-align: center;
+  font-weight: 400;
 }
 
 .testimonial-author {
