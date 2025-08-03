@@ -288,7 +288,7 @@ const Home = () => {
           )}
           <div className="text-center mt-4">
             <Link to="/contact" className="btn btn-primary">
-              Contact Us
+              Ας μιλήσουμε!
             </Link>
           </div>
         </div>
@@ -314,13 +314,12 @@ const Home = () => {
               )}
             </div>
             <div className="offer-text custom-order-offer-text">
-              <h2 className="section-title text-left">Φτιάξτο όπως θες!</h2>
               <p className="offer-description">
                 Στείλε την εικόνα που θες να εκτυπώσεις και θα την κάνουμε πραγματικότητα!
               </p>
               <form className="admin-form" onSubmit={handleCustomOrderSubmit}>
                 <div className="form-group">
-                  <label>Select Product(s)</label>
+                  <label>Διάλεξε Προϊόντα</label>
                   <div className="custom-order-products-list">
                     {allProducts.map((product, idx) => {
                       const checked = customOrderProducts.includes(product._id);
@@ -351,7 +350,7 @@ const Home = () => {
                   </div>
                 </div>
                 <div className="form-group">
-                  <label>Select Option(s)</label>
+                  <label>Διάλεξε μέρος εκτύπωσης</label>
                   <div className="custom-order-options-list">
                     {customOrderOptionList.map(option => (
                       <label key={option} className="checkbox-label">
@@ -368,7 +367,7 @@ const Home = () => {
                   </div>
                 </div>
                 <div className="form-group">
-                  <label>Upload Image</label>
+                  <label>Ανέβασε το σχέδιο σου</label>
                   <label className="prettier-file-upload">
                     Choose Image
                     <input
@@ -395,7 +394,7 @@ const Home = () => {
                   />
                 </div>
                 <div className="form-group">
-                  <label>Phone</label>
+                  <label>Τηλέφωνο</label>
                   <input
                     type="tel"
                     className="form-input"
@@ -407,7 +406,7 @@ const Home = () => {
                   />
                 </div>
                 <button className="prettier-submit-btn" type="submit" disabled={customOrderSubmitting}>
-                  {customOrderSubmitting ? 'Submitting...' : 'Submit Order'}
+                  {customOrderSubmitting ? 'Submitting...' : 'Στείλε την παραγγελία'}
                 </button>
                 {customOrderMessage && (
                   <div className="custom-order-message">{customOrderMessage}</div>
@@ -478,7 +477,7 @@ const Home = () => {
                 <li>Flexible payment terms</li>
               </ul>
               <Link to="/contact" className="btn btn-primary">
-                Get Quote
+                Ρώτησε μας!
               </Link>
             </div>
             <div className="offer-image">
@@ -504,9 +503,6 @@ const Home = () => {
       <section className="section">
         <div className="container">
           <h2 className="section-title">Οι πελάτες μας λένε</h2>
-          <p className="section-subtitle">
-            Trusted by businesses worldwide
-          </p>
           
           {testimonials.length > 0 ? (
             <div className="testimonials-grid">

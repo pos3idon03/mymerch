@@ -46,6 +46,16 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static files from the volume mount point
 app.use(PUBLIC_UPLOADS_URL_PATH, express.static(INTERNAL_VOLUME_PATH));
 
+// Backward compatibility: Serve old testimonials directory
+// This ensures existing testimonials with old paths still work
+const oldTestimonialsPath = '/app/uploads/testimonials';
+if (fs.existsSync(oldTestimonialsPath)) {
+  app.use('/app/uploads/testimonials', express.static(oldTestimonialsPath));
+  console.log('Serving old testimonials directory for backward compatibility');
+} else {
+  console.log('Old testimonials directory does not exist, skipping backward compatibility route');
+}
+
 mongouri = process.env.MONGO_URI;
 
 // MongoDB Connection

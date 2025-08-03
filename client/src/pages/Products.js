@@ -13,7 +13,7 @@ const Products = () => {
   const [error, setError] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const productsPerPage = 9;
+  const productsPerPage = 8;
   const totalPages = Math.ceil(products.length / productsPerPage);
   const paginatedProducts = products.slice((currentPage - 1) * productsPerPage, currentPage * productsPerPage);
 
@@ -51,7 +51,11 @@ const Products = () => {
   };
 
   const handlePageChange = (page) => {
-    if (page >= 1 && page <= totalPages) setCurrentPage(page);
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+      // Scroll to top of page
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   const handleCategoryFilter = (categoryId) => {
@@ -95,8 +99,8 @@ const Products = () => {
           </h1>
           <p>
             {selectedCategory 
-              ? `Discover our ${selectedCategory.name.toLowerCase()} products`
-              : 'Discover our comprehensive range of high-quality products'
+              ? `${selectedCategory.name.toLowerCase()}`
+              : 'Ανακαλύψτε τα προϊόντα μας'
             }
           </p>
           {selectedCategory && (

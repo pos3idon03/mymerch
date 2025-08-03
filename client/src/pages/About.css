@@ -5,8 +5,10 @@
 /* Banner Section */
 .about-banner {
   position: relative;
-  height: 400px;
+  aspect-ratio: 4/3; /* This matches the home banner */
   overflow: hidden;
+  min-height: 300px; /* Fallback for browsers that don't support aspect-ratio */
+  min-width: 100%;
 }
 
 .banner-image {
@@ -20,26 +22,7 @@
   object-fit: cover;
 }
 
-.banner-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
 
-.banner-overlay h1 {
-  color: white;
-  font-size: 3rem;
-  font-weight: 700;
-  margin: 0;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
 
 /* Content Section */
 .about-content {
@@ -274,9 +257,7 @@
     gap: 40px;
   }
   
-  .banner-overlay h1 {
-    font-size: 2.5rem;
-  }
+
   
   .content-wrapper h2,
   .contact-info h2 {
@@ -285,13 +266,9 @@
 }
 
 @media (max-width: 768px) {
-  .about-banner {
-    height: 300px;
-  }
+  /* Banner uses aspect-ratio for responsive scaling */
   
-  .banner-overlay h1 {
-    font-size: 2rem;
-  }
+
   
   .about-content,
   .contact-section {
@@ -318,13 +295,9 @@
 }
 
 @media (max-width: 480px) {
-  .about-banner {
-    height: 250px;
-  }
+  /* Banner uses aspect-ratio for responsive scaling */
   
-  .banner-overlay h1 {
-    font-size: 1.8rem;
-  }
+
   
   .about-content,
   .contact-section {

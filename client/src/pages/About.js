@@ -95,11 +95,6 @@ const About = () => {
               loading='lazy'
             />
           </div>
-          <div className="banner-overlay">
-            <div className="container">
-              <h1>{aboutContent?.title || 'About Us'}</h1>
-            </div>
-          </div>
         </section>
       )}
 

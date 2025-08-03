@@ -11,7 +11,7 @@ const TestimonialCard = ({ testimonial }) => {
               src={testimonial.companyLogo} 
               alt="Company logo"
               onError={(e) => {
-                e.target.src = '/placeholder-logo.png';
+                e.target.src = '/images/placeholder-logo.svg';
               }}
               loading='lazy'
             />
@@ -19,7 +19,7 @@ const TestimonialCard = ({ testimonial }) => {
         </div>
         
         <blockquote className="testimonial-text">
-          "{testimonial.testimonial}"
+          {testimonial.testimonial}
         </blockquote>
       </div>
       
