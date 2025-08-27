@@ -393,6 +393,38 @@
 .category-dropdown-toggle[aria-expanded="true"] .dropdown-arrow {
   color: #3498db;
 }
+
+/* Category links styles */
+.category-links-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.category-link-item {
+  margin-bottom: 8px;
+}
+
+.category-link {
+  display: flex;
+  align-items: center;
+  color: #2c3e50;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 12px 16px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.category-link:hover {
+  color: #3498db;
+  background-color: #f8fafc;
+  border-color: #e2e8f0;
+  text-decoration: none;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(44,62,80,0.08);
+}
 .prettier-product-list {
   padding: 0;
   margin: 0;
@@ -837,7 +869,9 @@
 /* Make dropdown list items larger for categories and events */
 .category-dropdown-item,
 .category-dropdown-toggle,
-.category-dropdown-menu li {
+.category-dropdown-menu li,
+.category-link-item,
+.category-link {
   font-size: 1.15rem;
 } 
 

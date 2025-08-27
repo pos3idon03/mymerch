@@ -214,7 +214,7 @@ const AdminTestimonials = () => {
               </div>
 
               <div className="form-group">
-                <label>Company Logo</label>
+                <label>Company Logo (Optional)</label>
                 <div className="file-upload">
                   <input
                     type="file"
@@ -233,6 +233,7 @@ const AdminTestimonials = () => {
                 {editingTestimonial && !selectedFile && (
                   <p className="file-info">Current logo will be kept</p>
                 )}
+                <p className="form-help">Company logo is optional. You can add a testimonial without uploading a logo.</p>
               </div>
 
               {imagePreview && (
