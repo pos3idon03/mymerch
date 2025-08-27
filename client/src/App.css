@@ -57,7 +57,7 @@ body, html {
 .form-textarea:focus,
 .form-select:focus {
   outline: none;
-  border-color: #d4af37;
+  border-color: #c8b1a0;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 

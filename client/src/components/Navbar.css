@@ -20,7 +20,7 @@
 .navbar-logo {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #d4af37;
+  color: #c8b1a0;
   text-decoration: none;
   transition: color 0.3s ease;
   display: flex;
@@ -41,7 +41,7 @@
 .navbar-logo-text {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #d4af37;
+  color: #c8b1a0;
 }
 
 .navbar-menu {
@@ -63,7 +63,7 @@
 
 .navbar-link:hover,
 .navbar-link.active {
-  color: #d4af37;
+  color: #c8b1a0;
 }
 
 .navbar-link.active::after {
@@ -73,7 +73,7 @@
   left: 0;
   right: 0;
   height: 2px;
-  background-color: #d4af37;
+  background-color: #c8b1a0;
 }
 
 .navbar-actions {
@@ -94,7 +94,7 @@
 }
 
 .navbar-action-btn:hover {
-  color: #d4af37;
+  color: #c8b1a0;
   background-color: #f3f4f6;
 }
 
@@ -111,7 +111,7 @@
 }
 
 .navbar-toggle:hover {
-  color: #d4af37;
+  color: #c8b1a0;
   background-color: #f3f4f6;
 }
 
@@ -149,7 +149,7 @@
 
   .navbar-link:hover {
     background-color: #f3f4f6;
-    color: #d4af37;
+    color: #c8b1a0;
   }
 
   .navbar-link.active::after {
