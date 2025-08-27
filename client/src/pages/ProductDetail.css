@@ -17,7 +17,7 @@
 }
 
 .breadcrumb-link:hover {
-  color: #d4af37;
+  color: #c8b1a0;
 }
 
 .breadcrumb-separator {
@@ -73,7 +73,7 @@
 }
 
 .thumbnail.active {
-  border-color: #d4af37;
+  border-color: #c8b1a0;
 }
 
 .thumbnail img {
@@ -184,14 +184,14 @@
 }
 
 .btn-primary {
-  background: linear-gradient(90deg, #d4af37 60%, #bfa133 100%);
+  background: linear-gradient(90deg, #c8b1a0 60%, #b8a08f 100%);
   color: #fff;
   border: none;
 }
 
 .btn-primary:hover,
 .btn-primary:focus {
-  background: linear-gradient(90deg, #bfa133 60%, #d4af37 100%);
+  background: linear-gradient(90deg, #b8a08f 60%, #c8b1a0 100%);
   color: #fff;
 }
 

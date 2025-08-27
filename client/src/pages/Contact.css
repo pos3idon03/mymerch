@@ -146,7 +146,7 @@
   font-weight: 700;
   border-radius: 8px;
   margin-top: 10px;
-  background: linear-gradient(90deg, #d4af37 60%, #bfa133 100%);
+  background: linear-gradient(90deg, #c8b1a0 60%, #b8a08f 100%);
   border: none;
   color: #fff;
   letter-spacing: 0.5px;
@@ -159,7 +159,7 @@
 
 .btn-primary:hover,
 .btn-primary:focus {
-  background: linear-gradient(90deg, #bfa133 60%, #d4af37 100%);
+  background: linear-gradient(90deg, #b8a08f 60%, #c8b1a0 100%);
   box-shadow: 0 4px 16px rgba(44,62,80,0.13);
   transform: translateY(-2px) scale(1.01);
   color: #fff;
