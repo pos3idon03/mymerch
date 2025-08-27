@@ -5,7 +5,7 @@ import Banner from '../components/Banner';
 import ProductCard from '../components/ProductCard';
 import TestimonialCard from '../components/TestimonialCard';
 import BlogCard from '../components/BlogCard';
-import { FaBox, FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { FaBox } from 'react-icons/fa';
 import { Helmet } from 'react-helmet';
 import './Home.css';
 
@@ -17,7 +17,6 @@ const Home = () => {
   const [categories, setCategories] = useState([]);
   const [events, setEvents] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
-  const [openCategory, setOpenCategory] = useState(null);
   const [openEvent, setOpenEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [customOrderProducts, setCustomOrderProducts] = useState([]);
@@ -30,6 +29,19 @@ const Home = () => {
   const [customOrderMessage, setCustomOrderMessage] = useState('');
   const [customOrderPhone, setCustomOrderPhone] = useState('');
   const customOrderImageInput = useRef();
+  
+  // Contact form state
+  const [contactForm, setContactForm] = useState({
+    name: '',
+    email: '',
+    company: '',
+    phone: '',
+    subject: '',
+    message: ''
+  });
+  const [contactSubmitting, setContactSubmitting] = useState(false);
+  const [contactSuccess, setContactSuccess] = useState(false);
+  const [contactError, setContactError] = useState('');
   const customOrderOptionList = [
     'Κέντρο',
     'Στήθος',
@@ -130,6 +142,77 @@ const Home = () => {
     }
   };
 
+  const handleContactInputChange = (e) => {
+    setContactForm({
+      ...contactForm,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const validateContactForm = () => {
+    if (!contactForm.name.trim()) {
+      setContactError('Name is required');
+      return false;
+    }
+    if (!contactForm.email.trim()) {
+      setContactError('Email is required');
+      return false;
+    }
+    if (!contactForm.message.trim()) {
+      setContactError('Message is required');
+      return false;
+    }
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(contactForm.email)) {
+      setContactError('Please enter a valid email address');
+      return false;
+    }
+    return true;
+  };
+
+  const handleContactSubmit = async (e) => {
+    e.preventDefault();
+    setContactError('');
+    
+    if (!validateContactForm()) {
+      return;
+    }
+    
+    setContactSubmitting(true);
+    
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(contactForm)
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to send message');
+      }
+      
+      setContactSuccess(true);
+      setContactForm({
+        name: '',
+        email: '',
+        company: '',
+        phone: '',
+        subject: '',
+        message: ''
+      });
+      
+      // Reset success message after 5 seconds
+      setTimeout(() => setContactSuccess(false), 5000);
+    } catch (error) {
+      setContactError('Failed to send message. Please try again.');
+    } finally {
+      setContactSubmitting(false);
+    }
+  };
+
   // Only show banners with placement 'homepage' in the main banner slider
   const homepageBanners = banners.filter(b => b.placement === 'homepage' && b.active);
 
@@ -179,53 +262,26 @@ const Home = () => {
                 Discover our most popular and high-quality products
               </p> */}
               
-              {/* Categories as dropdown list */}
+              {/* Categories as links */}
               <div className="categories-section">
                 <h3 className="products-3-title">Κατηγορίες</h3>
-                <ul className="products-3-list category-dropdown-list">
+                <ul className="products-3-list category-links-list">
                   {categories.length > 0 ? (
-                    categories.map(category => {
-                      const productsInCategory = allProducts.filter(product =>
-                        product.categories && product.categories.some(c => c._id === category._id)
-                      );
-                      const isOpen = openCategory === category._id;
-                      return (
-                        <li key={category._id} className="category-dropdown-item">
-                          <button
-                            className="category-dropdown-toggle"
-                            onClick={() => setOpenCategory(isOpen ? null : category._id)}
-                            aria-expanded={isOpen}
-                          >
-                            {/* Favicon */}
-                            {category.favicon && (
-                              <img src={category.favicon} alt="favicon" style={{ width: 24, height: 24, borderRadius: 4, border: '1px solid #eee', marginRight: 8, verticalAlign: 'middle' }} loading='lazy'/>
-                            )}
-                            <span>{category.name}</span>
-                            <span className="dropdown-arrow">{isOpen ? <FaChevronUp /> : <FaChevronDown />}</span>
-                          </button>
-                          {isOpen && productsInCategory.length > 0 && (
-                            <ul className="category-dropdown-menu prettier-product-list">
-                              {productsInCategory.map(product => (
-                                <li key={product._id} className="prettier-product-item">
-                                  <Link to={`/products/${product._id}`} style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', color: 'inherit' }}>
-                                    {/* Product favicon or default icon */}
-                                    {product.favicon ? (
-                                      <img src={product.favicon} alt="favicon" style={{ width: 20, height: 20, borderRadius: 4, border: '1px solid #eee', marginRight: 6, verticalAlign: 'middle' }} loading='lazy'/>
-                                    ) : (
-                                      <FaBox className="product-list-icon" />
-                                    )}
-                                    <span className="product-title-bold">{product.title}</span>
-                                  </Link>
-                                </li>
-                              ))}
-                            </ul>
+                    categories.map(category => (
+                      <li key={category._id} className="category-link-item">
+                        <Link 
+                          to={`/products/category/${category._id}`} 
+                          className="category-link"
+                          style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', color: 'inherit' }}
+                        >
+                          {/* Favicon */}
+                          {category.favicon && (
+                            <img src={category.favicon} alt="favicon" style={{ width: 24, height: 24, borderRadius: 4, border: '1px solid #eee', marginRight: 8, verticalAlign: 'middle' }} loading='lazy'/>
                           )}
-                          {isOpen && productsInCategory.length === 0 && (
-                            <ul className="category-dropdown-menu prettier-product-list"><li className="prettier-product-item">No products</li></ul>
-                          )}
-                        </li>
-                      );
-                    })
+                          <span>{category.name}</span>
+                        </Link>
+                      </li>
+                    ))
                   ) : (
                     <li>No categories</li>
                   )}
@@ -464,22 +520,6 @@ const Home = () => {
       <section className="section bg-gray-50">
         <div className="container">
           <div className="offer-content">
-            <div className="offer-text">
-              <h2 className="section-title text-left">Special Business Offers</h2>
-              <p className="offer-description">
-                Get exclusive pricing and bulk discounts for your business. 
-                We offer competitive rates for large orders and long-term partnerships.
-              </p>
-              <ul className="offer-features">
-                <li>Bulk pricing discounts</li>
-                <li>Fast shipping & delivery</li>
-                <li>24/7 customer support</li>
-                <li>Flexible payment terms</li>
-              </ul>
-              <Link to="/contact" className="btn btn-primary">
-                Ρώτησε μας!
-              </Link>
-            </div>
             <div className="offer-image">
               {offerBanner && offerBanner.image ? (
                 <img
@@ -494,6 +534,112 @@ const Home = () => {
                   <p>Contact us for a custom offer for your business needs</p>
                 </div>
               )}
+            </div>
+            <div className="contact-form-container">
+              <h2 className="section-title text-left">Contact Us</h2>
+              
+              {contactSuccess && (
+                <div className="success-message">
+                  Ευχαριστούμε για το μήνυμά σας! Θα επικοινωνήσουμε μαζί σας το συντομότερο δυνατό!
+                </div>
+              )}
+              
+              {contactError && (
+                <div className="error-message">
+                  {contactError}
+                </div>
+              )}
+              
+              <form className="contact-form" onSubmit={handleContactSubmit}>
+                <div className="form-row">
+                  <div className="form-group">
+                    <label htmlFor="home-name">Name *</label>
+                    <input
+                      type="text"
+                      id="home-name"
+                      name="name"
+                      value={contactForm.name}
+                      onChange={handleContactInputChange}
+                      required
+                      className="form-input"
+                      placeholder="Your full name"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="home-email">Email *</label>
+                    <input
+                      type="email"
+                      id="home-email"
+                      name="email"
+                      value={contactForm.email}
+                      onChange={handleContactInputChange}
+                      required
+                      className="form-input"
+                      placeholder="your.email@company.com"
+                    />
+                  </div>
+                </div>
+
+                <div className="form-row">
+                  <div className="form-group">
+                    <label htmlFor="home-company">Company</label>
+                    <input
+                      type="text"
+                      id="home-company"
+                      name="company"
+                      value={contactForm.company}
+                      onChange={handleContactInputChange}
+                      className="form-input"
+                      placeholder="Your company name"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="home-phone">Phone</label>
+                    <input
+                      type="tel"
+                      id="home-phone"
+                      name="phone"
+                      value={contactForm.phone}
+                      onChange={handleContactInputChange}
+                      className="form-input"
+                      placeholder="Your phone number"
+                    />
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="home-subject">Subject</label>
+                  <input
+                    type="text"
+                    id="home-subject"
+                    name="subject"
+                    value={contactForm.subject}
+                    onChange={handleContactInputChange}
+                    className="form-input"
+                    placeholder="What is this regarding?"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="home-message">Message *</label>
+                  <textarea
+                    id="home-message"
+                    name="message"
+                    value={contactForm.message}
+                    onChange={handleContactInputChange}
+                    required
+                    rows="4"
+                    className="form-textarea"
+                    placeholder="Tell us about your business needs..."
+                  ></textarea>
+                </div>
+
+                <button type="submit" className="btn btn-primary" disabled={contactSubmitting}>
+                  {contactSubmitting ? 'Sending...' : 'Send Message'}
+                </button>
+              </form>
             </div>
           </div>
         </div>

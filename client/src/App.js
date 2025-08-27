@@ -27,6 +27,7 @@ import AdminFAQ from './pages/admin/FAQ';
 import AdminAssets from './pages/admin/Assets';
 import AdminEvents from './pages/admin/Events';
 import AdminCustomOrders from './pages/admin/CustomOrders';
+import AdminContact from './pages/admin/Contact';
 import './App.css';
 import axios from 'axios';
 
@@ -129,6 +130,11 @@ function App() {
           <Route path="/admin/custom-orders" element={
             <AdminLayout>
               <AdminCustomOrders />
+            </AdminLayout>
+          } />
+          <Route path="/admin/contact" element={
+            <AdminLayout>
+              <AdminContact />
             </AdminLayout>
           } />
           {/* Client Routes */}

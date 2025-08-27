@@ -1045,4 +1045,24 @@
   padding-left: 24px;
   padding-right: 24px;
   /* You can adjust padding for a more "medium" look */
+}
+
+/* Contact Messages Admin Section */
+.admin-contact .page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.message-preview {
+  max-width: 300px;
+  word-wrap: break-word;
+  line-height: 1.4;
+}
+
+.admin-contact .admin-table th,
+.admin-contact .admin-table td {
+  vertical-align: top;
+  padding: 12px 8px;
 } 
