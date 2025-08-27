@@ -29,6 +29,19 @@ const Home = () => {
   const [customOrderMessage, setCustomOrderMessage] = useState('');
   const [customOrderPhone, setCustomOrderPhone] = useState('');
   const customOrderImageInput = useRef();
+  
+  // Contact form state
+  const [contactForm, setContactForm] = useState({
+    name: '',
+    email: '',
+    company: '',
+    phone: '',
+    subject: '',
+    message: ''
+  });
+  const [contactSubmitting, setContactSubmitting] = useState(false);
+  const [contactSuccess, setContactSuccess] = useState(false);
+  const [contactError, setContactError] = useState('');
   const customOrderOptionList = [
     'Κέντρο',
     'Στήθος',
@@ -126,6 +139,77 @@ const Home = () => {
       setCustomOrderMessage('There was an error submitting your order.');
     } finally {
       setCustomOrderSubmitting(false);
+    }
+  };
+
+  const handleContactInputChange = (e) => {
+    setContactForm({
+      ...contactForm,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const validateContactForm = () => {
+    if (!contactForm.name.trim()) {
+      setContactError('Name is required');
+      return false;
+    }
+    if (!contactForm.email.trim()) {
+      setContactError('Email is required');
+      return false;
+    }
+    if (!contactForm.message.trim()) {
+      setContactError('Message is required');
+      return false;
+    }
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(contactForm.email)) {
+      setContactError('Please enter a valid email address');
+      return false;
+    }
+    return true;
+  };
+
+  const handleContactSubmit = async (e) => {
+    e.preventDefault();
+    setContactError('');
+    
+    if (!validateContactForm()) {
+      return;
+    }
+    
+    setContactSubmitting(true);
+    
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(contactForm)
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to send message');
+      }
+      
+      setContactSuccess(true);
+      setContactForm({
+        name: '',
+        email: '',
+        company: '',
+        phone: '',
+        subject: '',
+        message: ''
+      });
+      
+      // Reset success message after 5 seconds
+      setTimeout(() => setContactSuccess(false), 5000);
+    } catch (error) {
+      setContactError('Failed to send message. Please try again.');
+    } finally {
+      setContactSubmitting(false);
     }
   };
 
@@ -453,7 +537,20 @@ const Home = () => {
             </div>
             <div className="contact-form-container">
               <h2 className="section-title text-left">Contact Us</h2>
-              <form className="contact-form">
+              
+              {contactSuccess && (
+                <div className="success-message">
+                  Ευχαριστούμε για το μήνυμά σας! Θα επικοινωνήσουμε μαζί σας το συντομότερο δυνατό!
+                </div>
+              )}
+              
+              {contactError && (
+                <div className="error-message">
+                  {contactError}
+                </div>
+              )}
+              
+              <form className="contact-form" onSubmit={handleContactSubmit}>
                 <div className="form-row">
                   <div className="form-group">
                     <label htmlFor="home-name">Name *</label>
@@ -461,6 +558,8 @@ const Home = () => {
                       type="text"
                       id="home-name"
                       name="name"
+                      value={contactForm.name}
+                      onChange={handleContactInputChange}
                       required
                       className="form-input"
                       placeholder="Your full name"
@@ -473,6 +572,8 @@ const Home = () => {
                       type="email"
                       id="home-email"
                       name="email"
+                      value={contactForm.email}
+                      onChange={handleContactInputChange}
                       required
                       className="form-input"
                       placeholder="your.email@company.com"
@@ -487,6 +588,8 @@ const Home = () => {
                       type="text"
                       id="home-company"
                       name="company"
+                      value={contactForm.company}
+                      onChange={handleContactInputChange}
                       className="form-input"
                       placeholder="Your company name"
                     />
@@ -498,6 +601,8 @@ const Home = () => {
                       type="tel"
                       id="home-phone"
                       name="phone"
+                      value={contactForm.phone}
+                      onChange={handleContactInputChange}
                       className="form-input"
                       placeholder="Your phone number"
                     />
@@ -510,6 +615,8 @@ const Home = () => {
                     type="text"
                     id="home-subject"
                     name="subject"
+                    value={contactForm.subject}
+                    onChange={handleContactInputChange}
                     className="form-input"
                     placeholder="What is this regarding?"
                   />
@@ -520,6 +627,8 @@ const Home = () => {
                   <textarea
                     id="home-message"
                     name="message"
+                    value={contactForm.message}
+                    onChange={handleContactInputChange}
                     required
                     rows="4"
                     className="form-textarea"
@@ -527,8 +636,8 @@ const Home = () => {
                   ></textarea>
                 </div>
 
-                <button type="submit" className="btn btn-primary">
-                  Send Message
+                <button type="submit" className="btn btn-primary" disabled={contactSubmitting}>
+                  {contactSubmitting ? 'Sending...' : 'Send Message'}
                 </button>
               </form>
             </div>

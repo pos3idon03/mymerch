@@ -80,6 +80,7 @@ app.use('/api/company', require('./routes/company'));
 app.use('/api/events', require('./routes/events'));
 app.use('/api/custom-order', require('./routes/customOrder'));
 app.use('/api/test-your-idea', require('./routes/testYourIdea'));
+app.use('/api/contact', require('./routes/contact'));
 
 const Product = require('./models/Product');
 const Blog = require('./models/Blog');

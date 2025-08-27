@@ -55,9 +55,17 @@ const Contact = () => {
     setSubmitting(true);
     
     try {
-      // Here you would typically send the contact form data to your backend
-      // For now, we'll just simulate a successful submission
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(contactForm)
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to send message');
+      }
       
       setSubmitSuccess(true);
       setContactForm({
@@ -92,7 +100,7 @@ const Contact = () => {
             
             {submitSuccess && (
               <div className="success-message">
-                Thank you for your message! We'll get back to you within 24 hours.
+                Ευχαριστούμε για το μήνυμά σας! Θα επικοινωνήσουμε μαζί σας το συντομότερο δυνατό!
               </div>
             )}
             

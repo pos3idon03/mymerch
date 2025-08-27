@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { FaSignOutAlt, FaHome, FaBox, FaTags, FaNewspaper, FaImages, FaComments, FaInfoCircle, FaQuestionCircle, FaImage } from 'react-icons/fa';
+import { FaSignOutAlt, FaHome, FaBox, FaTags, FaNewspaper, FaImages, FaComments, FaInfoCircle, FaQuestionCircle, FaImage, FaEnvelope } from 'react-icons/fa';
 import './AdminNavbar.css';
 
 const AdminNavbar = () => {
@@ -42,6 +42,7 @@ const AdminNavbar = () => {
         <Link to="/admin/testimonials" className={`admin-sidebar-link${isActive('/admin/testimonials') ? ' active' : ''}`}><FaComments /><span>Testimonials</span></Link>
         <Link to="/admin/about" className={`admin-sidebar-link${isActive('/admin/about') ? ' active' : ''}`}><FaInfoCircle /><span>About</span></Link>
         <Link to="/admin/faq" className={`admin-sidebar-link${isActive('/admin/faq') ? ' active' : ''}`}><FaQuestionCircle /><span>FAQ</span></Link>
+        <Link to="/admin/contact" className={`admin-sidebar-link${isActive('/admin/contact') ? ' active' : ''}`}><FaEnvelope /><span>Contact</span></Link>
         <Link to="/admin/assets" className={`admin-sidebar-link${isActive('/admin/assets') ? ' active' : ''}`}><FaImage /><span>Company</span></Link>
         <Link to="/admin/custom-orders" className={`admin-sidebar-link${isActive('/admin/custom-orders') ? ' active' : ''}`}><FaBox /><span>Custom Orders</span></Link>
       </nav>
