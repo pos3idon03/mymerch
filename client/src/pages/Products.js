@@ -95,20 +95,20 @@ const Products = () => {
       <div className="container">
         <div className="page-header">
           <h1>
-            {selectedCategory ? `${selectedCategory.name} Products` : 'Our Products'}
+            {selectedCategory ? `${selectedCategory.name}` : 'Προϊόντα'}
           </h1>
-          <p>
+          {/* <p>
             {selectedCategory 
               ? `${selectedCategory.name.toLowerCase()}`
               : 'Ανακαλύψτε τα προϊόντα μας'
             }
-          </p>
+          </p> */}
           {selectedCategory && (
             <button 
               className="back-to-all-btn"
               onClick={() => handleCategoryFilter(null)}
             >
-              ← See All Products
+              ← Όλα τα Προϊόντα
             </button>
           )}
         </div>

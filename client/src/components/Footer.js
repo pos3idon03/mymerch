@@ -19,7 +19,7 @@ const Footer = () => {
           <div className="footer-section">
             <h3 className="footer-title">MyMerch</h3>
             <p className="footer-description">
-              Your trusted partner for quality business solutions. We provide innovative products and exceptional service to help your business grow.
+              Ψάχνεις διαφημιστικά προϊόντα; Είμαστε ο συνεργάτης που εμπιστεύεσαι για να βάλεις το logo σου σε ό,τι μπορεί να φορεθεί, να κρατηθεί ή να... γίνει δώρο! 🎁
             </p>
             <div className="social-links">
               {settings.facebook && (

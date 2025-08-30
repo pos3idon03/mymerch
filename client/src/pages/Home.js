@@ -536,7 +536,7 @@ const Home = () => {
               )}
             </div>
             <div className="contact-form-container">
-              <h2 className="section-title text-left">Contact Us</h2>
+              <h2 className="section-title text-left">Στείλτε μας Μήνυμα</h2>
               
               {contactSuccess && (
                 <div className="success-message">
@@ -553,7 +553,7 @@ const Home = () => {
               <form className="contact-form" onSubmit={handleContactSubmit}>
                 <div className="form-row">
                   <div className="form-group">
-                    <label htmlFor="home-name">Name *</label>
+                    <label htmlFor="home-name">Όνομα *</label>
                     <input
                       type="text"
                       id="home-name"
@@ -562,7 +562,7 @@ const Home = () => {
                       onChange={handleContactInputChange}
                       required
                       className="form-input"
-                      placeholder="Your full name"
+                      placeholder="Όνομα και Επίθετο"
                     />
                   </div>
 
@@ -583,7 +583,7 @@ const Home = () => {
 
                 <div className="form-row">
                   <div className="form-group">
-                    <label htmlFor="home-company">Company</label>
+                    <label htmlFor="home-company">Όνομα Εταιρείας</label>
                     <input
                       type="text"
                       id="home-company"
@@ -591,12 +591,12 @@ const Home = () => {
                       value={contactForm.company}
                       onChange={handleContactInputChange}
                       className="form-input"
-                      placeholder="Your company name"
+                      placeholder="Όνομα Εταιρείας"
                     />
                   </div>
 
                   <div className="form-group">
-                    <label htmlFor="home-phone">Phone</label>
+                    <label htmlFor="home-phone">Τηλέφωνο</label>
                     <input
                       type="tel"
                       id="home-phone"
@@ -604,13 +604,13 @@ const Home = () => {
                       value={contactForm.phone}
                       onChange={handleContactInputChange}
                       className="form-input"
-                      placeholder="Your phone number"
+                      placeholder="Τηλέφωνο"
                     />
                   </div>
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="home-subject">Subject</label>
+                  <label htmlFor="home-subject">Θέμα</label>
                   <input
                     type="text"
                     id="home-subject"
@@ -618,12 +618,12 @@ const Home = () => {
                     value={contactForm.subject}
                     onChange={handleContactInputChange}
                     className="form-input"
-                    placeholder="What is this regarding?"
+                    placeholder="Τι αφορά;"
                   />
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="home-message">Message *</label>
+                  <label htmlFor="home-message">Μήνυμα *</label>
                   <textarea
                     id="home-message"
                     name="message"
@@ -632,12 +632,12 @@ const Home = () => {
                     required
                     rows="4"
                     className="form-textarea"
-                    placeholder="Tell us about your business needs..."
+                    placeholder="Πείτε μας λεπτομέρειες..."
                   ></textarea>
                 </div>
 
                 <button type="submit" className="btn btn-primary" disabled={contactSubmitting}>
-                  {contactSubmitting ? 'Sending...' : 'Send Message'}
+                  {contactSubmitting ? 'Sending...' : 'Στείλτε Μήνυμα'}
                 </button>
               </form>
             </div>
@@ -676,7 +676,7 @@ const Home = () => {
         <div className="container">
           <h2 className="section-title">Το Blog μας</h2>
           <p className="section-subtitle">
-            Stay updated with industry insights and company news
+            Μείνε ενημερωμένος για τις πρόσφατες ειδήσεις και νέες πληροφορίες
           </p>
           
           {recentBlogs.length > 0 ? (
@@ -687,13 +687,13 @@ const Home = () => {
             </div>
           ) : (
             <div className="text-center">
-              <p>No blog posts available</p>
+              <p>Δεν υπάρχουν αναρτήσεις στο blog</p>
             </div>
           )}
           
           <div className="text-center mt-4">
-            <Link to="/blog" className="btn btn-outline">
-              Read More
+            <Link to="/blog" className="btn btn-primary blog-read-more-btn">
+              Διαβάστε Περισσότερα
             </Link>
           </div>
         </div>

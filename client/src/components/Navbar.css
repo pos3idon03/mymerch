@@ -202,7 +202,7 @@
 }
 
 .navbar-toggle:hover .hamburger-line {
-  background-color: #d4af37;
+  background-color: #c8b1a0;
 }
 
 .navbar-toggle.active .hamburger-line:nth-child(1) {
@@ -217,8 +217,16 @@
   transform: rotate(-45deg) translate(7px, -6px);
 }
 
+/* Hide burger menu on desktop */
+.navbar-toggle {
+  display: none;
+}
+
 /* Mobile Responsive */
 @media (max-width: 768px) {
+  .navbar-toggle {
+    display: flex;
+  }
   .navbar-menu {
     position: fixed;
     top: 0;

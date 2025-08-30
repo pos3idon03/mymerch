@@ -239,7 +239,7 @@ const Contact = () => {
                 disabled={submitting}
               >
                 <FaPaperPlane style={{ marginRight: 8, fontSize: '16px' }} />
-                {submitting ? 'Sending...' : 'Send Message'}
+                {submitting ? 'Sending...' : 'Στείλτε Μήνυμα'}
               </button>
             </form>
           </div>
