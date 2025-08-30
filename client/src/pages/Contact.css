@@ -18,8 +18,11 @@
 .page-header h1 {
   font-size: 3rem;
   color: #333;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   font-weight: 700;
+  display: block;
+  width: 100%;
+  white-space: nowrap;
 }
 
 .page-header p {
@@ -28,6 +31,7 @@
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.6;
+  display: block;
 }
 
 .contact-wrapper {
@@ -56,18 +60,51 @@
   gap: 30px;
 }
 
-.contact-item h4 {
-  font-size: 1.2rem;
+.contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.contact-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: #c8b1a0;
+  color: white !important;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 0.25rem;
+}
+
+.contact-icon svg {
+  font-size: 1.1rem;
+  color: white !important;
+}
+
+.contact-content {
+  flex: 1;
+}
+
+.contact-content h4 {
+  font-size: 1.1rem;
   color: #333;
-  margin-bottom: 10px;
+  margin: 0 0 0.5rem 0;
   font-weight: 600;
 }
 
-.contact-item p {
+.contact-content p {
   font-size: 1rem;
   color: #666;
   line-height: 1.5;
   margin: 0;
+}
+
+.contact-content p span {
+  color: #666 !important;
 }
 
 /* Contact Form */
@@ -139,13 +176,16 @@
 
 /* Modern submit button */
 .btn-primary {
-  display: inline-block;
-  width: 100%;
-  padding: 0.85rem 0;
-  font-size: 1.08rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  min-width: 200px;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
   font-weight: 700;
   border-radius: 8px;
-  margin-top: 10px;
+  margin: 20px auto 0 auto;
   background: linear-gradient(90deg, #c8b1a0 60%, #b8a08f 100%);
   border: none;
   color: #fff;
@@ -155,6 +195,15 @@
   text-decoration: none;
   transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
   cursor: pointer;
+  white-space: nowrap;
+  gap: 8px;
+}
+
+.btn-primary svg {
+  color: #fff !important;
+  fill: #fff !important;
+  width: 16px;
+  height: 16px;
 }
 
 .btn-primary:hover,
@@ -191,6 +240,41 @@
   border-radius: 6px;
   margin-bottom: 20px;
   border: 1px solid #f5c6cb;
+}
+
+/* Social Media Item */
+.social-media-item {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.social-media-item .contact-content {
+  margin-left: 0;
+}
+
+/* Social Links */
+.social-links {
+  display: flex;
+  gap: 1rem;
+  margin-top: 10px;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: #374151;
+  color: white;
+  border-radius: 50%;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.social-link:hover {
+  background-color: #c8b1a0;
+  transform: translateY(-2px);
 }
 
 /* Responsive Design */
