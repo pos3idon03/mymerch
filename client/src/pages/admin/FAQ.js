@@ -21,7 +21,9 @@ const FAQ = () => {
 
   const fetchFAQs = async () => {
     try {
-      const response = await axios.get('/api/faq');
+      const response = await axios.get('/api/faq/admin', {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      });
       setFaqs(response.data);
     } catch (error) {
       setError('Failed to fetch FAQs');

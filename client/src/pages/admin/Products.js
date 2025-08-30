@@ -58,7 +58,7 @@ const AdminProducts = () => {
 
   const fetchEvents = async () => {
     try {
-      const res = await axios.get('/api/events', {
+      const res = await axios.get('/api/events/all', {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }

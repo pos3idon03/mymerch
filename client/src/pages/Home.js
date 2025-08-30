@@ -5,6 +5,7 @@ import Banner from '../components/Banner';
 import ProductCard from '../components/ProductCard';
 import TestimonialCard from '../components/TestimonialCard';
 import BlogCard from '../components/BlogCard';
+import SliderBanner from '../components/SliderBanner';
 import { FaBox } from 'react-icons/fa';
 import { Helmet } from 'react-helmet';
 import './Home.css';
@@ -223,8 +224,6 @@ const Home = () => {
   const categoriesBanner = banners.find(b => b.placement === 'categories' && b.active);
 
   const offerBanner = banners.find(b => b.placement === 'offer-banner' && b.active);
-  
-  const customersBanner = banners.filter(b => b.placement === 'customers-banner' && b.active);
 
   // Find the event banner from banners
   const eventBanner = banners.find(b => b.placement === 'event-banner' && b.active);
@@ -664,12 +663,8 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Customers Banner Section */}
-      {customersBanner.length > 0 && (
-        <section className="section customers-banner-section">
-          <Banner banners={customersBanner} imageFit="cover" />
-        </section>
-      )}
+      {/* Customers Slider Section */}
+      <SliderBanner />
 
       {/* Blog Section */}
       <section className="section bg-gray-50">

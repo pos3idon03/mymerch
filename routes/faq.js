@@ -13,6 +13,16 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Get all FAQs (admin only)
+router.get('/admin', auth, async (req, res) => {
+  try {
+    const faqs = await FAQ.find().sort({ order: 1 });
+    res.json(faqs);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // Get single FAQ (public)
 router.get('/:id', async (req, res) => {
   try {

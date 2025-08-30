@@ -153,8 +153,15 @@ const Navbar = () => {
             className={`navbar-link ${isActive('/about') ? 'active' : ''}`}
             onClick={closeMenu}
           >
-            About
+            About us
           </Link>
+          {/* <Link 
+            to="/our-works" 
+            className={`navbar-link ${isActive('/our-works') ? 'active' : ''}`}
+            onClick={closeMenu}
+          >
+            Οι δουλειές μας
+          </Link> */}
           <Link 
             to="/contact" 
             className={`navbar-link ${isActive('/contact') ? 'active' : ''}`}

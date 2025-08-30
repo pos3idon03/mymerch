@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FaBox, FaNewspaper, FaImages, FaComments, FaPlus, FaEdit, FaEye, FaTags, FaCalendarAlt } from 'react-icons/fa';
+import { FaBox, FaNewspaper, FaImages, FaComments, FaPlus, FaEdit, FaEye, FaTags, FaCalendarAlt, FaBriefcase } from 'react-icons/fa';
 import axios from 'axios';
 import './Admin.css';
 
@@ -12,7 +12,9 @@ const AdminDashboard = () => {
     banners: 0,
     testimonials: 0,
     events: 0,
-    customOrders: 0
+    customOrders: 0,
+    ourWork: 0,
+    customers: 0
   });
   const [recentProducts, setRecentProducts] = useState([]);
   const [recentBlogs, setRecentBlogs] = useState([]);
@@ -21,14 +23,16 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const [productsRes, categoriesRes, blogsRes, bannersRes, testimonialsRes, eventsRes, customOrdersRes] = await Promise.all([
-          axios.get('/api/products'),
-          axios.get('/api/categories'),
-          axios.get('/api/blog'),
-          axios.get('/api/banner'),
-          axios.get('/api/testimonials'),
-          axios.get('/api/events'),
-          axios.get('/api/custom-order', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } })
+        const [productsRes, categoriesRes, blogsRes, bannersRes, testimonialsRes, eventsRes, customOrdersRes, ourWorkRes, customersRes] = await Promise.all([
+          axios.get('/api/products/all', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } }),
+          axios.get('/api/categories/all', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } }),
+          axios.get('/api/blog/admin', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } }),
+          axios.get('/api/banner/admin', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } }),
+          axios.get('/api/testimonials/admin', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } }),
+          axios.get('/api/events/all', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } }),
+          axios.get('/api/custom-order', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } }),
+          axios.get('/api/our-work/admin', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } }),
+          axios.get('/api/customers/admin', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } })
         ]);
 
         setStats({
@@ -38,7 +42,9 @@ const AdminDashboard = () => {
           banners: bannersRes.data.length,
           testimonials: testimonialsRes.data.length,
           events: eventsRes.data.length,
-          customOrders: customOrdersRes.data.length
+          customOrders: customOrdersRes.data.length,
+          ourWork: ourWorkRes.data.length,
+          customers: customersRes.data.length
         });
 
         setRecentProducts(productsRes.data.slice(0, 5));
@@ -139,6 +145,26 @@ const AdminDashboard = () => {
             <p>Custom Orders</p>
           </div>
         </div>
+
+        <div className="stat-card">
+          <div className="stat-icon">
+            <FaBriefcase />
+          </div>
+          <div className="stat-content">
+            <h3>{stats.ourWork}</h3>
+            <p>Our Work</p>
+          </div>
+        </div>
+
+        <div className="stat-card">
+          <div className="stat-icon">
+            <FaBriefcase />
+          </div>
+          <div className="stat-content">
+            <h3>{stats.customers}</h3>
+            <p>Customers</p>
+          </div>
+        </div>
       </div>
 
       {/* Quick Actions */}
@@ -172,6 +198,10 @@ const AdminDashboard = () => {
           <Link to="/admin/custom-orders" className="action-card">
             <FaPlus />
             <span>Add Custom Order</span>
+          </Link>
+          <Link to="/admin/our-work" className="action-card">
+            <FaPlus />
+            <span>Add Work Post</span>
           </Link>
         </div>
       </div>

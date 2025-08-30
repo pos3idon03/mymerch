@@ -27,7 +27,9 @@ const AdminBanners = () => {
 
   const fetchBanners = async () => {
     try {
-      const response = await axios.get('/api/banner');
+      const response = await axios.get('/api/banner/admin', {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      });
       setBanners(response.data);
     } catch (error) {
       console.error('Error fetching banners:', error);
@@ -266,7 +268,6 @@ const AdminBanners = () => {
                   <option value="homepage">Homepage</option>
                   <option value="custom-order">Custom Order Section</option>
                   <option value="offer-banner">Offer Banner</option>
-                  <option value="customers-banner">Customers Banner</option>
                   <option value="categories">Categories Section</option>
                   <option value="event-banner">Event Banner</option>
                   <option value="other">Other</option>

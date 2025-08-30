@@ -24,7 +24,9 @@ const AdminTestimonials = () => {
 
   const fetchTestimonials = async () => {
     try {
-      const response = await axios.get('/api/testimonials');
+      const response = await axios.get('/api/testimonials/admin', {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      });
       setTestimonials(response.data);
     } catch (error) {
       console.error('Error fetching testimonials:', error);
