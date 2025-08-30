@@ -149,19 +149,12 @@ const Navbar = () => {
           </Link>
           */}
           <Link 
-            to="/about" 
-            className={`navbar-link ${isActive('/about') ? 'active' : ''}`}
-            onClick={closeMenu}
-          >
-            About us
-          </Link>
-          {/* <Link 
             to="/our-works" 
             className={`navbar-link ${isActive('/our-works') ? 'active' : ''}`}
             onClick={closeMenu}
           >
             Οι δουλειές μας
-          </Link> */}
+          </Link>
           <Link 
             to="/contact" 
             className={`navbar-link ${isActive('/contact') ? 'active' : ''}`}

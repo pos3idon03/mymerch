@@ -83,7 +83,7 @@ router.post('/', auth, async (req, res) => {
 
     const customerData = {
       name,
-      active: active === 'true',
+      active: Boolean(active),
       image
     };
 
@@ -110,7 +110,7 @@ router.put('/:id', auth, async (req, res) => {
 
     const updateData = {
       name,
-      active: active === 'true'
+      active: Boolean(active)
     };
 
     // Only update image if a new image URL was provided
