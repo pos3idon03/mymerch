@@ -31,21 +31,25 @@
 }
 
 .back-to-all-btn {
-  background-color: #d4af37;
+  background-color: #c8b1a0;
   color: white;
   border: none;
   padding: 0.75rem 1.5rem;
   border-radius: 6px;
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: 1.08rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
   cursor: pointer;
   transition: all 0.3s ease;
   text-decoration: none;
   display: inline-block;
+  white-space: nowrap;
+  min-width: fit-content;
+  word-break: keep-all;
 }
 
 .back-to-all-btn:hover {
-  background-color: #b8941f;
+  background-color: #b8a08f;
   transform: translateY(-1px);
 }
 
@@ -202,6 +206,11 @@
   .category-filters {
     justify-content: center;
   }
+
+  .back-to-all-btn {
+    font-size: 0.9rem;
+    padding: 0.6rem 1.25rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -211,5 +220,13 @@
 
   .products-filters {
     padding: 1rem;
+  }
+
+  .back-to-all-btn {
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+    max-width: 90vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 } 

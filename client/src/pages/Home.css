@@ -995,4 +995,20 @@
   /* Optional: for flex layouts */
   justify-content: center;
   align-items: center;
+  /* Ensure button expands to fit content */
+  min-width: fit-content;
+  white-space: nowrap;
+  padding: 16px 32px; /* Increase horizontal padding */
+  box-sizing: border-box;
+}
+
+/* Specific styling for the blog read more button */
+.blog-read-more-btn {
+  min-width: fit-content !important;
+  padding: 16px 40px !important; /* Extra padding for Greek text */
+  white-space: nowrap !important;
+  overflow: visible !important;
+  box-sizing: border-box !important;
+  width: auto !important;
+  max-width: none !important;
 } 

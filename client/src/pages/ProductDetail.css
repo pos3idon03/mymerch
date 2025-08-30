@@ -161,6 +161,22 @@
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
+  justify-content: center;
+}
+
+.product-actions .btn {
+  display: inline-block !important;
+  text-align: center !important;
+  vertical-align: middle;
+  justify-content: center;
+  align-items: center;
+  min-width: 320px !important;
+  white-space: nowrap !important;
+  padding: 16px 40px !important;
+  box-sizing: border-box !important;
+  width: auto !important;
+  max-width: none !important;
+  overflow: visible !important;
 }
 
 .btn-large {
@@ -181,6 +197,12 @@
 .error-page p {
   color: #6b7280;
   margin-bottom: 2rem;
+}
+
+.error-page .btn {
+  min-width: 250px;
+  white-space: nowrap;
+  text-align: center;
 }
 
 .btn-primary {

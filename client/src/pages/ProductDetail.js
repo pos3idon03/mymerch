@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaStar, FaShoppingCart } from 'react-icons/fa';
 import axios from 'axios';
 import './ProductDetail.css';
 
 const ProductDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
@@ -47,7 +48,7 @@ const ProductDetail = () => {
           <h2>Product not found</h2>
           <p>The product you're looking for doesn't exist.</p>
           <Link to="/products" className="btn btn-primary">
-            Back to Products
+            Πίσω στα Προϊόντα
           </Link>
         </div>
       </div>
@@ -85,13 +86,13 @@ const ProductDetail = () => {
               <h1 className="product-title">{product.title}</h1>
             </div>
             <div className="product-description">
-              <h3>Description</h3>
+              <h3>Περιγραφή</h3>
               <p>{product.description}</p>
             </div>
             <div className="product-actions">
-              <Link to="/products" className="btn btn-primary">
-                <FaArrowLeft /> Back to Products
-              </Link>
+              <button onClick={() => navigate(-1)} className="btn btn-primary">
+                <FaArrowLeft /> Πίσω στα Προϊόντα
+              </button>
             </div>
           </div>
         </div>

@@ -114,7 +114,7 @@ const Navbar = () => {
               className={`navbar-link dropdown-toggle ${isActive('/products') ? 'active' : ''}`}
               onClick={toggleCategoriesDropdown}
             >
-              Products <FaChevronDown className="dropdown-icon" />
+              Προϊόντα <FaChevronDown className="dropdown-icon" />
             </button>
             {showCategoriesDropdown && (
               <div className="dropdown-menu">
@@ -123,7 +123,7 @@ const Navbar = () => {
                   className="dropdown-item"
                   onClick={closeMenu}
                 >
-                  All Products
+                  Όλα τα Προϊόντα
                 </Link>
                 {categories.map(category => (
                   <Link 
@@ -160,7 +160,7 @@ const Navbar = () => {
             className={`navbar-link ${isActive('/contact') ? 'active' : ''}`}
             onClick={closeMenu}
           >
-            Contact
+            Επικοινωνία
           </Link>
         </div>
 
