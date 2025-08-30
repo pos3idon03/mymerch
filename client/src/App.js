@@ -15,6 +15,7 @@ import Sitemap from './pages/Sitemap';
 import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
 import TestYourIdea from './pages/TestYourIdea';
+import OurWorks from './pages/OurWorks';
 import AdminLogin from './pages/admin/Login';
 import AdminDashboard from './pages/admin/Dashboard';
 import AdminProducts from './pages/admin/Products';
@@ -28,6 +29,7 @@ import AdminAssets from './pages/admin/Assets';
 import AdminEvents from './pages/admin/Events';
 import AdminCustomOrders from './pages/admin/CustomOrders';
 import AdminContact from './pages/admin/Contact';
+import AdminOurWork from './pages/admin/OurWork';
 import './App.css';
 import axios from 'axios';
 
@@ -137,6 +139,11 @@ function App() {
               <AdminContact />
             </AdminLayout>
           } />
+          <Route path="/admin/our-work" element={
+            <AdminLayout>
+              <AdminOurWork />
+            </AdminLayout>
+          } />
           {/* Client Routes */}
           <Route path="/" element={
             <>
@@ -226,6 +233,13 @@ function App() {
             <>
               <Navbar />
               <BlogDetail />
+              <Footer />
+            </>
+          } />
+          <Route path="/our-works" element={
+            <>
+              <Navbar />
+              <OurWorks />
               <Footer />
             </>
           } />
