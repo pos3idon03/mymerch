@@ -73,18 +73,18 @@ router.get('/admin', auth, async (req, res) => {
 // @route   POST /api/customers
 // @desc    Create a customer
 // @access  Private
-router.post('/', auth, upload.single('image'), async (req, res) => {
+router.post('/', auth, async (req, res) => {
   try {
-    const { name, active } = req.body;
+    const { name, active, image } = req.body;
     
-    if (!req.file) {
+    if (!image) {
       return res.status(400).json({ message: 'Image is required' });
     }
 
     const customerData = {
       name,
       active: active === 'true',
-      image: path.join(PUBLIC_UPLOADS_URL_PATH, CUSTOMERS_SUBDIR, req.file.filename).replace(/\\/g, '/')
+      image
     };
 
     const customerDoc = new Customer(customerData);
@@ -99,9 +99,9 @@ router.post('/', auth, upload.single('image'), async (req, res) => {
 // @route   PUT /api/customers/:id
 // @desc    Update a customer
 // @access  Private
-router.put('/:id', auth, upload.single('image'), async (req, res) => {
+router.put('/:id', auth, async (req, res) => {
   try {
-    const { name, active } = req.body;
+    const { name, active, image } = req.body;
     
     let customerDoc = await Customer.findById(req.params.id);
     if (!customerDoc) {
@@ -113,8 +113,8 @@ router.put('/:id', auth, upload.single('image'), async (req, res) => {
       active: active === 'true'
     };
 
-    // Only update image if a new file was uploaded
-    if (req.file) {
+    // Only update image if a new image URL was provided
+    if (image && image !== customerDoc.image) {
       // Delete old image if it exists
       if (customerDoc.image) {
         const oldImagePath = customerDoc.image.replace(PUBLIC_UPLOADS_URL_PATH, '/app/uploads/prod');
@@ -122,7 +122,7 @@ router.put('/:id', auth, upload.single('image'), async (req, res) => {
           fs.unlinkSync(oldImagePath);
         }
       }
-      updateData.image = path.join(PUBLIC_UPLOADS_URL_PATH, CUSTOMERS_SUBDIR, req.file.filename).replace(/\\/g, '/');
+      updateData.image = image;
     }
 
     customerDoc = await Customer.findByIdAndUpdate(
@@ -162,6 +162,16 @@ router.delete('/:id', auth, async (req, res) => {
     console.error(error.message);
     res.status(500).send('Server error');
   }
+});
+
+// @route   POST /api/customers/upload
+// @desc    Upload customer image
+// @access  Private
+router.post('/upload', auth, upload.single('image'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ message: 'No file uploaded or invalid file type' });
+  }
+  res.json({ imageUrl: path.join(PUBLIC_UPLOADS_URL_PATH, CUSTOMERS_SUBDIR, req.file.filename).replace(/\\/g, '/') });
 });
 
 module.exports = router;
