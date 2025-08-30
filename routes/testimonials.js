@@ -57,6 +57,19 @@ router.get('/', async (req, res) => {
   }
 });
 
+// @route   GET /api/testimonials/admin
+// @desc    Get all testimonials (including inactive) - Admin only
+// @access  Private
+router.get('/admin', auth, async (req, res) => {
+  try {
+    const testimonials = await Testimonial.find().sort({ createdAt: -1 });
+    res.json(testimonials);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server error');
+  }
+});
+
 // @route   POST /api/testimonials
 // @desc    Create a testimonial
 // @access  Private

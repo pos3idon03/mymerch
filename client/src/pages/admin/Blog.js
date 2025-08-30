@@ -27,11 +27,13 @@ const AdminBlog = () => {
 
   const fetchPosts = async () => {
     try {
-      const response = await axios.get('/api/blog');
+      const response = await axios.get('/api/blog/admin', {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      });
       setPosts(response.data);
     } catch (error) {
-      console.error('Error fetching posts:', error);
-      setError('Failed to fetch blog posts');
+      console.error('Error fetching blogs:', error);
+      setError('Failed to fetch blogs');
     } finally {
       setLoading(false);
     }

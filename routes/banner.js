@@ -57,6 +57,19 @@ router.get('/', async (req, res) => {
   }
 });
 
+// @route   GET /api/banner/admin
+// @desc    Get all banners (including inactive) - Admin only
+// @access  Private
+router.get('/admin', auth, async (req, res) => {
+  try {
+    const banners = await Banner.find().sort({ order: 1 });
+    res.json(banners);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server error');
+  }
+});
+
 // @route   POST /api/banner
 // @desc    Create a banner
 // @access  Private

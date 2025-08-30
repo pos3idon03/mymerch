@@ -91,6 +91,19 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// @route   GET /api/blog/admin
+// @desc    Get all blogs (including unpublished) - Admin only
+// @access  Private
+router.get('/admin', auth, async (req, res) => {
+  try {
+    const blogs = await Blog.find().sort({ createdAt: -1 });
+    res.json(blogs);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server error');
+  }
+});
+
 // @route   POST /api/blog
 // @desc    Create a blog
 // @access  Private

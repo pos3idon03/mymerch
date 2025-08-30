@@ -125,11 +125,11 @@ const Contact = () => {
   return (
     <div className="contact-page">
       <div className="container">
-        <div className="page-header">
+        {/* <div className="page-header">
           <h1>Επικοινωνήστε μαζί μας</h1>
           <p>Θα χαρούμε πολύ να ακούσουμε την ιδέα σας! 
             Στείλτε μας το μήνυμά σας και θα σας απαντήσουμε το συντομότερο δυνατό.</p>
-        </div>
+        </div> */}
         
         <div className="contact-wrapper">
           <div className="contact-form-container">

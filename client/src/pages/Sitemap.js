@@ -46,6 +46,7 @@ const Sitemap = () => {
               <li><Link to="/admin/faq">Manage FAQ</Link> - Add, edit, or remove FAQs</li>
               <li><Link to="/admin/assets">Company Assets</Link> - Manage company logo, favicon, and info</li>
               <li><Link to="/admin/about">About Page</Link> - Edit about page content</li>
+              <li><Link to="/admin/customers">Our Customers</Link> - Manage customer logos and information</li>
             </ul>
           </div> */}
 

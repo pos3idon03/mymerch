@@ -46,6 +46,7 @@ const AdminNavbar = () => {
         <Link to="/admin/assets" className={`admin-sidebar-link${isActive('/admin/assets') ? ' active' : ''}`}><FaImage /><span>Company</span></Link>
         <Link to="/admin/custom-orders" className={`admin-sidebar-link${isActive('/admin/custom-orders') ? ' active' : ''}`}><FaBox /><span>Custom Orders</span></Link>
         <Link to="/admin/our-work" className={`admin-sidebar-link${isActive('/admin/our-work') ? ' active' : ''}`}><FaBriefcase /><span>Our Work</span></Link>
+        <Link to="/admin/customers" className={`admin-sidebar-link${isActive('/admin/customers') ? ' active' : ''}`}><FaBriefcase /><span>Our Customers</span></Link>
       </nav>
       <div className="admin-sidebar-actions">
         <button className="admin-sidebar-logout" onClick={handleLogout}>

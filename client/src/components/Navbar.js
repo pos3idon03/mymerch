@@ -153,7 +153,7 @@ const Navbar = () => {
             className={`navbar-link ${isActive('/about') ? 'active' : ''}`}
             onClick={closeMenu}
           >
-            About
+            About us
           </Link>
           {/* <Link 
             to="/our-works" 

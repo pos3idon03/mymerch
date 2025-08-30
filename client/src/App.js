@@ -30,6 +30,7 @@ import AdminEvents from './pages/admin/Events';
 import AdminCustomOrders from './pages/admin/CustomOrders';
 import AdminContact from './pages/admin/Contact';
 import AdminOurWork from './pages/admin/OurWork';
+import AdminCustomers from './pages/admin/Customers';
 import './App.css';
 import axios from 'axios';
 
@@ -142,6 +143,11 @@ function App() {
           <Route path="/admin/our-work" element={
             <AdminLayout>
               <AdminOurWork />
+            </AdminLayout>
+          } />
+          <Route path="/admin/customers" element={
+            <AdminLayout>
+              <AdminCustomers />
             </AdminLayout>
           } />
           {/* Client Routes */}

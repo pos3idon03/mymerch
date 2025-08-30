@@ -32,7 +32,6 @@ const bannerSchema = new mongoose.Schema({
       'homepage',
       'custom-order',
       'offer-banner',
-      'customers-banner',
       'categories',
       'event-banner',
       'other'

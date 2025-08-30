@@ -13,7 +13,8 @@ const AdminDashboard = () => {
     testimonials: 0,
     events: 0,
     customOrders: 0,
-    ourWork: 0
+    ourWork: 0,
+    customers: 0
   });
   const [recentProducts, setRecentProducts] = useState([]);
   const [recentBlogs, setRecentBlogs] = useState([]);
@@ -22,15 +23,16 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const [productsRes, categoriesRes, blogsRes, bannersRes, testimonialsRes, eventsRes, customOrdersRes, ourWorkRes] = await Promise.all([
-          axios.get('/api/products'),
-          axios.get('/api/categories'),
-          axios.get('/api/blog'),
-          axios.get('/api/banner'),
-          axios.get('/api/testimonials'),
-          axios.get('/api/events'),
+        const [productsRes, categoriesRes, blogsRes, bannersRes, testimonialsRes, eventsRes, customOrdersRes, ourWorkRes, customersRes] = await Promise.all([
+          axios.get('/api/products/all', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } }),
+          axios.get('/api/categories/all', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } }),
+          axios.get('/api/blog/admin', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } }),
+          axios.get('/api/banner/admin', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } }),
+          axios.get('/api/testimonials/admin', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } }),
+          axios.get('/api/events/all', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } }),
           axios.get('/api/custom-order', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } }),
-          axios.get('/api/our-work/admin', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } })
+          axios.get('/api/our-work/admin', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } }),
+          axios.get('/api/customers/admin', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } })
         ]);
 
         setStats({
@@ -41,7 +43,8 @@ const AdminDashboard = () => {
           testimonials: testimonialsRes.data.length,
           events: eventsRes.data.length,
           customOrders: customOrdersRes.data.length,
-          ourWork: ourWorkRes.data.length
+          ourWork: ourWorkRes.data.length,
+          customers: customersRes.data.length
         });
 
         setRecentProducts(productsRes.data.slice(0, 5));
@@ -150,6 +153,16 @@ const AdminDashboard = () => {
           <div className="stat-content">
             <h3>{stats.ourWork}</h3>
             <p>Our Work</p>
+          </div>
+        </div>
+
+        <div className="stat-card">
+          <div className="stat-icon">
+            <FaBriefcase />
+          </div>
+          <div className="stat-content">
+            <h3>{stats.customers}</h3>
+            <p>Customers</p>
           </div>
         </div>
       </div>
