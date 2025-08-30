@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Contact.css';
-import { FaPaperPlane } from 'react-icons/fa';
+import { FaPaperPlane, FaFacebook, FaTwitter, FaLinkedin, FaInstagram, FaEnvelope, FaPhone, FaMapMarkerAlt, FaClock } from 'react-icons/fa';
 
 const Contact = () => {
   const [contactForm, setContactForm] = useState({
@@ -11,9 +11,45 @@ const Contact = () => {
     subject: '',
     message: ''
   });
+  const [companyInfo, setCompanyInfo] = useState({
+    email: '',
+    telephone: '',
+    location: '',
+    facebook: '',
+    instagram: '',
+    twitter: '',
+    linkedin: ''
+  });
   const [submitting, setSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchCompanyInfo();
+  }, []);
+
+  const fetchCompanyInfo = async () => {
+    try {
+      const res = await fetch('/api/company/settings');
+      if (res.ok) {
+        const data = await res.json();
+        setCompanyInfo({
+          email: data.email || '',
+          telephone: data.telephone || '',
+          location: data.location || '',
+          facebook: data.facebook || '',
+          instagram: data.instagram || '',
+          twitter: data.twitter || '',
+          linkedin: data.linkedin || ''
+        });
+      }
+    } catch (e) {
+      console.error('Failed to fetch company info:', e);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleInputChange = (e) => {
     setContactForm({
@@ -90,13 +126,14 @@ const Contact = () => {
     <div className="contact-page">
       <div className="container">
         <div className="page-header">
-          <h1>Contact Us</h1>
-          <p>Get in touch with us for any inquiries or support</p>
+          <h1>Επικοινωνήστε μαζί μας</h1>
+          <p>Θα χαρούμε πολύ να ακούσουμε την ιδέα σας! 
+            Στείλτε μας το μήνυμά σας και θα σας απαντήσουμε το συντομότερο δυνατό.</p>
         </div>
         
         <div className="contact-wrapper">
           <div className="contact-form-container">
-            <h3>Send us a Message</h3>
+            <h3>Στείλτε μας Μήνυμα</h3>
             
             {submitSuccess && (
               <div className="success-message">
@@ -113,7 +150,7 @@ const Contact = () => {
             <form onSubmit={handleSubmit} className="contact-form">
               <div className="form-row">
                 <div className="form-group">
-                  <label htmlFor="name">Name *</label>
+                  <label htmlFor="name">Όνομα *</label>
                   <input
                     type="text"
                     id="name"
@@ -122,7 +159,7 @@ const Contact = () => {
                     onChange={handleInputChange}
                     required
                     className="form-input"
-                    placeholder="Your full name"
+                    placeholder="Όνομα και Επίθετο"
                   />
                 </div>
 
@@ -143,7 +180,7 @@ const Contact = () => {
 
               <div className="form-row">
                 <div className="form-group">
-                  <label htmlFor="company">Company</label>
+                  <label htmlFor="company">Όνομα Εταιρείας</label>
                   <input
                     type="text"
                     id="company"
@@ -151,12 +188,12 @@ const Contact = () => {
                     value={contactForm.company}
                     onChange={handleInputChange}
                     className="form-input"
-                    placeholder="Your company name"
+                    placeholder="Όνομα Εταιρείας"
                   />
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="phone">Phone</label>
+                  <label htmlFor="phone">Τηλέφωνο</label>
                   <input
                     type="tel"
                     id="phone"
@@ -164,13 +201,13 @@ const Contact = () => {
                     value={contactForm.phone}
                     onChange={handleInputChange}
                     className="form-input"
-                    placeholder="Your phone number"
+                    placeholder="Τηλέφωνο"
                   />
                 </div>
               </div>
 
               <div className="form-group">
-                <label htmlFor="subject">Subject</label>
+                <label htmlFor="subject">Θέμα</label>
                 <input
                   type="text"
                   id="subject"
@@ -178,12 +215,12 @@ const Contact = () => {
                   value={contactForm.subject}
                   onChange={handleInputChange}
                   className="form-input"
-                  placeholder="What is this regarding?"
+                  placeholder="Τι αφορά;"
                 />
               </div>
 
               <div className="form-group">
-                <label htmlFor="message">Message *</label>
+                <label htmlFor="message">Μήνυμα *</label>
                 <textarea
                   id="message"
                   name="message"
@@ -192,7 +229,7 @@ const Contact = () => {
                   required
                   rows="6"
                   className="form-textarea"
-                  placeholder="Tell us about your inquiry or project..."
+                  placeholder="Πείτε μας λεπτομέρειες..."
                 ></textarea>
               </div>
 
@@ -201,35 +238,95 @@ const Contact = () => {
                 className="btn btn-primary"
                 disabled={submitting}
               >
-                <FaPaperPlane style={{ marginRight: 8, verticalAlign: 'middle' }} aria-hidden="true" />
+                <FaPaperPlane style={{ marginRight: 8, fontSize: '16px' }} />
                 {submitting ? 'Sending...' : 'Send Message'}
               </button>
             </form>
           </div>
 
           <div className="contact-info">
-            <h2>Get In Touch</h2>
+            <h2>Επικοινωνήστε μαζί μας</h2>
             <p>
-              Ready to start working together? We'd love to hear from you. 
-              Send us a message and we'll respond as soon as possible.
+            Θα χαρούμε πολύ να ακούσουμε την ιδέα σας! 
+            Στείλτε μας το μήνυμά σας και θα σας απαντήσουμε το συντομότερο δυνατό.
             </p>
             <div className="contact-details">
+              {companyInfo.email && (
+                <div className="contact-item">
+                  <div className="contact-icon">
+                    <FaEnvelope />
+                  </div>
+                  <div className="contact-content">
+                    <h4>Email</h4>
+                    <p>{companyInfo.email}</p>
+                  </div>
+                </div>
+              )}
+              {companyInfo.telephone && (
+                <div className="contact-item">
+                  <div className="contact-icon">
+                    <FaPhone />
+                  </div>
+                  <div className="contact-content">
+                    <h4>Τηλέφωνο</h4>
+                    <p>{companyInfo.telephone}</p>
+                  </div>
+                </div>
+              )}
+              {companyInfo.location && (
+                <div className="contact-item">
+                  <div className="contact-icon">
+                    <FaMapMarkerAlt />
+                  </div>
+                  <div className="contact-content">
+                    <h4>Διεύθυνση</h4>
+                    <p>{companyInfo.location.split(',').map((part, index) => (
+                      <span key={index}>
+                        {part.trim()}
+                        {index < companyInfo.location.split(',').length - 1 && <br />}
+                      </span>
+                    ))}</p>
+                  </div>
+                </div>
+              )}
               <div className="contact-item">
-                <h4>Email</h4>
-                <p>info@mymerch.gr</p>
+                <div className="contact-icon">
+                  <FaClock />
+                </div>
+                <div className="contact-content">
+                  <h4>Ωρες Λειτουργίας</h4>
+                  <p>Monday - Friday: 9:00 AM - 6:00 PM<br />Saturday: 10:00 AM - 4:00 PM<br />Sunday: Closed</p>
+                </div>
               </div>
-              <div className="contact-item">
-                <h4>Phone</h4>
-                <p>+1 (555) 123-4567</p>
-              </div>
-              <div className="contact-item">
-                <h4>Address</h4>
-                <p>123 Business Street<br />Suite 100<br />City, State 12345</p>
-              </div>
-              <div className="contact-item">
-                <h4>Business Hours</h4>
-                <p>Monday - Friday: 9:00 AM - 6:00 PM<br />Saturday: 10:00 AM - 4:00 PM<br />Sunday: Closed</p>
-              </div>
+              {(companyInfo.facebook || companyInfo.instagram || companyInfo.twitter || companyInfo.linkedin) && (
+                <div className="contact-item social-media-item">
+                  <div className="contact-content">
+                    <h4>Follow Us</h4>
+                    <div className="social-links">
+                    {companyInfo.facebook && (
+                      <a href={companyInfo.facebook} target="_blank" rel="noopener noreferrer" className="social-link">
+                        <FaFacebook />
+                      </a>
+                    )}
+                    {companyInfo.instagram && (
+                      <a href={companyInfo.instagram} target="_blank" rel="noopener noreferrer" className="social-link">
+                        <FaInstagram />
+                      </a>
+                    )}
+                    {companyInfo.twitter && (
+                      <a href={companyInfo.twitter} target="_blank" rel="noopener noreferrer" className="social-link">
+                        <FaTwitter />
+                      </a>
+                    )}
+                    {companyInfo.linkedin && (
+                      <a href={companyInfo.linkedin} target="_blank" rel="noopener noreferrer" className="social-link">
+                        <FaLinkedin />
+                      </a>
+                    )}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
