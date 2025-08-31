@@ -190,9 +190,6 @@ const AdminDashboard = () => {
         </div>
 
         <div className="stat-card">
-          <div className="stat-icon">
-            <FaBriefcase />
-          </div>
           <div className="stat-content">
             <h3>{stats.customers}</h3>
             <p>Customers</p>

@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'r
 import Navbar from './components/Navbar';
 import AdminNavbar from './components/AdminNavbar';
 import Footer from './components/Footer';
+import CookieConsent from './components/CookieConsent';
 import Home from './pages/Home';
 import About from './pages/About';
 import Contact from './pages/Contact';
@@ -31,6 +32,7 @@ import AdminCustomOrders from './pages/admin/CustomOrders';
 import AdminContact from './pages/admin/Contact';
 import AdminOurWork from './pages/admin/OurWork';
 import AdminCustomers from './pages/admin/Customers';
+import AnalyticsDashboard from './components/AnalyticsDashboard';
 import './App.css';
 import axios from 'axios';
 
@@ -260,6 +262,13 @@ function App() {
               </AdminLayout>
             </ProtectedRoute>
           } />
+          <Route path="/admin/analytics" element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <AnalyticsDashboard />
+              </AdminLayout>
+            </ProtectedRoute>
+          } />
           {/* Client Routes */}
           <Route path="/" element={
             <>
@@ -360,6 +369,7 @@ function App() {
             </>
           } />
         </Routes>
+        <CookieConsent />
       </div>
     </Router>
   );
