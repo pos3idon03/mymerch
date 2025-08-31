@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaLock, FaUser } from 'react-icons/fa';
 import axios from 'axios';
@@ -10,8 +10,28 @@ const AdminLogin = () => {
     password: ''
   });
   const [loading, setLoading] = useState(false);
+  const [checkingAuth, setCheckingAuth] = useState(true);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+
+  // Check if user is already authenticated
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      // Validate token and redirect if valid
+      axios.get('/api/auth/user', { headers: { 'Authorization': `Bearer ${token}` } })
+        .then(() => {
+          navigate('/admin');
+        })
+        .catch(() => {
+          // Token is invalid, remove it
+          localStorage.removeItem('token');
+          setCheckingAuth(false);
+        });
+    } else {
+      setCheckingAuth(false);
+    }
+  }, [navigate]);
 
   const handleChange = (e) => {
     setFormData({
@@ -35,6 +55,14 @@ const AdminLogin = () => {
       setLoading(false);
     }
   };
+
+  if (checkingAuth) {
+    return (
+      <div className="loading">
+        <div className="spinner"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="admin-login">

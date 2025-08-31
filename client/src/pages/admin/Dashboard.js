@@ -22,17 +22,23 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     const fetchDashboardData = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setLoading(false);
+        return;
+      }
+      
       try {
         const [productsRes, categoriesRes, blogsRes, bannersRes, testimonialsRes, eventsRes, customOrdersRes, ourWorkRes, customersRes] = await Promise.all([
-          axios.get('/api/products/all', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } }),
-          axios.get('/api/categories/all', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } }),
-          axios.get('/api/blog/admin', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } }),
-          axios.get('/api/banner/admin', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } }),
-          axios.get('/api/testimonials/admin', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } }),
-          axios.get('/api/events/all', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } }),
-          axios.get('/api/custom-order', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } }),
-          axios.get('/api/our-work/admin', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } }),
-          axios.get('/api/customers/admin', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } })
+          axios.get('/api/products/all', { headers: { 'Authorization': `Bearer ${token}` } }),
+          axios.get('/api/categories/all', { headers: { 'Authorization': `Bearer ${token}` } }),
+          axios.get('/api/blog/admin', { headers: { 'Authorization': `Bearer ${token}` } }),
+          axios.get('/api/banner/admin', { headers: { 'Authorization': `Bearer ${token}` } }),
+          axios.get('/api/testimonials/admin', { headers: { 'Authorization': `Bearer ${token}` } }),
+          axios.get('/api/events/all', { headers: { 'Authorization': `Bearer ${token}` } }),
+          axios.get('/api/custom-order', { headers: { 'Authorization': `Bearer ${token}` } }),
+          axios.get('/api/our-work/admin', { headers: { 'Authorization': `Bearer ${token}` } }),
+          axios.get('/api/customers/admin', { headers: { 'Authorization': `Bearer ${token}` } })
         ]);
 
         setStats({
@@ -51,6 +57,11 @@ const AdminDashboard = () => {
         setRecentBlogs(blogsRes.data.slice(0, 5));
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
+        // If we get a 401 error, the token might be invalid
+        if (error.response && error.response.status === 401) {
+          localStorage.removeItem('token');
+          window.location.href = '/admin/login';
+        }
       } finally {
         setLoading(false);
       }
@@ -63,6 +74,28 @@ const AdminDashboard = () => {
     return (
       <div className="loading">
         <div className="spinner"></div>
+      </div>
+    );
+  }
+
+  // Check if user is authenticated
+  const token = localStorage.getItem('token');
+  if (!token) {
+    return (
+      <div className="admin-dashboard">
+        <div className="dashboard-header">
+          <h1>Access Denied</h1>
+          <p>Please log in to access the admin panel</p>
+        </div>
+        <div style={{ textAlign: 'center', padding: '2rem' }}>
+          <p>You need to be authenticated to view this page.</p>
+          <button 
+            onClick={() => window.location.href = '/admin/login'} 
+            className="btn btn-primary"
+          >
+            Go to Login
+          </button>
+        </div>
       </div>
     );
   }
