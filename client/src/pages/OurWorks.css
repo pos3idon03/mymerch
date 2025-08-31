@@ -52,7 +52,7 @@
 .work-image-container {
   position: relative;
   width: 100%;
-  height: 250px;
+  aspect-ratio: 1 / 1; /* Ensures 1:1 square ratio for 1080x1080 images */
   overflow: hidden;
   background-color: #f3f4f6;
 }
@@ -264,7 +264,7 @@
   }
   
   .work-image-container {
-    height: 200px;
+    aspect-ratio: 1 / 1;
   }
   
   .work-content {
@@ -308,7 +308,7 @@
   }
   
   .work-image-container {
-    height: 180px;
+    aspect-ratio: 1 / 1;
   }
   
   .work-content {
