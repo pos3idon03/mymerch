@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import AdminNavbar from './components/AdminNavbar';
 import Footer from './components/Footer';
@@ -45,6 +45,59 @@ const ScrollToTop = () => {
   return null;
 };
 
+// Protected Route Component
+const ProtectedRoute = ({ children }) => {
+  const [isValidating, setIsValidating] = React.useState(true);
+  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+  
+  React.useEffect(() => {
+    const validateToken = async () => {
+      const token = localStorage.getItem('token');
+      
+      if (!token) {
+        setIsValidating(false);
+        setIsAuthenticated(false);
+        return;
+      }
+      
+      try {
+        // Make a simple API call to validate the token
+        const response = await axios.get('/api/auth/user', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        
+        if (response.status === 200) {
+          setIsAuthenticated(true);
+        } else {
+          setIsAuthenticated(false);
+          localStorage.removeItem('token');
+        }
+      } catch (error) {
+        setIsAuthenticated(false);
+        localStorage.removeItem('token');
+      } finally {
+        setIsValidating(false);
+      }
+    };
+    
+    validateToken();
+  }, []);
+  
+  if (isValidating) {
+    return (
+      <div className="loading">
+        <div className="spinner"></div>
+      </div>
+    );
+  }
+  
+  if (!isAuthenticated) {
+    return <Navigate to="/admin/login" replace />;
+  }
+  
+  return children;
+};
+
 // Admin Layout Component
 const AdminLayout = ({ children }) => {
   return (
@@ -59,6 +112,22 @@ const AdminLayout = ({ children }) => {
 
 function App() {
   useEffect(() => {
+    // Set up axios interceptor for handling 401 errors
+    const interceptor = axios.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response && error.response.status === 401) {
+          // Token is invalid or expired
+          localStorage.removeItem('token');
+          // Only redirect if we're on an admin page
+          if (window.location.pathname.startsWith('/admin')) {
+            window.location.href = '/admin/login';
+          }
+        }
+        return Promise.reject(error);
+      }
+    );
+
     axios.get('/api/company/settings').then(res => {
       if (res.data.favicon) {
         const faviconUrl = res.data.favicon;
@@ -71,6 +140,11 @@ function App() {
         link.href = faviconUrl;
       }
     });
+
+    // Cleanup interceptor on unmount
+    return () => {
+      axios.interceptors.response.eject(interceptor);
+    };
   }, []);
 
   return (
@@ -79,76 +153,112 @@ function App() {
       <div className="App">
         <Routes>
           {/* Admin Routes */}
-          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/login" element={
+            (() => {
+              const token = localStorage.getItem('token');
+              if (token) {
+                return <Navigate to="/admin" replace />;
+              }
+              return <AdminLogin />;
+            })()
+          } />
           <Route path="/admin" element={
-            <AdminLayout>
-              <AdminDashboard />
-            </AdminLayout>
+            <ProtectedRoute>
+              <AdminLayout>
+                <AdminDashboard />
+              </AdminLayout>
+            </ProtectedRoute>
           } />
           <Route path="/admin/products" element={
-            <AdminLayout>
-              <AdminProducts />
-            </AdminLayout>
+            <ProtectedRoute>
+              <AdminLayout>
+                <AdminProducts />
+              </AdminLayout>
+            </ProtectedRoute>
           } />
           <Route path="/admin/categories" element={
-            <AdminLayout>
-              <AdminCategories />
-            </AdminLayout>
+            <ProtectedRoute>
+              <AdminLayout>
+                <AdminCategories />
+              </AdminLayout>
+            </ProtectedRoute>
           } />
           <Route path="/admin/blog" element={
-            <AdminLayout>
-              <AdminBlog />
-            </AdminLayout>
+            <ProtectedRoute>
+              <AdminLayout>
+                <AdminBlog />
+              </AdminLayout>
+            </ProtectedRoute>
           } />
           <Route path="/admin/banners" element={
-            <AdminLayout>
-              <AdminBanners />
-            </AdminLayout>
+            <ProtectedRoute>
+              <AdminLayout>
+                <AdminBanners />
+              </AdminLayout>
+            </ProtectedRoute>
           } />
           <Route path="/admin/testimonials" element={
-            <AdminLayout>
-              <AdminTestimonials />
-            </AdminLayout>
+            <ProtectedRoute>
+              <AdminLayout>
+                <AdminTestimonials />
+              </AdminLayout>
+            </ProtectedRoute>
           } />
           <Route path="/admin/about" element={
-            <AdminLayout>
-              <AdminAbout />
-            </AdminLayout>
+            <ProtectedRoute>
+              <AdminLayout>
+                <AdminAbout />
+              </AdminLayout>
+            </ProtectedRoute>
           } />
           <Route path="/admin/faq" element={
-            <AdminLayout>
-              <AdminFAQ />
-            </AdminLayout>
+            <ProtectedRoute>
+              <AdminLayout>
+                <AdminFAQ />
+              </AdminLayout>
+            </ProtectedRoute>
           } />
           <Route path="/admin/assets" element={
-            <AdminLayout>
-              <AdminAssets />
-            </AdminLayout>
+            <ProtectedRoute>
+              <AdminLayout>
+                <AdminAssets />
+              </AdminLayout>
+            </ProtectedRoute>
           } />
           <Route path="/admin/events" element={
-            <AdminLayout>
-              <AdminEvents />
-            </AdminLayout>
+            <ProtectedRoute>
+              <AdminLayout>
+                <AdminEvents />
+              </AdminLayout>
+            </ProtectedRoute>
           } />
           <Route path="/admin/custom-orders" element={
-            <AdminLayout>
-              <AdminCustomOrders />
-            </AdminLayout>
+            <ProtectedRoute>
+              <AdminLayout>
+                <AdminCustomOrders />
+              </AdminLayout>
+            </ProtectedRoute>
           } />
           <Route path="/admin/contact" element={
-            <AdminLayout>
-              <AdminContact />
-            </AdminLayout>
+            <ProtectedRoute>
+              <AdminLayout>
+                <AdminContact />
+              </AdminLayout>
+            </ProtectedRoute>
           } />
           <Route path="/admin/our-work" element={
-            <AdminLayout>
-              <AdminOurWork />
-            </AdminLayout>
+            <ProtectedRoute>
+              <AdminLayout>
+                <AdminOurWork />
+              </AdminLayout>
+            </ProtectedRoute>
           } />
           <Route path="/admin/customers" element={
-            <AdminLayout>
-              <AdminCustomers />
-            </AdminLayout>
+            <ProtectedRoute>
+              <AdminLayout>
+                <AdminCustomers />
+              </AdminLayout>
+            </ProtectedRoute>
           } />
           {/* Client Routes */}
           <Route path="/" element={

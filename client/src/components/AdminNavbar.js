@@ -13,10 +13,20 @@ const AdminNavbar = () => {
     const token = localStorage.getItem('token');
     if (token) {
       try {
-        await fetch('/api/auth/logout', {
+        const response = await fetch('/api/auth/logout', {
           method: 'POST',
-          headers: { 'Authorization': `Bearer ${token}` }
+          headers: { 
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
         });
+        
+        // If we get a 401 error, the token is invalid
+        if (response.status === 401) {
+          localStorage.removeItem('token');
+          navigate('/admin/login');
+          return;
+        }
       } catch (e) {
         // Optionally handle error, but still proceed to logout client-side
       }

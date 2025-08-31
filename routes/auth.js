@@ -125,4 +125,22 @@ router.get('/user', auth, async (req, res) => {
   }
 });
 
+// @route   POST /api/auth/logout
+// @desc    Logout user and blacklist token
+// @access  Private
+router.post('/logout', auth, async (req, res) => {
+  try {
+    const token = req.header('Authorization')?.replace('Bearer ', '');
+    if (token) {
+      // Blacklist the token
+      const { blacklistToken } = require('../middleware/tokenBlacklist');
+      blacklistToken(token);
+    }
+    res.json({ message: 'Logged out successfully' });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server error');
+  }
+});
+
 module.exports = router; 
