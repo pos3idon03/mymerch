@@ -142,7 +142,7 @@ code {
   }
   
   .section-title {
-    font-size: 2rem;
+    font-size: 1.75rem;
   }
   
   .grid-2,
@@ -154,7 +154,7 @@ code {
 
 @media (max-width: 480px) {
   .section-title {
-    font-size: 1.75rem;
+    font-size: 0.9rem;
   }
   
   .btn {
