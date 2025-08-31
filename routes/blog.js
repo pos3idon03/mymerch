@@ -63,9 +63,20 @@ router.get('/', async (req, res) => {
 // @access  Public
 router.get('/recent', async (req, res) => {
   try {
-    const blogs = await Blog.find({ published: true })
-      .sort({ createdAt: -1 })
-      .limit(3);
+    const blogs = await Blog.find({ published: true }).sort({ createdAt: -1 }).limit(3);
+    res.json(blogs);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server error');
+  }
+});
+
+// @route   GET /api/blog/admin
+// @desc    Get all blogs (including unpublished) - Admin only
+// @access  Private
+router.get('/admin', auth, async (req, res) => {
+  try {
+    const blogs = await Blog.find().sort({ createdAt: -1 });
     res.json(blogs);
   } catch (error) {
     console.error(error.message);
@@ -85,19 +96,6 @@ router.get('/:id', async (req, res) => {
     }
     
     res.json(blog);
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).send('Server error');
-  }
-});
-
-// @route   GET /api/blog/admin
-// @desc    Get all blogs (including unpublished) - Admin only
-// @access  Private
-router.get('/admin', auth, async (req, res) => {
-  try {
-    const blogs = await Blog.find().sort({ createdAt: -1 });
-    res.json(blogs);
   } catch (error) {
     console.error(error.message);
     res.status(500).send('Server error');

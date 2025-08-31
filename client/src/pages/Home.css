@@ -981,11 +981,24 @@
 } 
 
 .section-title {
-  font-size: 1.5rem; /* or 1.75rem, adjust as you like */
+  font-size: 1.5rem;
   font-weight: 700;
   text-align: center;
   margin-bottom: 2.5rem;
   color: #1f2937;
+}
+
+/* Responsive font sizes for section-title on mobile */
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-title {
+    font-size: 0.9rem;
+  }
 } 
 
 .btn, .btn-primary {
