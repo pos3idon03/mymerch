@@ -6,9 +6,6 @@ import './Banner.css';
 const Banner = ({ banners, imageFit = 'contain' }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Debug logging
-  console.log('Banner component rendered with:', { banners, imageFit, bannersLength: banners?.length });
-
   useEffect(() => {
     if (banners.length > 1) {
       const timer = setInterval(() => {
@@ -44,7 +41,6 @@ const Banner = ({ banners, imageFit = 'contain' }) => {
   };
 
   if (!banners || banners.length === 0) {
-    console.log('No banners provided, showing fallback');
     return (
       <section className="banner">
         <div className="banner-content">
@@ -67,7 +63,6 @@ const Banner = ({ banners, imageFit = 'contain' }) => {
   // Add a test banner if no images are loading
   const hasValidImages = banners.some(banner => banner.image);
   if (!hasValidImages) {
-    console.log('No valid images found, showing test banner');
     return (
       <section className="banner">
         <div className="banner-content">
@@ -78,8 +73,7 @@ const Banner = ({ banners, imageFit = 'contain' }) => {
                 This is a test banner. Check console for debugging info.
               </p>
               <p style={{ fontSize: '0.9rem', opacity: 0.8 }}>
-                Banner count: {banners.length}<br/>
-                Image URLs: {banners.map(b => b.image).join(', ')}
+                Banner count: {banners.length}
               </p>
             </div>
           </div>
@@ -88,13 +82,10 @@ const Banner = ({ banners, imageFit = 'contain' }) => {
     );
   }
 
-  console.log('Rendering banners:', banners.map(b => ({ id: b._id, title: b.title, image: b.image })));
-
   return (
     <section className="banner">
       <div className="banner-slider">
         {banners.map((banner, index) => {
-          console.log(`Rendering banner ${index}:`, banner);
           return (
             <div
               key={banner._id}
@@ -107,8 +98,8 @@ const Banner = ({ banners, imageFit = 'contain' }) => {
                   alt={banner.title || 'Banner'}
                   className={getImageClass()}
                   loading='lazy'
-                  onError={(e) => console.error('Image failed to load:', banner.image, e)}
-                  onLoad={() => console.log('Image loaded successfully:', banner.image)}
+                  onError={(e) => console.error('Image failed to load')}
+                  onLoad={() => {}}
                 />
               </picture>
               <div className="banner-content">

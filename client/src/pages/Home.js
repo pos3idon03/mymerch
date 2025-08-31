@@ -670,10 +670,7 @@ const Home = () => {
       <section className="section bg-gray-50">
         <div className="container">
           <h2 className="section-title">Το Blog μας</h2>
-          <p className="section-subtitle">
-            Μείνε ενημερωμένος για τις πρόσφατες ειδήσεις και νέες πληροφορίες
-          </p>
-          
+
           {recentBlogs.length > 0 ? (
             <div className="grid grid-3">
               {recentBlogs.map(blog => (

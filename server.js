@@ -83,6 +83,7 @@ app.use('/api/test-your-idea', require('./routes/testYourIdea'));
 app.use('/api/contact', require('./routes/contact'));
 app.use('/api/our-work', require('./routes/ourWork'));
 app.use('/api/customers', require('./routes/customers'));
+app.use('/api/analytics', require('./routes/analytics'));
 
 const Product = require('./models/Product');
 const Blog = require('./models/Blog');
