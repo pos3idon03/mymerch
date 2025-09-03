@@ -32,6 +32,7 @@ import AdminCustomOrders from './pages/admin/CustomOrders';
 import AdminContact from './pages/admin/Contact';
 import AdminOurWork from './pages/admin/OurWork';
 import AdminCustomers from './pages/admin/Customers';
+import AdminOffers from './pages/admin/Offers';
 import AnalyticsDashboard from './components/AnalyticsDashboard';
 import './App.css';
 import axios from 'axios';
@@ -266,6 +267,13 @@ function App() {
             <ProtectedRoute>
               <AdminLayout>
                 <AnalyticsDashboard />
+              </AdminLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/offers" element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <AdminOffers />
               </AdminLayout>
             </ProtectedRoute>
           } />

@@ -59,24 +59,18 @@ router.put('/settings', auth, upload.fields([
   { name: 'favicon', maxCount: 1 }
 ]), async (req, res) => {
   try {
-    console.log('Files received:', req.files);
-    console.log('Body received:', req.body);
-    
     let settings = await Company.findOne();
     if (!settings) {
-      console.log('Creating new company settings');
       settings = await Company.create({});
     }
 
     // Handle file uploads
     if (req.files && req.files.logo) {
       const logoPath = path.join(PUBLIC_UPLOADS_URL_PATH, COMPANY_SUBDIR, req.files.logo[0].filename).replace(/\\/g, '/');
-      console.log('Setting logo path:', logoPath);
       settings.logo = logoPath;
     }
     if (req.files && req.files.favicon) {
       const faviconPath = path.join(PUBLIC_UPLOADS_URL_PATH, COMPANY_SUBDIR, req.files.favicon[0].filename).replace(/\\/g, '/');
-      console.log('Setting favicon path:', faviconPath);
       settings.favicon = faviconPath;
     }
 
@@ -88,9 +82,7 @@ router.put('/settings', auth, upload.fields([
       }
     });
 
-    console.log('Saving settings:', settings);
     await settings.save();
-    console.log('Settings saved successfully');
     res.json(settings);
   } catch (error) {
     console.error('Error updating company settings:', error);
