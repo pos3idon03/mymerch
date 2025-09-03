@@ -2,8 +2,12 @@
 FROM node:18 AS client-build
 WORKDIR /app/client
 COPY client/package.json ./
-RUN npm install
+COPY client/package-lock.json ./
+RUN npm ci --only=production
 COPY client/ ./
+# Set production environment for build
+ENV NODE_ENV=production
+ENV GENERATE_SOURCEMAP=false
 RUN npm run build
 
 # 2. Build backend and serve frontend build
