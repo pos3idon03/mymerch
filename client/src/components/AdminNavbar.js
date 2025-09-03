@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { FaSignOutAlt, FaHome, FaBox, FaTags, FaNewspaper, FaImages, FaComments, FaInfoCircle, FaQuestionCircle, FaImage, FaEnvelope, FaBriefcase, FaChartLine } from 'react-icons/fa';
+import { FaSignOutAlt, FaHome, FaBox, FaTags, FaNewspaper, FaImages, FaComments, FaInfoCircle, FaQuestionCircle, FaImage, FaEnvelope, FaBriefcase, FaChartLine, FaFileContract } from 'react-icons/fa';
 import './AdminNavbar.css';
 
 const AdminNavbar = () => {
@@ -58,6 +58,7 @@ const AdminNavbar = () => {
         <Link to="/admin/our-work" className={`admin-sidebar-link${isActive('/admin/our-work') ? ' active' : ''}`}><FaBriefcase /><span>Our Work</span></Link>
         <Link to="/admin/customers" className={`admin-sidebar-link${isActive('/admin/customers') ? ' active' : ''}`}><FaBriefcase /><span>Our Customers</span></Link>
         <Link to="/admin/analytics" className={`admin-sidebar-link${isActive('/admin/analytics') ? ' active' : ''}`}><FaChartLine /><span>Analytics</span></Link>
+        <Link to="/admin/offers" className={`admin-sidebar-link${isActive('/admin/offers') ? ' active' : ''}`}><FaFileContract /><span>Offers</span></Link>
       </nav>
       <div className="admin-sidebar-actions">
         <button className="admin-sidebar-logout" onClick={handleLogout}>
