@@ -38,9 +38,6 @@ router.get('/:id', async (req, res) => {
 
 // Create FAQ (admin only)
 router.post('/', auth, async (req, res) => {
-  console.log('FAQ POST route - Request body:', req.body); // Debug log
-  console.log('FAQ POST route - User:', req.user); // Debug log
-  
   try {
     const { question, answer, order } = req.body;
     

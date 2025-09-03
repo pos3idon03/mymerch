@@ -56,7 +56,6 @@ const AdminOffers = () => {
       setSkus(skusRes.data);
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching data:', error);
       setError('Error fetching data');
       setLoading(false);
     }
@@ -84,7 +83,6 @@ const AdminOffers = () => {
       setShowAddSKUModal(false);
       fetchData(); // Refresh SKUs
     } catch (error) {
-      console.error('Error adding SKU:', error);
       setError(error.response?.data?.message || 'Error adding SKU');
     } finally {
       setSubmitting(false);
@@ -125,7 +123,6 @@ const AdminOffers = () => {
       setShowEditSKUModal(false);
       fetchData(); // Refresh SKUs
     } catch (error) {
-      console.error('Error updating SKU:', error);
       setError(error.response?.data?.message || 'Error updating SKU');
     } finally {
       setSubmitting(false);
@@ -245,7 +242,6 @@ const AdminOffers = () => {
       setShowCreateOfferForm(false);
       fetchData(); // Refresh offers
     } catch (error) {
-      console.error('Error saving offer:', error);
       setError(error.response?.data?.message || 'Error saving offer');
     } finally {
       setSubmitting(false);
@@ -267,7 +263,6 @@ const AdminOffers = () => {
         });
         fetchData();
       } catch (error) {
-        console.error('Error deleting offer:', error);
         setError('Error deleting offer');
       }
     }

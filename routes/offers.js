@@ -98,9 +98,7 @@ router.post('/', auth, async (req, res) => {
       items: processedItems
     });
 
-    console.log('Offer before save:', offer);
     await offer.save();
-    console.log('Offer after save:', offer);
     
     // Populate the saved offer with SKU details
     const populatedOffer = await Offer.findById(offer._id)

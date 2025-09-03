@@ -50,20 +50,15 @@ const FAQ = () => {
 
     try {
       const token = localStorage.getItem('token');
-      console.log('Token:', token); // Debug log
       
       const headers = {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       };
-      
-      console.log('Headers:', headers); // Debug log
 
       if (editingFAQ) {
-        console.log('Updating FAQ:', editingFAQ._id); // Debug log
         await axios.put(`/api/faq/${editingFAQ._id}`, formData, { headers });
       } else {
-        console.log('Creating new FAQ'); // Debug log
         await axios.post('/api/faq', formData, { headers });
       }
       
@@ -73,7 +68,6 @@ const FAQ = () => {
       setError('');
       fetchFAQs();
     } catch (error) {
-      console.error('FAQ Error:', error.response?.data || error.message); // Debug log
       setError(error.response?.data?.message || 'Failed to save FAQ');
     }
   };
@@ -92,7 +86,7 @@ const FAQ = () => {
     if (window.confirm('Are you sure you want to delete this FAQ?')) {
       try {
         const token = localStorage.getItem('token');
-        console.log('Delete Token:', token); // Debug log
+
         
         await axios.delete(`/api/faq/${id}`, {
           headers: {
@@ -102,7 +96,6 @@ const FAQ = () => {
         });
         fetchFAQs();
       } catch (error) {
-        console.error('Delete Error:', error.response?.data || error.message); // Debug log
         setError('Failed to delete FAQ');
       }
     }

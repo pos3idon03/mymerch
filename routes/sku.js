@@ -49,9 +49,7 @@ router.post('/', auth, async (req, res) => {
       priceWithoutVAT: parseFloat(priceWithoutVAT),
       minimumOrderItems: parseInt(minimumOrderItems)
     });
-    console.log('SKU before save:', sku);
     await sku.save();
-    console.log('SKU after save:', sku);
     
     // Ensure SKU code was generated
     if (!sku.skuCode) {
