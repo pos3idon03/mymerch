@@ -123,10 +123,15 @@ app.get('/sitemap.xml', async (req, res) => {
 
 // Serve React app in production
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('client/build'));
+  // Serve static files from React build
+  app.use(express.static(path.join(__dirname, 'client', 'build')));
+  
+  // Handle React routing, return all requests to React app
   app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
   });
+  
+  console.log('Production mode: Serving React build from client/build');
 } else {
   console.log('Development mode: NODE_ENV =', process.env.NODE_ENV);
 }
