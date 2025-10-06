@@ -86,6 +86,8 @@ app.use('/api/customers', require('./routes/customers'));
 app.use('/api/analytics', require('./routes/analytics'));
 app.use('/api/sku', require('./routes/sku'));
 app.use('/api/offers', require('./routes/offers'));
+app.use('/api/design-studio/products', require('./routes/designStudioProducts'));
+app.use('/api/design-studio/orders', require('./routes/designStudioOrders'));
 
 const Product = require('./models/Product');
 const Blog = require('./models/Blog');

@@ -3,7 +3,14 @@ class AnalyticsService {
     this.sessionId = null;
     this.sessionStartTime = null;
     this.isTracking = false;
-    this.baseURL = process.env.REACT_APP_API_URL || '';
+    
+    // For local development, always use relative URLs
+    // For production, use the environment variable
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      this.baseURL = '';
+    } else {
+      this.baseURL = process.env.REACT_APP_API_URL || '';
+    }
     
     // Check if analytics consent was given
     this.checkConsent();
@@ -50,9 +57,12 @@ class AnalyticsService {
         this.setupBeforeUnloadListener();
         
         console.log('Analytics tracking initialized');
+      } else {
+        console.warn('Analytics session start failed:', response.status, response.statusText);
       }
     } catch (error) {
       console.error('Failed to initialize analytics tracking:', error);
+      // Don't throw the error, just log it and continue
     }
   }
 
@@ -61,8 +71,8 @@ class AnalyticsService {
       if (document.hidden) {
         // Page is hidden, end session
         this.endSession();
-      } else {
-        // Page is visible again, start new session
+      } else if (!this.isTracking) {
+        // Page is visible again and we're not tracking, start new session
         this.initializeTracking();
       }
     });
@@ -81,7 +91,7 @@ class AnalyticsService {
       const currentUrl = window.location.pathname;
       const currentTitle = document.title || 'Unknown Page';
 
-      await fetch(`${this.baseURL}/api/analytics/pageview`, {
+      const response = await fetch(`${this.baseURL}/api/analytics/pageview`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -92,6 +102,10 @@ class AnalyticsService {
           title: currentTitle
         })
       });
+
+      if (!response.ok) {
+        console.warn('Page view tracking failed:', response.status, response.statusText);
+      }
     } catch (error) {
       console.error('Failed to track page view:', error);
     }
@@ -101,7 +115,7 @@ class AnalyticsService {
     if (!this.isTracking || !this.sessionId) return;
 
     try {
-      await fetch(`${this.baseURL}/api/analytics/session/end`, {
+      const response = await fetch(`${this.baseURL}/api/analytics/session/end`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -111,11 +125,19 @@ class AnalyticsService {
         })
       });
 
+      if (!response.ok) {
+        console.warn('Session end failed:', response.status, response.statusText);
+      }
+
       this.sessionId = null;
       this.sessionStartTime = null;
       this.isTracking = false;
     } catch (error) {
       console.error('Failed to end session:', error);
+      // Reset tracking state even if the request failed
+      this.sessionId = null;
+      this.sessionStartTime = null;
+      this.isTracking = false;
     }
   }
 
@@ -123,7 +145,7 @@ class AnalyticsService {
   async updateConsent(consentGiven) {
     if (this.sessionId) {
       try {
-        await fetch(`${this.baseURL}/api/analytics/consent`, {
+        const response = await fetch(`${this.baseURL}/api/analytics/consent`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -133,6 +155,10 @@ class AnalyticsService {
             consentGiven
           })
         });
+
+        if (!response.ok) {
+          console.warn('Consent update failed:', response.status, response.statusText);
+        }
       } catch (error) {
         console.error('Failed to update consent:', error);
       }
