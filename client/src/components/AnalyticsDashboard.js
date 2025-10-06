@@ -22,10 +22,6 @@ const AnalyticsDashboard = () => {
     fetchAnalyticsData();
   }, [dateRange]);
 
-  // Debug: Log analyticsData whenever it changes
-  useEffect(() => {
-    console.log('Analytics data updated:', analyticsData);
-  }, [analyticsData]);
 
   const fetchAnalyticsData = async () => {
     setLoading(true);
@@ -57,9 +53,6 @@ const AnalyticsDashboard = () => {
         })
       ]);
 
-      // Debug: Log the responses to see the structure
-      console.log('Summary response:', summaryRes.data);
-      console.log('Recent sessions response:', recentSessionsRes.data);
 
       setAnalyticsData({
         summary: summaryRes.data.data || summaryRes.data || {

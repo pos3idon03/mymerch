@@ -27,15 +27,12 @@ class AnalyticsService {
   }
 
   checkForExistingSession() {
-    console.log('Analytics: checkForExistingSession called');
     // Check if we have an existing session cookie
     const existingSessionId = this.getCookie('analytics_session_id');
-    console.log('Analytics: existingSessionId =', existingSessionId);
     
     if (existingSessionId) {
       // Check if consent was given
       const consent = localStorage.getItem('cookieConsent');
-      console.log('Analytics: consent =', consent);
       
       if (consent) {
         const consentData = JSON.parse(consent);
@@ -45,7 +42,6 @@ class AnalyticsService {
           this.sessionStartTime = new Date(); // Reset start time for current page load
           this.isTracking = true;
           this.isResumingSession = true;
-          console.log('Analytics: Resuming existing session:', this.sessionId);
           
           // Set up listeners without creating a new session
           this.setupPageVisibilityListener();
@@ -55,14 +51,8 @@ class AnalyticsService {
           
           // Track the current page view
           this.trackPageView();
-        } else {
-          console.log('Analytics: No analytics consent, not resuming session');
         }
-      } else {
-        console.log('Analytics: No consent data, not resuming session');
       }
-    } else {
-      console.log('Analytics: No existing session cookie found');
     }
   }
 
