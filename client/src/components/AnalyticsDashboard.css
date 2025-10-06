@@ -458,6 +458,26 @@
   font-size: 1rem;
 }
 
+.user-type {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.user-type.admin {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.user-type.user {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
 /* Loading and Error States */
 .analytics-loading,
 .analytics-error {

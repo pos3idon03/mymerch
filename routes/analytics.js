@@ -34,7 +34,7 @@ const getClientIP = (req) => {
 // Start a new session
 router.post('/session/start', async (req, res) => {
   try {
-    const { consentGiven = false } = req.body;
+    const { consentGiven = false, userType = 'user' } = req.body;
     const sessionId = uuidv4();
     const clientIP = getClientIP(req);
     const referrer = req.headers.referer || req.headers.referrer;
@@ -60,7 +60,8 @@ router.post('/session/start', async (req, res) => {
       city,
       referrer,
       source,
-      consentGiven
+      consentGiven,
+      userType
     });
 
     await session.save();
@@ -115,10 +116,54 @@ router.post('/session/end', async (req, res) => {
   }
 });
 
+// Update session (keep alive)
+router.post('/session/update', async (req, res) => {
+  try {
+    const { sessionId, userType } = req.body;
+    
+    if (!sessionId) {
+      return res.status(400).json({
+        success: false,
+        message: 'Session ID is required'
+      });
+    }
+
+    const session = await Analytics.findOne({ sessionId });
+    
+    if (!session) {
+      return res.status(404).json({
+        success: false,
+        message: 'Session not found'
+      });
+    }
+
+    // Update the session's last activity time
+    session.lastActivity = new Date();
+    
+    // Update userType if provided
+    if (userType && (userType === 'admin' || userType === 'user')) {
+      session.userType = userType;
+    }
+    
+    await session.save();
+
+    res.json({
+      success: true,
+      message: 'Session updated successfully'
+    });
+  } catch (error) {
+    console.error('Error updating session:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to update session'
+    });
+  }
+});
+
 // Track page view
 router.post('/pageview', async (req, res) => {
   try {
-    const { sessionId, url, title } = req.body;
+    const { sessionId, url, title, pageName } = req.body;
     
     if (!sessionId || !url || !title) {
       return res.status(400).json({
@@ -136,7 +181,7 @@ router.post('/pageview', async (req, res) => {
       });
     }
 
-    await session.addPageView(url, title);
+    await session.addPageView(url, title, pageName);
 
     res.json({
       success: true,
@@ -276,11 +321,26 @@ router.get('/recent-sessions', auth, async (req, res) => {
     const recentSessions = await Analytics.find()
       .sort({ startTime: -1 })
       .limit(parseInt(limit))
-      .select('sessionId startTime endTime duration source country city pageViews.length consentGiven');
+      .select('sessionId startTime endTime duration source country city pageViews.length consentGiven userType isActive lastActivity');
+    
+    // Calculate duration for active sessions
+    const sessionsWithDuration = recentSessions.map(session => {
+      const sessionObj = session.toObject();
+      
+      // If session is active (not ended), calculate duration based on current time
+      if (sessionObj.isActive) {
+        const now = new Date();
+        // Use lastActivity if available, otherwise use startTime
+        const referenceTime = sessionObj.lastActivity ? new Date(sessionObj.lastActivity) : new Date(sessionObj.startTime);
+        sessionObj.duration = Math.floor((now - referenceTime) / 1000);
+      }
+      
+      return sessionObj;
+    });
     
     res.json({
       success: true,
-      data: recentSessions
+      data: sessionsWithDuration
     });
   } catch (error) {
     console.error('Error getting recent sessions:', error);

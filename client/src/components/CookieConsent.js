@@ -28,8 +28,18 @@ const CookieConsent = () => {
   }, []);
 
   const startAnalyticsTracking = () => {
-    // Actually start the analytics service
-    analyticsService.initializeTracking();
+    console.log('CookieConsent: startAnalyticsTracking called');
+    console.log('CookieConsent: isTracking =', analyticsService.isTracking);
+    console.log('CookieConsent: isResumingSession =', analyticsService.isResumingSession);
+    console.log('CookieConsent: sessionId =', analyticsService.sessionId);
+    
+    // Only start analytics if not already tracking and not resuming a session
+    if (!analyticsService.isTracking && !analyticsService.isResumingSession) {
+      console.log('CookieConsent: Starting new analytics tracking');
+      analyticsService.initializeTracking();
+    } else {
+      console.log('CookieConsent: Skipping analytics initialization - already tracking or resuming session');
+    }
   };
 
   const handleAcceptAll = () => {

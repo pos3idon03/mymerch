@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const pageViewSchema = new mongoose.Schema({
   url: { type: String, required: true },
   title: { type: String, required: true },
+  pageName: { type: String },
   timestamp: { type: Date, default: Date.now },
   sessionId: { type: String, required: true }
 });
@@ -13,6 +14,7 @@ const sessionSchema = new mongoose.Schema({
   endTime: { type: Date },
   duration: { type: Number }, // in seconds
   isActive: { type: Boolean, default: true },
+  lastActivity: { type: Date, default: Date.now },
   userAgent: { type: String },
   ipAddress: { type: String },
   country: { type: String },
@@ -21,6 +23,7 @@ const sessionSchema = new mongoose.Schema({
   source: { type: String, enum: ['direct', 'facebook', 'instagram', 'linkedin', 'google', 'other'] },
   pageViews: [pageViewSchema],
   consentGiven: { type: Boolean, default: false },
+  userType: { type: String, enum: ['user', 'admin'], default: 'user' },
   createdAt: { type: Date, default: Date.now }
 });
 
@@ -34,13 +37,17 @@ sessionSchema.index({ country: 1 });
 sessionSchema.methods.endSession = function() {
   this.endTime = new Date();
   this.isActive = false;
-  this.duration = Math.floor((this.endTime - this.startTime) / 1000);
+  // Calculate duration based on last activity, not start time
+  const endTime = this.endTime;
+  const startTime = this.lastActivity || this.startTime;
+  this.duration = Math.floor((endTime - startTime) / 1000);
   return this.save();
 };
 
 // Method to add page view
-sessionSchema.methods.addPageView = function(url, title) {
-  this.pageViews.push({ url, title, sessionId: this.sessionId });
+sessionSchema.methods.addPageView = function(url, title, pageName) {
+  this.pageViews.push({ url, title, pageName, sessionId: this.sessionId });
+  this.lastActivity = new Date();
   return this.save();
 };
 
