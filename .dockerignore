@@ -53,3 +53,5 @@ coverage
 
 # Local uploads (will be mounted as volume)
 uploads
+
+perform__hashing.py

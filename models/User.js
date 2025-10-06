@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { verifyPassword } = require('../utils/passwordUtils');
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -18,6 +19,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  salt: {
+    type: String,
+    required: true
+  },
   role: {
     type: String,
     enum: ['admin'],
@@ -27,9 +32,9 @@ const userSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// Method to compare password (now compares plain text)
+// Method to compare password using salt and hash
 userSchema.methods.comparePassword = async function(candidatePassword) {
-  return this.password === candidatePassword;
+  return verifyPassword(candidatePassword, this.salt, this.password);
 };
 
 module.exports = mongoose.model('User', userSchema); 
