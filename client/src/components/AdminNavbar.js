@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { FaSignOutAlt, FaHome, FaBox, FaTags, FaNewspaper, FaImages, FaComments, FaInfoCircle, FaQuestionCircle, FaImage, FaEnvelope, FaBriefcase, FaChartLine, FaFileContract } from 'react-icons/fa';
+import { FaSignOutAlt, FaHome, FaBox, FaTags, FaNewspaper, FaImages, FaComments, FaInfoCircle, FaQuestionCircle, FaImage, FaEnvelope, FaBriefcase, FaChartLine, FaFileContract, FaPaintBrush } from 'react-icons/fa';
 import './AdminNavbar.css';
 
 const AdminNavbar = () => {
@@ -55,6 +55,7 @@ const AdminNavbar = () => {
         <Link to="/admin/contact" className={`admin-sidebar-link${isActive('/admin/contact') ? ' active' : ''}`}><FaEnvelope /><span>Contact</span></Link>
         <Link to="/admin/assets" className={`admin-sidebar-link${isActive('/admin/assets') ? ' active' : ''}`}><FaImage /><span>Company</span></Link>
         <Link to="/admin/custom-orders" className={`admin-sidebar-link${isActive('/admin/custom-orders') ? ' active' : ''}`}><FaBox /><span>Custom Orders</span></Link>
+        <Link to="/admin/design-studio" className={`admin-sidebar-link${isActive('/admin/design-studio') ? ' active' : ''}`}><FaPaintBrush /><span>Design Studio</span></Link>
         <Link to="/admin/our-work" className={`admin-sidebar-link${isActive('/admin/our-work') ? ' active' : ''}`}><FaBriefcase /><span>Our Work</span></Link>
         <Link to="/admin/customers" className={`admin-sidebar-link${isActive('/admin/customers') ? ' active' : ''}`}><FaBriefcase /><span>Our Customers</span></Link>
         <Link to="/admin/analytics" className={`admin-sidebar-link${isActive('/admin/analytics') ? ' active' : ''}`}><FaChartLine /><span>Analytics</span></Link>

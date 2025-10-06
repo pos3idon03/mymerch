@@ -33,6 +33,7 @@ import AdminContact from './pages/admin/Contact';
 import AdminOurWork from './pages/admin/OurWork';
 import AdminCustomers from './pages/admin/Customers';
 import AdminOffers from './pages/admin/Offers';
+import AdminDesignStudio from './pages/admin/DesignStudio';
 import AnalyticsDashboard from './components/AnalyticsDashboard';
 import './App.css';
 import axios from 'axios';
@@ -239,6 +240,13 @@ function App() {
             <ProtectedRoute>
               <AdminLayout>
                 <AdminCustomOrders />
+              </AdminLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/design-studio" element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <AdminDesignStudio />
               </AdminLayout>
             </ProtectedRoute>
           } />
