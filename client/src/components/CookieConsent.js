@@ -28,8 +28,10 @@ const CookieConsent = () => {
   }, []);
 
   const startAnalyticsTracking = () => {
-    // Actually start the analytics service
-    analyticsService.initializeTracking();
+    // Only start analytics if not already tracking and not resuming a session
+    if (!analyticsService.isTracking && !analyticsService.isResumingSession) {
+      analyticsService.initializeTracking();
+    }
   };
 
   const handleAcceptAll = () => {

@@ -3,6 +3,11 @@ class AnalyticsService {
     this.sessionId = null;
     this.sessionStartTime = null;
     this.isTracking = false;
+    this.initializing = false;
+    this.hiddenStartTime = null;
+    this.sessionTimeout = null;
+    this.pageViewTimeout = null;
+    this.isResumingSession = false;
     
     // For local development, always use relative URLs
     // For production, use the environment variable
@@ -12,24 +17,99 @@ class AnalyticsService {
       this.baseURL = process.env.REACT_APP_API_URL || '';
     }
     
-    // Check if analytics consent was given
-    this.checkConsent();
+    // Check for existing session first, before checking consent
+    this.checkForExistingSession();
+    
+    // If no existing session, check consent
+    if (!this.isResumingSession) {
+      this.checkConsent();
+    }
+  }
+
+  checkForExistingSession() {
+    // Check if we have an existing session cookie
+    const existingSessionId = this.getCookie('analytics_session_id');
+    
+    if (existingSessionId) {
+      // Check if consent was given
+      const consent = localStorage.getItem('cookieConsent');
+      
+      if (consent) {
+        const consentData = JSON.parse(consent);
+        if (consentData.analytics) {
+          // Resume existing session
+          this.sessionId = existingSessionId;
+          this.sessionStartTime = new Date(); // Reset start time for current page load
+          this.isTracking = true;
+          this.isResumingSession = true;
+          
+          // Set up listeners without creating a new session
+          this.setupPageVisibilityListener();
+          this.setupBeforeUnloadListener();
+          this.setupRouteChangeListener();
+          this.setupPeriodicUpdates();
+          
+          // Track the current page view
+          this.trackPageView();
+        }
+      }
+    }
   }
 
   checkConsent() {
     const consent = localStorage.getItem('cookieConsent');
     if (consent) {
       const consentData = JSON.parse(consent);
-      this.isTracking = consentData.analytics;
       
-      if (this.isTracking) {
+      if (consentData.analytics) {
         this.initializeTracking();
       }
     }
   }
 
+  setCookie(name, value, hours) {
+    const expires = new Date();
+    expires.setTime(expires.getTime() + (hours * 60 * 60 * 1000));
+    document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/;SameSite=Lax`;
+  }
+
+  getCookie(name) {
+    const nameEQ = name + "=";
+    const ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+      if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+  }
+
   async initializeTracking() {
+    // Prevent multiple session initialization
+    if (this.isTracking && this.sessionId) {
+      console.log('Analytics already initialized, skipping...');
+      return;
+    }
+
+    // Add a flag to prevent concurrent initialization
+    if (this.initializing) {
+      console.log('Analytics initialization already in progress, skipping...');
+      return;
+    }
+
+    this.initializing = true;
+
     try {
+      // Determine if this is an admin session - check multiple conditions
+      const isAdminSession = window.location.pathname.startsWith('/admin') || 
+                            window.location.pathname.includes('admin') ||
+                            document.title.includes('Admin') ||
+                            document.querySelector('.admin-sidebar') !== null ||
+                            document.querySelector('.admin-panel') !== null ||
+                            document.querySelector('[class*="admin"]') !== null;
+      
+      console.log('Detected admin session:', isAdminSession, 'for path:', window.location.pathname, 'title:', document.title);
+      
       // Start a new session
       const response = await fetch(`${this.baseURL}/api/analytics/session/start`, {
         method: 'POST',
@@ -37,7 +117,8 @@ class AnalyticsService {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          consentGiven: true
+          consentGiven: true,
+          userType: isAdminSession ? 'admin' : 'user'
         })
       });
 
@@ -46,6 +127,9 @@ class AnalyticsService {
         this.sessionId = data.sessionId;
         this.sessionStartTime = new Date();
         this.isTracking = true;
+        
+        // Store session ID in a cookie for persistence
+        this.setCookie('analytics_session_id', this.sessionId, 24); // 24 hours
         
         // Track the initial page view
         this.trackPageView();
@@ -56,24 +140,43 @@ class AnalyticsService {
         // Set up beforeunload listener
         this.setupBeforeUnloadListener();
         
-        console.log('Analytics tracking initialized');
+        // Set up route change listener for SPA navigation
+        this.setupRouteChangeListener();
+        
+        // Set up periodic session updates
+        this.setupPeriodicUpdates();
+        
+        console.log('Analytics tracking initialized for', isAdminSession ? 'admin' : 'user');
       } else {
         console.warn('Analytics session start failed:', response.status, response.statusText);
       }
     } catch (error) {
       console.error('Failed to initialize analytics tracking:', error);
       // Don't throw the error, just log it and continue
+    } finally {
+      this.initializing = false;
     }
   }
 
   setupPageVisibilityListener() {
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
-        // Page is hidden, end session
-        this.endSession();
-      } else if (!this.isTracking) {
-        // Page is visible again and we're not tracking, start new session
-        this.initializeTracking();
+        // Page is hidden, start a timeout to end session after 30 minutes of inactivity
+        this.hiddenStartTime = Date.now();
+        this.sessionTimeout = setTimeout(() => {
+          this.endSession();
+        }, 30 * 60 * 1000); // 30 minutes
+      } else {
+        // Page is visible again, clear the timeout
+        if (this.sessionTimeout) {
+          clearTimeout(this.sessionTimeout);
+          this.sessionTimeout = null;
+        }
+        
+        // If we're not tracking, start a new session
+        if (!this.isTracking) {
+          this.initializeTracking();
+        }
       }
     });
   }
@@ -84,31 +187,142 @@ class AnalyticsService {
     });
   }
 
-  async trackPageView() {
+  setupPeriodicUpdates() {
+    // Update session every 30 seconds to ensure it stays active
+    this.updateInterval = setInterval(() => {
+      if (this.isTracking && this.sessionId) {
+        this.updateSession();
+      }
+    }, 30000); // 30 seconds
+  }
+
+  async updateSession() {
     if (!this.isTracking || !this.sessionId) return;
 
     try {
-      const currentUrl = window.location.pathname;
-      const currentTitle = document.title || 'Unknown Page';
+      // Check if we need to update userType
+      const isAdminSession = window.location.pathname.startsWith('/admin') || 
+                            window.location.pathname.includes('admin') ||
+                            document.title.includes('Admin') ||
+                            document.querySelector('.admin-sidebar') !== null ||
+                            document.querySelector('.admin-panel') !== null ||
+                            document.querySelector('[class*="admin"]') !== null;
 
-      const response = await fetch(`${this.baseURL}/api/analytics/pageview`, {
+      const response = await fetch(`${this.baseURL}/api/analytics/session/update`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           sessionId: this.sessionId,
-          url: currentUrl,
-          title: currentTitle
+          userType: isAdminSession ? 'admin' : 'user'
         })
       });
 
       if (!response.ok) {
-        console.warn('Page view tracking failed:', response.status, response.statusText);
+        console.warn('Session update failed:', response.status, response.statusText);
       }
     } catch (error) {
-      console.error('Failed to track page view:', error);
+      console.error('Failed to update session:', error);
     }
+  }
+
+  setupRouteChangeListener() {
+    // Listen for popstate events (back/forward navigation)
+    window.addEventListener('popstate', () => {
+      this.trackPageView();
+    });
+
+    // For React Router, we need to listen to history changes
+    // This will be called when the route changes
+    const originalPushState = window.history.pushState;
+    const originalReplaceState = window.history.replaceState;
+
+    window.history.pushState = (...args) => {
+      originalPushState.apply(window.history, args);
+      setTimeout(() => this.trackPageView(), 100); // Small delay to ensure DOM is updated
+    };
+
+    window.history.replaceState = (...args) => {
+      originalReplaceState.apply(window.history, args);
+      setTimeout(() => this.trackPageView(), 100);
+    };
+  }
+
+  async trackPageView() {
+    if (!this.isTracking || !this.sessionId) return;
+
+    // Debounce page view tracking to prevent rapid calls
+    if (this.pageViewTimeout) {
+      clearTimeout(this.pageViewTimeout);
+    }
+
+    this.pageViewTimeout = setTimeout(async () => {
+      try {
+        const currentUrl = window.location.pathname;
+        const currentTitle = document.title || 'Unknown Page';
+        
+        // Get a more descriptive page name
+        let pageName = this.getPageName(currentUrl, currentTitle);
+
+        const response = await fetch(`${this.baseURL}/api/analytics/pageview`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            sessionId: this.sessionId,
+            url: currentUrl,
+            title: currentTitle,
+            pageName: pageName
+          })
+        });
+
+        if (!response.ok) {
+          console.warn('Page view tracking failed:', response.status, response.statusText);
+        } else {
+          console.log('Page view tracked:', pageName);
+        }
+      } catch (error) {
+        console.error('Failed to track page view:', error);
+      }
+    }, 500); // 500ms debounce
+  }
+
+  getPageName(url, title) {
+    // Map URLs to more descriptive names
+    const pageMap = {
+      '/': 'Home',
+      '/products': 'Products',
+      '/blog': 'Blog',
+      '/about': 'About Us',
+      '/contact': 'Contact',
+      '/faq': 'FAQ',
+      '/privacy': 'Privacy Policy',
+      '/terms': 'Terms of Service',
+      '/sitemap': 'Sitemap',
+      '/our-works': 'Our Works',
+      '/test-your-idea': 'Test Your Idea'
+    };
+
+    // Check for admin pages
+    if (url.startsWith('/admin')) {
+      const adminPage = url.replace('/admin', '').replace('/', '') || 'Dashboard';
+      return `Admin - ${adminPage.charAt(0).toUpperCase() + adminPage.slice(1)}`;
+    }
+
+    // Check for product detail pages
+    if (url.startsWith('/products/') && url !== '/products') {
+      return 'Product Detail';
+    }
+
+    // Check for blog detail pages
+    if (url.startsWith('/blog/') && url !== '/blog') {
+      return 'Blog Post';
+    }
+
+    // Return mapped name or extract from title
+    return pageMap[url] || title.replace(' | MyMerch', '');
   }
 
   async endSession() {
@@ -129,11 +343,17 @@ class AnalyticsService {
         console.warn('Session end failed:', response.status, response.statusText);
       }
 
+      // Clear session cookie
+      this.setCookie('analytics_session_id', '', -1); // Expire immediately
+      
       this.sessionId = null;
       this.sessionStartTime = null;
       this.isTracking = false;
     } catch (error) {
       console.error('Failed to end session:', error);
+      // Clear session cookie even if API call failed
+      this.setCookie('analytics_session_id', '', -1); // Expire immediately
+      
       // Reset tracking state even if the request failed
       this.sessionId = null;
       this.sessionStartTime = null;
@@ -169,6 +389,11 @@ class AnalyticsService {
     } else {
       this.endSession();
     }
+  }
+
+  // Method to manually track page views (for React Router integration)
+  trackPageViewManual() {
+    this.trackPageView();
   }
 
   // Method to manually track custom events (optional)

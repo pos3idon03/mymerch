@@ -22,10 +22,6 @@ const AnalyticsDashboard = () => {
     fetchAnalyticsData();
   }, [dateRange]);
 
-  // Debug: Log analyticsData whenever it changes
-  useEffect(() => {
-    console.log('Analytics data updated:', analyticsData);
-  }, [analyticsData]);
 
   const fetchAnalyticsData = async () => {
     setLoading(true);
@@ -57,9 +53,6 @@ const AnalyticsDashboard = () => {
         })
       ]);
 
-      // Debug: Log the responses to see the structure
-      console.log('Summary response:', summaryRes.data);
-      console.log('Recent sessions response:', recentSessionsRes.data);
 
       setAnalyticsData({
         summary: summaryRes.data.data || summaryRes.data || {
@@ -200,16 +193,22 @@ const AnalyticsDashboard = () => {
         <div className="analytics-section">
           <h3>🔥 Most Popular Pages</h3>
           <div className="popular-pages">
-            {analyticsData.popularPages.map((page, index) => (
-              <div key={index} className="page-item">
-                <div className="page-rank">#{index + 1}</div>
-                <div className="page-info">
-                  <div className="page-title">{page.title}</div>
-                  <div className="page-url">{page.url}</div>
+            {analyticsData.popularPages.length > 0 ? (
+              analyticsData.popularPages.map((page, index) => (
+                <div key={index} className="page-item">
+                  <div className="page-rank">#{index + 1}</div>
+                  <div className="page-info">
+                    <div className="page-title">{page.title}</div>
+                    <div className="page-url">{page.url}</div>
+                  </div>
+                  <div className="page-visits">{page.visits} visits</div>
                 </div>
-                <div className="page-visits">{page.visits} visits</div>
+              ))
+            ) : (
+              <div className="empty-state">
+                <p>No page views recorded yet. Start browsing to see popular pages!</p>
               </div>
-            ))}
+            )}
           </div>
         </div>
 
@@ -217,20 +216,26 @@ const AnalyticsDashboard = () => {
         <div className="analytics-section">
           <h3>📈 Traffic Sources</h3>
           <div className="traffic-sources">
-            {analyticsData.trafficSources.map((source, index) => (
-              <div key={index} className="source-item">
-                <div className="source-icon">
-                  {getSourceIcon(source._id)}
+            {analyticsData.trafficSources.length > 0 ? (
+              analyticsData.trafficSources.map((source, index) => (
+                <div key={index} className="source-item">
+                  <div className="source-icon">
+                    {getSourceIcon(source._id)}
+                  </div>
+                  <div className="source-info">
+                    <div className="source-name">{source._id}</div>
+                    <div className="source-sessions">{source.sessions} sessions</div>
+                  </div>
+                  <div className="source-percentage">
+                    {Math.round((source.sessions / analyticsData.summary.totalSessions) * 100)}%
+                  </div>
                 </div>
-                <div className="source-info">
-                  <div className="source-name">{source._id}</div>
-                  <div className="source-sessions">{source.sessions} sessions</div>
-                </div>
-                <div className="source-percentage">
-                  {Math.round((source.sessions / analyticsData.summary.totalSessions) * 100)}%
-                </div>
+              ))
+            ) : (
+              <div className="empty-state">
+                <p>No traffic source data available yet.</p>
               </div>
-            ))}
+            )}
           </div>
         </div>
 
@@ -238,20 +243,26 @@ const AnalyticsDashboard = () => {
         <div className="analytics-section">
           <h3>🌍 Geographic Distribution</h3>
           <div className="geographic-data">
-            {analyticsData.geographicData.map((location, index) => (
-              <div key={index} className="location-item">
-                <div className="location-name">{location._id}</div>
-                <div className="location-sessions">{location.sessions} sessions</div>
-                <div className="location-bar">
-                  <div 
-                    className="location-bar-fill"
-                    style={{ 
-                      width: `${(location.sessions / analyticsData.summary.totalSessions) * 100}%` 
-                    }}
-                  ></div>
+            {analyticsData.geographicData.length > 0 ? (
+              analyticsData.geographicData.map((location, index) => (
+                <div key={index} className="location-item">
+                  <div className="location-name">{location._id}</div>
+                  <div className="location-sessions">{location.sessions} sessions</div>
+                  <div className="location-bar">
+                    <div 
+                      className="location-bar-fill"
+                      style={{ 
+                        width: `${(location.sessions / analyticsData.summary.totalSessions) * 100}%` 
+                      }}
+                    ></div>
+                  </div>
                 </div>
+              ))
+            ) : (
+              <div className="empty-state">
+                <p>No geographic data available yet.</p>
               </div>
-            ))}
+            )}
           </div>
         </div>
 
@@ -268,6 +279,7 @@ const AnalyticsDashboard = () => {
                   <th>Source</th>
                   <th>Location</th>
                   <th>Pages</th>
+                  <th>User Type</th>
                   <th>Consent</th>
                 </tr>
               </thead>
@@ -280,6 +292,11 @@ const AnalyticsDashboard = () => {
                     <td>{getSourceIcon(session.source)} {session.source}</td>
                     <td>{session.country}, {session.city}</td>
                     <td>{session.pageViews?.length || 0} pages</td>
+                    <td>
+                      <span className={`user-type ${session.userType || 'user'}`}>
+                        {session.userType === 'admin' ? '👨‍💼 Admin' : '👤 User'}
+                      </span>
+                    </td>
                     <td>
                       {session.consentGiven ? '✅' : '❌'}
                     </td>
