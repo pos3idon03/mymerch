@@ -32,3 +32,4 @@ uploads/
 # elastic beanstalk
 .elasticbeanstalk
 .elasticbeanstalk/app_versions/*.zip
+perform__hashing.py
